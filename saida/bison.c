@@ -4372,7 +4372,7 @@ yyreduce:
 #line 346 "parser/clang.y"
                         {
                             NoAST_Parametros_Chamada *novo_no = (NoAST_Parametros_Chamada*) (yyvsp[-2].no);
-                            (yyval.no) = novo_no_ast_parametros_chamada(novo_no->parametros, novo_no->parametros_no, (yyvsp[0].no));
+                            (yyval.no) = novo_no_ast_parametros_chamada((yyvsp[-2].no),  novo_no->parametros_no, (yyvsp[0].no));
                         }
 #line 4378 "clang.tab.c"
     break;

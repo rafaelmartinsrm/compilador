@@ -177,7 +177,7 @@ NoAST *novo_no_ast_elseif(NoAST *condicao, NoAST *bloco_elseif);
 NoAST *novo_no_ast_declaracao_funcao(int tipo_dado, Simbolo *simbolo, NoAST *expressao_composta);
 NoAST *novo_no_ast_declaracoes(NoAST **declaracoes, int declaracoes_no, NoAST *declaracao);
 NoAST *novo_no_ast_parametros(NoAST *no, int parametros_no, Simbolo *parametro);
-NoAST *novo_no_ast_parametros_chamada(NoAST **parametros, int parametros_no, NoAST *parametro);
+NoAST *novo_no_ast_parametros_chamada(NoAST *no, int parametros_no, NoAST *parametro);
 NoAST *novo_no_ast_constante(int tipo_constante, Valor valor);
 NoAST *novo_no_ast_aritmetica(Operador operador, NoAST *esquerda, NoAST *direita);
 NoAST *novo_no_ast_conjunto(Operador operador, NoAST *esquerda, NoAST *direita);

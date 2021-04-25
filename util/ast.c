@@ -191,26 +191,31 @@ NoAST *novo_no_ast_chamada_funcao(NoAST *definicao, NoAST *parametros, int param
     return (struct NoAST*) novo_no;
 }
 
-NoAST *novo_no_ast_parametros_chamada(NoAST **parametros, int parametros_no, NoAST *parametro)
+NoAST *novo_no_ast_parametros_chamada(NoAST *no, int parametros_no, NoAST *parametro)
 {
-    NoAST_Parametros_Chamada *novo_no = malloc(sizeof(NoAST_Parametros_Chamada));
-    
-    novo_no->tipo = NO_PARAMETROS_CHAMADA;
-
-    if(parametros == NULL)
+    NoAST_Parametros_Chamada *novo_no = NULL;
+    if(no == NULL)
     {
-        parametros = (NoAST**)malloc(sizeof(NoAST*));
+        novo_no = malloc(sizeof(NoAST_Parametros_Chamada));
+        novo_no->tipo = NO_PARAMETROS_CHAMADA;
+    }
+    else
+    {
+        novo_no = (NoAST_Parametros_Chamada *) no;
+    }
+
+    if(novo_no->parametros == NULL)
+    {
+        novo_no->parametros = (NoAST**)malloc(sizeof(NoAST*));
         novo_no->parametros_no = 1;
     }
     else
     {
         novo_no->parametros_no = parametros_no + 1;
-        parametros = (NoAST**)realloc(parametros, novo_no->parametros_no * sizeof(NoAST*));
+        novo_no->parametros = (NoAST**)realloc(novo_no->parametros, novo_no->parametros_no * sizeof(NoAST*));
     }
 
-    parametros[novo_no->parametros_no - 1] = parametro;
-    novo_no->parametros = parametros;
-
+    novo_no->parametros[novo_no->parametros_no - 1] = parametro;
     return (struct NoAST*) novo_no;
 }
 

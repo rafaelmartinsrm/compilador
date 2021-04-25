@@ -345,7 +345,7 @@ expressao_lista_param   : expressao_atribuicao
                         | expressao_lista_param VIRGULA expressao_atribuicao
                         {
                             NoAST_Parametros_Chamada *novo_no = (NoAST_Parametros_Chamada*) $1;
-                            $$ = novo_no_ast_parametros_chamada(novo_no->parametros, novo_no->parametros_no, $3);
+                            $$ = novo_no_ast_parametros_chamada($1,  novo_no->parametros_no, $3);
                         }
                         ;
 
