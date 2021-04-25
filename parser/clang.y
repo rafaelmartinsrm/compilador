@@ -43,7 +43,7 @@ void yyerror(const char *s);
 %token ATRIBUICAO ASPAS_SIMPLES ASPAS_DUPLAS CHAVE_E CHAVE_D COMANDO_FOR COMANDO_FORALL COMANDO_READ COMANDO_WRITE COMANDO_WRITELN CONJUNTO_IN TIPO_ELEM COMANDO_ELSE EMPTY COMANDO_IF IN IS_FLOAT IS_INT IS_SET OP_COMPARACAO OP_DIVISAO OP_E OP_MULTIPLICACAO OP_NEGACAO OP_OU PARENTESE_E PARENTESE_D PONTO_E_VIRGULA RETURN TIPO_SET TIPO_INT TIPO_FLOAT VIRGULA
 %type <tipo_dado> def_declaracao_tipo
 
-%type <no> programa declaracao declaracao_func lista_tipo_parametro
+%type <no> programa declaracao declaracoes declaracao_func lista_tipo_parametro
 %type <no> declaracao_var valores 
 %type <no> lista_itens_bloco item_bloco expressao_composta
 %type <no> tipos_expressao expressao_declaracao expressao_iteracao expressao_decisao expressao_return
@@ -59,16 +59,20 @@ void yyerror(const char *s);
 %start programa
 %%
 
-programa				: declaracao
+programa                : declaracoes
+                        {
+                            liberar_ast($1);
+                        }
+                        ;
+
+declaracoes             : declaracao
                         {
                             $$ = novo_no_ast_declaracoes(NULL, 0, $1);
-                            liberar_ast($$);
                         }
-                        | programa declaracao
+                        | declaracoes declaracao
                         {
                             NoAST_Declaracoes *novo_no = (NoAST_Declaracoes*) $1;
                             $$ = novo_no_ast_declaracoes($1, novo_no->declaracoes_no, $2);
-                            liberar_ast($$);
                         }
 						;
 
