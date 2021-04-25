@@ -3,6 +3,7 @@
 #include <string.h>
 #include "../configuracoes.h"
 #include "tabela_simbolos.h"
+#include "ast.h"
 #include "../uthash/uthash.h"
 
 void tabela_inicializar()
@@ -93,6 +94,16 @@ Simbolo* buscar_simbolo_todos_escopos(const char* identificador)
         }
     }
     return NULL;
+}
+
+void verifica_existencia_main()
+{
+    Simbolo* simbolo = buscar_simbolo_todos_escopos("main");
+
+    if(!simbolo)
+    {
+        adicionar_erro("[ERRO] Não foi definida uma main.");
+    }
 }
 
 Escopo** lista_escopos(Escopo** lista, Escopo *raiz, int *tamanho)

@@ -188,6 +188,7 @@ NoAST *novo_no_ast_chamada_funcao(NoAST *definicao, NoAST *parametros, int param
 Simbolo *simbolo_no_ast(NoAST *no);
 void imprimir_ast(NoAST *no);
 void liberar_ast(NoAST *no);
+void adicionar_erro(const char* erro);
 int tipo_expressao(NoAST *no);
 int tipo_parametros_funcao(Simbolo *simbolo, NoAST *no);
 #endif

@@ -107,6 +107,7 @@ void deletar_todos();
 void imprimir_simbolo();
 void add_lista(Simbolo* novo_simbolo);
 void imprime_simbolos();
+void verifica_existencia_main();
 void liberar_tabela_simbolos();
 const char* tipo_texto(int tipo);
 void novo_escopo();

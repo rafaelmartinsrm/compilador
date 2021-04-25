@@ -466,6 +466,7 @@ int main(int argc, char *argv[]) {
 		yyin = fopen(argv[1], "r");
 		yyparse();
 		fclose(yyin);
+        verifica_existencia_main();
         imprime_simbolos();
         liberar_tabela_simbolos();
         liberar_lista();
