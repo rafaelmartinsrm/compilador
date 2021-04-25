@@ -101,6 +101,11 @@ def_declaracao			: TOKEN_ID
                             $$ = $1; 
                         }
 						| def_declaracao PARENTESE_E PARENTESE_D
+                        {
+                            $1->funcao.parametros_no = 0;
+                            $1->funcao.parametros = NULL;
+                            $$ = $1;
+                        }
 						| def_declaracao PARENTESE_E lista_tipo_parametro PARENTESE_D
                         {
                             NoAST_Parametros *novo_no = (NoAST_Parametros*) $3;
