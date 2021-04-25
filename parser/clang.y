@@ -62,11 +62,13 @@ void yyerror(const char *s);
 programa				: declaracao
                         {
                             $$ = novo_no_ast_declaracoes(NULL, 0, $1);
+                            liberar_ast($$);
                         }
                         | programa declaracao
                         {
                             NoAST_Declaracoes *novo_no = (NoAST_Declaracoes*) $1;
-                            $$ = novo_no_ast_declaracoes(novo_no->declaracoes, novo_no->declaracoes_no, $2);
+                            $$ = novo_no_ast_declaracoes($1, novo_no->declaracoes_no, $2);
+                            liberar_ast($$);
                         }
 						;
 
@@ -104,6 +106,8 @@ def_declaracao			: TOKEN_ID
                             NoAST_Parametros *novo_no = (NoAST_Parametros*) $3;
                             $1->funcao.parametros_no = novo_no->parametros_no;
                             $1->funcao.parametros = novo_no->parametros;
+                            liberar_ast($3);
+                            $$ = $1;
                         }
 						| def_declaracao PARENTESE_E lista_identificadores PARENTESE_D
 						;
@@ -127,13 +131,11 @@ declaracao 				: declaracao_func
                         {
                             $$ = $1;
                             imprimir_ast($$);
-                            liberar_ast($$);
                         }
                         | declaracao_var 
                         { 
                             $$ = $1;
                             imprimir_ast($$);
-                            liberar_ast($$);
                         }
 						;
 
@@ -440,6 +442,16 @@ void add_lista(Simbolo* novo_simbolo)
     }
 }
 
+void liberar_lista()
+{
+    int i;
+    for(i = 0; i < simbolos_no; ++i)
+    {
+        free(simbolos[simbolos_no]);
+    }
+    free(simbolos);
+}
+
 int main(int argc, char *argv[]) {
    tabela_inicializar(); 
 /* #ifdef YYDEBUG
@@ -452,6 +464,7 @@ int main(int argc, char *argv[]) {
 		fclose(yyin);
         imprime_simbolos();
         liberar_tabela_simbolos();
+        liberar_lista();
 		yylex_destroy();
 	}
 

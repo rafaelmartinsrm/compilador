@@ -108,6 +108,7 @@ typedef struct
 {
     enum TipoNo tipo;
     Simbolo *definicao;
+    NoAST *parametros;
     /* tipo retorno */
     int tipo_dado;
     NoAST *expressao_composta;
@@ -175,7 +176,7 @@ NoAST *novo_no_ast_expressao_composta(NoAST *no, int itens_bloco_no, NoAST *item
 NoAST *novo_no_ast_if(NoAST *condicao, NoAST *bloco_if, NoAST **bloco_elseif, int elseif_no, NoAST *bloco_else);
 NoAST *novo_no_ast_elseif(NoAST *condicao, NoAST *bloco_elseif);
 NoAST *novo_no_ast_declaracao_funcao(int tipo_dado, Simbolo *simbolo, NoAST *expressao_composta);
-NoAST *novo_no_ast_declaracoes(NoAST **declaracoes, int declaracoes_no, NoAST *declaracao);
+NoAST *novo_no_ast_declaracoes(NoAST *no, int declaracoes_no, NoAST *declaracao);
 NoAST *novo_no_ast_parametros(NoAST *no, int parametros_no, Simbolo *parametro);
 NoAST *novo_no_ast_parametros_chamada(NoAST *no, int parametros_no, NoAST *parametro);
 NoAST *novo_no_ast_constante(int tipo_constante, Valor valor);

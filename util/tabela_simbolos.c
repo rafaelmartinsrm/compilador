@@ -138,6 +138,16 @@ void liberar_tabela_simbolos()
     {
         HASH_ITER(hh, escopos[i]->tabela_hash, simbolo, tmp)
         {
+            Parametro* parametro_tmp = NULL;
+            if(simbolo->tag == FUNCAO)
+            {
+                while(simbolo->funcao.parametros != NULL)     
+                {
+                    parametro_tmp = simbolo->funcao.parametros->proximo;
+                    free(simbolo->funcao.parametros);
+                    simbolo->funcao.parametros = parametro_tmp;
+                }
+            }
             Linha* linha_tmp = NULL;
             while(simbolo->linhas != NULL)
             {

@@ -18,6 +18,7 @@ typedef enum
 typedef struct Simbolo Simbolo;
 typedef struct Escopo Escopo;
 typedef struct Linha Linha;
+typedef struct Parametro Parametro;
 /* typedef struct TipoSimbolo
 {
     enum 
@@ -40,11 +41,11 @@ typedef union {
     char* stringval;
 } Valor;
 
-typedef struct 
+typedef struct Parametro
 {
     int tipo_dado;
     const char* identificador;
-    
+    Parametro *proximo;
     Valor valor;
 } Parametro;
 
@@ -73,7 +74,7 @@ typedef struct Simbolo
         {
             int tipo_dado; /* tipo do retorno */
             int parametros_no;
-            Parametro *parametros;
+            Parametro* parametros;
         } funcao;
     };
 

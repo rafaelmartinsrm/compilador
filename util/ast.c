@@ -28,22 +28,27 @@ NoAST *novo_no_ast_parametros(NoAST *no, int parametros_no, Simbolo *parametro)
     {
         novo_no = (NoAST_Parametros *) no;
     }
+
     Parametro* novo_parametro = malloc(sizeof(Parametro));
     novo_parametro->identificador = parametro->identificador;
     novo_parametro->tipo_dado = parametro->funcao.tipo_dado;
+    novo_parametro->proximo = NULL;
 
     if(novo_no->parametros == NULL)
     {
-        novo_no->parametros = (Parametro*)malloc(sizeof(Parametro));
+        novo_no->parametros = novo_parametro;
         novo_no->parametros_no = 1;
     }
     else
     {
-        novo_no->parametros_no = parametros_no + 1;
-        novo_no->parametros = (Parametro*)realloc(novo_no->parametros, novo_no->parametros_no * sizeof(Parametro));
-    }
+        Parametro *temp_parametro = novo_no->parametros;
 
-    novo_no->parametros[novo_no->parametros_no - 1] = *novo_parametro;
+        novo_no->parametros_no = parametros_no + 1;
+        
+        while(temp_parametro->proximo != NULL)
+            temp_parametro = temp_parametro->proximo;
+        temp_parametro->proximo = novo_parametro;
+    }
 
     return (struct NoAST*) novo_no;
 }
@@ -145,24 +150,32 @@ NoAST *novo_no_ast_if(NoAST *condicao, NoAST *bloco_if, NoAST **blocos_elseif, i
     return (struct NoAST*) novo_no;
 }
 
-NoAST *novo_no_ast_declaracoes(NoAST **declaracoes, int declaracoes_no, NoAST *declaracao)
+NoAST *novo_no_ast_declaracoes(NoAST *no, int declaracoes_no, NoAST *declaracao)
 {
-    NoAST_Declaracoes *novo_no = malloc(sizeof(NoAST_Declaracoes));
-    novo_no->tipo = NO_DECLARACOES;
-
-    if(declaracoes == NULL)
+    NoAST_Declaracoes *novo_no = NULL;
+    if(no == NULL)
     {
-        declaracoes = (NoAST**)malloc(sizeof(NoAST*));
+        novo_no = malloc(sizeof(NoAST_Declaracoes));
+        novo_no->tipo = NO_DECLARACOES;
+        novo_no->declaracoes = NULL;
+    }
+    else
+    {
+        novo_no = (NoAST_Declaracoes *) no;
+    }
+
+    if(novo_no->declaracoes == NULL)
+    {
+        novo_no->declaracoes = (NoAST**)malloc(sizeof(NoAST*));
         novo_no->declaracoes_no = 1;
     }
     else
     {
         novo_no->declaracoes_no = declaracoes_no + 1;
-        declaracoes = (NoAST**)realloc(declaracoes, novo_no->declaracoes_no * sizeof(NoAST*));
+        novo_no->declaracoes = (NoAST**)realloc(novo_no->declaracoes, novo_no->declaracoes_no * sizeof(NoAST*));
     }
 
-    declaracoes[novo_no->declaracoes_no - 1] = declaracao;
-    novo_no->declaracoes = declaracoes;
+    novo_no->declaracoes[novo_no->declaracoes_no - 1] = declaracao;
 
     return (struct NoAST*) novo_no;
 }
@@ -384,6 +397,18 @@ void liberar_ast(NoAST *no)
 
     switch(no->tipo)
     {
+        case(NO_DECLARACOES):
+        {
+            NoAST_Declaracoes* no_declaracoes = (NoAST_Declaracoes *) no;
+            for(i = 0; i < no_declaracoes->declaracoes_no; ++i)
+            {
+                liberar_ast(no_declaracoes->declaracoes[i]);
+                free(no_declaracoes->declaracoes[i]);
+            }
+            free(no_declaracoes->declaracoes);
+            free(no_declaracoes);
+            break;
+        }
         case(NO_ARITMETICA):
         {
             NoAST_Aritmetica* no_aritmetica = (NoAST_Aritmetica *) no;
@@ -402,6 +427,12 @@ void liberar_ast(NoAST *no)
             }
             free(no_parametros_chamada->parametros);
             free(no_parametros_chamada);
+            break;
+        }
+        case(NO_PARAMETROS):
+        {
+            NoAST_Parametros* no_parametros = (NoAST_Parametros *) no;
+            free(no_parametros);
             break;
         }
         case(NO_CHAMADA_FUNCAO):
@@ -473,8 +504,9 @@ void liberar_ast(NoAST *no)
             for(i = 0; i < no_if->elseif_no; ++i)
             {
                 liberar_ast(no_if->blocos_elseif[i]);
+                free(no_if->blocos_elseif[i]);
             }
-
+            free(no_if->blocos_elseif);
             liberar_ast(no_if->bloco_else);
             free(no_if);
             break;
