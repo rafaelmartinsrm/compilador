@@ -147,13 +147,15 @@ void liberar_tabela_simbolos()
             }
             
             HASH_DEL(escopos[i]->tabela_hash, simbolo);
+            free((void *)simbolo->identificador);
             free(simbolo);
         }
         
         free(escopos[i]->tabela_hash);
         free(escopos[i]);
     }
-
+    
+    free(escopos);
     free(tamanho);
     free(tabela_simbolos);
     return;

@@ -398,7 +398,9 @@ void liberar_ast(NoAST *no)
             for(i = 0; i < no_parametros_chamada->parametros_no; ++i)
             {
                 liberar_ast(no_parametros_chamada->parametros[i]);
+                free(no_parametros_chamada->parametros[i]);
             }
+            free(no_parametros_chamada->parametros);
             free(no_parametros_chamada);
             break;
         }
@@ -483,7 +485,9 @@ void liberar_ast(NoAST *no)
             for(i = 0; i < no_expressao_composta->itens_bloco_no; ++i)
             {
                 liberar_ast(no_expressao_composta->itens_bloco[i]); 
+                free(no_expressao_composta->itens_bloco[i]);
             }
+            free(no_expressao_composta->itens_bloco);
             free(no_expressao_composta); 
             break;
         }
