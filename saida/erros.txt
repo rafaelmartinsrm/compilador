@@ -1,0 +1,3 @@
+[ERRO] Erro na chamada de função 'subsum', linha (coluna): 7 (32).
+[ERRO] Erro na chamada de função 'subsum', linha (coluna): 10 (32).
+[ERRO] Simbolo não encontrado.

@@ -106,7 +106,9 @@ void deletar_todos();
 void imprimir_simbolo();
 void add_lista(Simbolo* novo_simbolo);
 void imprime_simbolos();
+void liberar_tabela_simbolos();
 const char* tipo_texto(int tipo);
 void novo_escopo();
 void sair_escopo();
+Escopo** lista_escopos(Escopo** lista, Escopo* raiz, int *tamanho);
 #endif

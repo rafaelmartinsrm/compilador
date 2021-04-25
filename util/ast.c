@@ -20,7 +20,7 @@ NoAST *novo_no_ast_parametros(Parametro *parametros, int parametros_no, Simbolo 
 {
     NoAST_Parametros *novo_no = malloc(sizeof(NoAST_Parametros));
     Parametro* novo_parametro = malloc(sizeof(Parametro));
-    novo_parametro->identificador = strdup(parametro->identificador);
+    novo_parametro->identificador = parametro->identificador;
     novo_parametro->tipo_dado = parametro->funcao.tipo_dado;
     novo_no->tipo = NO_PARAMETROS;
 
@@ -51,22 +51,31 @@ NoAST *novo_no_ast_atribuicao(NoAST *referencia, NoAST *constante)
     return (struct NoAST*) novo_no;
 }
 
-NoAST *novo_no_ast_expressao_composta(NoAST **itens_bloco, int itens_bloco_no, NoAST *item)
+NoAST *novo_no_ast_expressao_composta(NoAST *no, int itens_bloco_no, NoAST *item)
 {
-    NoAST_Expressao_Composta *novo_no = malloc(sizeof(NoAST_Expressao_Composta));
-    novo_no->tipo = NO_EXPRESSAO_COMPOSTA;
-    if(itens_bloco == NULL)
+    NoAST_Expressao_Composta *novo_no = NULL;
+
+    if(no == NULL)
     {
-        itens_bloco = (NoAST**)malloc(sizeof(NoAST*));
+        novo_no = malloc(sizeof(NoAST_Expressao_Composta));
+        novo_no->tipo = NO_EXPRESSAO_COMPOSTA;
+    }
+    else
+    {
+        novo_no = (NoAST_Expressao_Composta *) no;
+    }
+
+    if(novo_no->itens_bloco == NULL)
+    {
+        novo_no->itens_bloco = (NoAST**)malloc(sizeof(NoAST*));
         novo_no->itens_bloco_no = 1;
     }
     else
     {
         novo_no->itens_bloco_no = itens_bloco_no + 1;
-        itens_bloco = (NoAST**)realloc(itens_bloco, novo_no->itens_bloco_no * sizeof(NoAST*));
+        novo_no->itens_bloco = (NoAST**)realloc(novo_no->itens_bloco, novo_no->itens_bloco_no * sizeof(NoAST*));
     }
-    itens_bloco[novo_no->itens_bloco_no - 1] = item;
-    novo_no->itens_bloco = itens_bloco;
+    novo_no->itens_bloco[novo_no->itens_bloco_no - 1] = item;
 
     return (struct NoAST*) novo_no;
 }
@@ -151,7 +160,7 @@ NoAST *novo_no_ast_declaracoes(NoAST **declaracoes, int declaracoes_no, NoAST *d
     return (struct NoAST*) novo_no;
 }
 
-NoAST *novo_no_ast_declaracao_funcao(int tipo_dado, Simbolo *simbolo, NoAST_Expressao_Composta *expressao_composta)
+NoAST *novo_no_ast_declaracao_funcao(int tipo_dado, Simbolo *simbolo, NoAST *expressao_composta)
 {
     NoAST_Declaracao_Funcao *novo_no = malloc(sizeof(NoAST_Declaracao_Funcao));
 
@@ -352,6 +361,141 @@ int tipo_parametros_funcao(Simbolo *simbolo, NoAST *no)
         }
     }
     return 1;
+}
+
+void liberar_ast(NoAST *no)
+{
+    if(no == NULL)
+        return;
+
+    int i;
+
+    switch(no->tipo)
+    {
+        case(NO_ARITMETICA):
+        {
+            NoAST_Aritmetica* no_aritmetica = (NoAST_Aritmetica *) no;
+            liberar_ast(no_aritmetica->esquerda);   
+            liberar_ast(no_aritmetica->direita);   
+            free(no_aritmetica);
+            break;
+        }
+        case(NO_PARAMETROS_CHAMADA):
+        {
+            NoAST_Parametros_Chamada* no_parametros_chamada = (NoAST_Parametros_Chamada *) no;
+            for(i = 0; i < no_parametros_chamada->parametros_no; ++i)
+            {
+                liberar_ast(no_parametros_chamada->parametros[i]);
+            }
+            free(no_parametros_chamada);
+            break;
+        }
+        case(NO_CHAMADA_FUNCAO):
+        {
+            NoAST_Chamada_Funcao* no_chamada_funcao = (NoAST_Chamada_Funcao *) no;
+            liberar_ast(no_chamada_funcao->definicao);
+            liberar_ast(no_chamada_funcao->parametros);
+            free(no_chamada_funcao);
+            break;
+        }
+        case(NO_CONJUNTO):
+        {
+            NoAST_Conjunto* no_conjunto = (NoAST_Conjunto *) no;
+            liberar_ast(no_conjunto->esquerda);
+            liberar_ast(no_conjunto->direita);
+            free(no_conjunto);
+            break;
+        }
+        case(NO_DECLARACAO):
+        {
+            NoAST_Declaracao* no_declaracao = (NoAST_Declaracao *) no;
+            // Simbolos     
+            free(no_declaracao);
+            break;
+        }
+        case(NO_CONSTANTE):
+        {
+            NoAST_Constante* no_constante = (NoAST_Constante *) no;
+            // Valor 
+            free(no_constante);
+            break;
+        }
+        case(NO_ELSEIF):
+        {
+            NoAST_ElseIf* no_elseif = (NoAST_ElseIf *) no;
+            liberar_ast(no_elseif->condicao);
+            liberar_ast(no_elseif->bloco_elseif);
+            free(no_elseif);
+            break;
+        }
+        case(NO_RETORNO):
+        {
+            NoAST_Retorno* no_retorno = (NoAST_Retorno *) no;
+            liberar_ast(no_retorno->referencia);
+            free(no_retorno);
+            break;
+        }
+        case(NO_REFERENCIA):
+        {
+            NoAST_Referencia* no_referencia = (NoAST_Referencia *) no;
+            // Simbolo
+            free(no_referencia);
+            break;
+        }
+        case(NO_RELACIONAL):
+        {
+            NoAST_Relacional* no_relacional = (NoAST_Relacional *) no;
+            liberar_ast(no_relacional->esquerda);
+            liberar_ast(no_relacional->direita);
+            free(no_relacional);
+            break;
+        }
+        case(NO_IF):
+        {
+            NoAST_If* no_if = (NoAST_If *) no;
+            liberar_ast(no_if->condicao);
+            liberar_ast(no_if->bloco_if);
+
+            for(i = 0; i < no_if->elseif_no; ++i)
+            {
+                liberar_ast(no_if->blocos_elseif[i]);
+            }
+
+            liberar_ast(no_if->bloco_else);
+            free(no_if);
+            break;
+        }
+        case(NO_EXPRESSAO_COMPOSTA):
+        {
+            NoAST_Expressao_Composta* no_expressao_composta = (NoAST_Expressao_Composta *) no;
+            for(i = 0; i < no_expressao_composta->itens_bloco_no; ++i)
+            {
+                liberar_ast(no_expressao_composta->itens_bloco[i]); 
+            }
+            free(no_expressao_composta); 
+            break;
+        }
+        case(NO_DECLARACAO_FUNCAO):
+        {
+            NoAST_Declaracao_Funcao* no_declaracao_funcao = (NoAST_Declaracao_Funcao *) no;
+            // Simbolo?
+            liberar_ast(no_declaracao_funcao->expressao_composta);
+            free(no_declaracao_funcao);
+            break;
+        }
+        case(NO_ATRIBUICAO):
+        {
+            NoAST_Atribuicao* no_atribuicao = (NoAST_Atribuicao *) no;
+            liberar_ast(no_atribuicao->referencia);
+            liberar_ast(no_atribuicao->constante);
+            free(no_atribuicao);
+            break;
+        }
+        default:
+        {
+            printf("-\nNão sei liberar o tipo %d\n-", no->tipo);
+        }
+    }
 }
 
 int tipo_expressao(NoAST *no)
@@ -630,20 +774,21 @@ void imprimir_ast(NoAST *no)
             }
         }
             printf(" * itens\n");
-            for(i = 0; i < no_declaracao_funcao->expressao_composta->itens_bloco_no; ++i)
+            NoAST_Expressao_Composta* no_expressao_composta = (NoAST_Expressao_Composta *) no_declaracao_funcao->expressao_composta;
+            for(i = 0; i < no_expressao_composta->itens_bloco_no; ++i)
             {
-                switch(no_declaracao_funcao->expressao_composta->itens_bloco[i]->tipo)
+                switch(no_expressao_composta->itens_bloco[i]->tipo)
                 {
                     case(NO_DECLARACAO): 
                         printf("   * declaração\n");
-                        NoAST_Declaracao* no = (NoAST_Declaracao*) no_declaracao_funcao->expressao_composta->itens_bloco[i];
+                        NoAST_Declaracao* no = (NoAST_Declaracao*) no_expressao_composta->itens_bloco[i];
                         for(k = 0; k < no->simbolos_no; ++k)
                             printf("    * %s %s\n", tipo_texto(no->tipo_dado), no->simbolos[k]->identificador); 
 
                         break;
                     case(NO_IF):
                     {
-                        NoAST_If *no_if = (NoAST_If *) no_declaracao_funcao->expressao_composta->itens_bloco[i];
+                        NoAST_If *no_if = (NoAST_If *) no_expressao_composta->itens_bloco[i];
                         printf("   * if\n");
                         if(no_if->bloco_if)
                         {
@@ -707,7 +852,7 @@ void imprimir_ast(NoAST *no)
                     }
                     default:
                     {
-                        imprimir_no(no_declaracao_funcao->expressao_composta->itens_bloco[i], 5);
+                        imprimir_no(no_expressao_composta->itens_bloco[i], 5);
                     }
                 }
             }

@@ -118,8 +118,7 @@ def_declaracao_tipo		: TIPO_INT      { $$ = TIPO_INTEIRO;}
 declaracao_func			: declaracao_parametro expressao_composta
                         {
                             $1->tag = FUNCAO;
-                            NoAST_Expressao_Composta *novo_no = (NoAST_Expressao_Composta*) $2;
-                            $$ = novo_no_ast_declaracao_funcao($1->funcao.tipo_dado, $1, novo_no);
+                            $$ = novo_no_ast_declaracao_funcao($1->funcao.tipo_dado, $1, $2);
                         }
 						;
 
@@ -128,11 +127,13 @@ declaracao 				: declaracao_func
                         {
                             $$ = $1;
                             imprimir_ast($$);
+                            liberar_ast($$);
                         }
                         | declaracao_var 
                         { 
                             $$ = $1;
                             imprimir_ast($$);
+                            liberar_ast($$);
                         }
 						;
 
@@ -182,7 +183,7 @@ lista_itens_bloco		: item_bloco
 						| lista_itens_bloco item_bloco
                         {
                             NoAST_Expressao_Composta *novo_no = (NoAST_Expressao_Composta*) $1;
-                            $$ = novo_no_ast_expressao_composta(novo_no->itens_bloco, novo_no->itens_bloco_no, $2);
+                            $$ = novo_no_ast_expressao_composta($1, novo_no->itens_bloco_no, $2);
                         }
 						;
 
@@ -450,6 +451,7 @@ int main(int argc, char *argv[]) {
 		yyparse();
 		fclose(yyin);
         imprime_simbolos();
+        liberar_tabela_simbolos();
 		yylex_destroy();
 	}
 

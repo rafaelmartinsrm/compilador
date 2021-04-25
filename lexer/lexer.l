@@ -127,7 +127,7 @@ ESPACO_BRANCO	[ \t\r\f]+
 
 void imprime_ret(char *tipo_token)
 {
-   // printf("yytext: %s\t\t|\ttoken: %s\t|\tlinha: %d\n", yytext, tipo_token, linha_no);
+   printf("yytext: %s\t\t|\ttoken: %s\t|\tlinha: %d\n", yytext, tipo_token, linha_no);
 }
 
 int fileno(FILE *stream);

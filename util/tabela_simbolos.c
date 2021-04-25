@@ -13,6 +13,7 @@ void tabela_inicializar()
         fprintf(stderr, "Erro ao abrir o arquivo.txt\n");
         return;
     }
+    fclose(arquivo);
 
     tabela_simbolos = malloc(sizeof(TabelaSimbolos));
     if(tabela_simbolos == NULL)
@@ -37,6 +38,7 @@ void add_simbolo(int declare, const char *identificador, int tipo_dado, int linh
         simbolo = buscar_simbolo_todos_escopos(identificador);
 
     Linha* linha = malloc(sizeof(Linha));
+    Linha* temp_linha = NULL;
     linha->linha_no = linha_no;
     linha->proxima = NULL;
 
@@ -51,7 +53,10 @@ void add_simbolo(int declare, const char *identificador, int tipo_dado, int linh
     }
     else
     {
-        simbolo->linhas->proxima = linha;
+        temp_linha = simbolo->linhas;
+        while(temp_linha->proxima != NULL) 
+            temp_linha = temp_linha->proxima;
+        temp_linha->proxima = linha;
     }
     /* se já existir, adicionar linhas */ 
     /* linhas+ escopo+ tipos+ */
@@ -107,6 +112,51 @@ Escopo** lista_escopos(Escopo** lista, Escopo *raiz, int *tamanho)
     }
 
     return lista;
+}
+
+void liberar_tabela_simbolos()
+{
+    printf("LIBERANDO\n");
+    if(tabela_simbolos == NULL)
+        return;
+
+    int i;
+
+    Escopo* escopo = tabela_simbolos->escopo_atual;
+
+    while(escopo->pai != NULL)
+        escopo = escopo->pai;
+
+    Escopo** escopos = NULL;
+    Simbolo *simbolo, *tmp;
+
+    int* tamanho  = (int *) malloc(sizeof(int));
+    *tamanho = 0;
+    escopos = lista_escopos(escopos, escopo, tamanho);
+
+    for(i = 0; i < *tamanho; ++i)
+    {
+        HASH_ITER(hh, escopos[i]->tabela_hash, simbolo, tmp)
+        {
+            Linha* linha_tmp = NULL;
+            while(simbolo->linhas != NULL)
+            {
+                linha_tmp = simbolo->linhas->proxima;
+                free(simbolo->linhas);
+                simbolo->linhas = linha_tmp;
+            }
+            
+            HASH_DEL(escopos[i]->tabela_hash, simbolo);
+            free(simbolo);
+        }
+        
+        free(escopos[i]->tabela_hash);
+        free(escopos[i]);
+    }
+
+    free(tamanho);
+    free(tabela_simbolos);
+    return;
 }
 
 void imprime_simbolos()

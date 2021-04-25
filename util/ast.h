@@ -40,7 +40,7 @@ typedef struct NoAST
 {
     enum TipoNo tipo;
     struct NoAST *esquerda;
-    struct NoAST *direita;
+    struct NoAS1 *direita;
 } NoAST;
 
 typedef struct
@@ -110,10 +110,7 @@ typedef struct
     Simbolo *definicao;
     /* tipo retorno */
     int tipo_dado;
-    
-    struct NoAST *declaracoes;
-    struct NoAST *expressoes;
-    NoAST_Expressao_Composta *expressao_composta;
+    NoAST *expressao_composta;
 
 } NoAST_Declaracao_Funcao;
 
@@ -169,16 +166,15 @@ typedef struct
 } NoAST_Conjunto;
 
 
-
 NoAST *novo_no_ast(TipoNo tipo, NoAST *esquerda, NoAST *direita);
 
 NoAST *novo_no_ast_declaracao(int tipo_dado, Simbolo **simbolos, int simbolos_no);
 NoAST *novo_no_ast_atribuicao(NoAST *referencia, NoAST *constante);
 NoAST *novo_no_ast_retorno(NoAST *referencia);
-NoAST *novo_no_ast_expressao_composta(NoAST **itens_bloco, int itens_bloco_no, NoAST *item);
+NoAST *novo_no_ast_expressao_composta(NoAST *no, int itens_bloco_no, NoAST *item);
 NoAST *novo_no_ast_if(NoAST *condicao, NoAST *bloco_if, NoAST **bloco_elseif, int elseif_no, NoAST *bloco_else);
 NoAST *novo_no_ast_elseif(NoAST *condicao, NoAST *bloco_elseif);
-NoAST *novo_no_ast_declaracao_funcao(int tipo_dado, Simbolo *simbolo, NoAST_Expressao_Composta *declaracao_funcao);
+NoAST *novo_no_ast_declaracao_funcao(int tipo_dado, Simbolo *simbolo, NoAST *expressao_composta);
 NoAST *novo_no_ast_declaracoes(NoAST **declaracoes, int declaracoes_no, NoAST *declaracao);
 NoAST *novo_no_ast_parametros(Parametro *parametros, int parametros_no, Simbolo *parametro);
 NoAST *novo_no_ast_parametros_chamada(NoAST **parametros, int parametros_no, NoAST *parametro);
@@ -190,6 +186,7 @@ NoAST *novo_no_ast_referencia(Simbolo *definicao);
 NoAST *novo_no_ast_chamada_funcao(NoAST *definicao, NoAST *parametros, int parametros_no);
 Simbolo *simbolo_no_ast(NoAST *no);
 void imprimir_ast(NoAST *no);
+void liberar_ast(NoAST *no);
 int tipo_expressao(NoAST *no);
 int tipo_parametros_funcao(Simbolo *simbolo, NoAST *no);
 #endif
