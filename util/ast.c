@@ -16,27 +16,34 @@ NoAST *novo_no_ast(TipoNo tipo, NoAST *esquerda, NoAST *direita)
     return no;
 }
 
-NoAST *novo_no_ast_parametros(Parametro *parametros, int parametros_no, Simbolo *parametro)
+NoAST *novo_no_ast_parametros(NoAST *no, int parametros_no, Simbolo *parametro)
 {
-    NoAST_Parametros *novo_no = malloc(sizeof(NoAST_Parametros));
+    NoAST_Parametros *novo_no = NULL;
+    if(no == NULL)
+    {
+        novo_no = malloc(sizeof(NoAST_Parametros));
+        novo_no->tipo = NO_PARAMETROS;
+    }
+    else
+    {
+        novo_no = (NoAST_Parametros *) no;
+    }
     Parametro* novo_parametro = malloc(sizeof(Parametro));
     novo_parametro->identificador = parametro->identificador;
     novo_parametro->tipo_dado = parametro->funcao.tipo_dado;
-    novo_no->tipo = NO_PARAMETROS;
 
-    if(parametros == NULL)
+    if(novo_no->parametros == NULL)
     {
-        parametros = (Parametro*)malloc(sizeof(Parametro));
+        novo_no->parametros = (Parametro*)malloc(sizeof(Parametro));
         novo_no->parametros_no = 1;
     }
     else
     {
         novo_no->parametros_no = parametros_no + 1;
-        parametros = (Parametro*)realloc(parametros, novo_no->parametros_no * sizeof(Parametro));
+        novo_no->parametros = (Parametro*)realloc(novo_no->parametros, novo_no->parametros_no * sizeof(Parametro));
     }
 
-    parametros[novo_no->parametros_no - 1] = *novo_parametro;
-    novo_no->parametros = parametros;
+    novo_no->parametros[novo_no->parametros_no - 1] = *novo_parametro;
 
     return (struct NoAST*) novo_no;
 }

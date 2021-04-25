@@ -3915,7 +3915,7 @@ yyreduce:
 #line 90 "parser/clang.y"
                         {
                             NoAST_Parametros *novo_no = (NoAST_Parametros*) (yyvsp[-2].no);
-                            (yyval.no) = novo_no_ast_parametros(novo_no->parametros, novo_no->parametros_no, (yyvsp[0].simbolo));
+                            (yyval.no) = novo_no_ast_parametros((yyvsp[-2].no), novo_no->parametros_no, (yyvsp[0].simbolo));
                         }
 #line 3921 "clang.tab.c"
     break;

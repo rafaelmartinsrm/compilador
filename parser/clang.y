@@ -89,7 +89,7 @@ lista_tipo_parametro	: declaracao_parametro
 						| lista_tipo_parametro VIRGULA declaracao_parametro
                         {
                             NoAST_Parametros *novo_no = (NoAST_Parametros*) $1;
-                            $$ = novo_no_ast_parametros(novo_no->parametros, novo_no->parametros_no, $3);
+                            $$ = novo_no_ast_parametros($1, novo_no->parametros_no, $3);
                         }
 						; 
 
