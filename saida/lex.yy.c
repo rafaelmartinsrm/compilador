@@ -975,12 +975,12 @@ YY_RULE_SETUP
 case 33:
 YY_RULE_SETUP
 #line 79 "lexer/lexer.l"
-{ TRATAR_COLUNA; imprime_ret("CHAVE_E"); return CHAVE_E; }
+{ TRATAR_COLUNA; imprime_ret("CHAVE_E"); novo_escopo(); return CHAVE_E; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 80 "lexer/lexer.l"
-{ TRATAR_COLUNA; imprime_ret("CHAVE_D"); return CHAVE_D; }
+{ TRATAR_COLUNA; imprime_ret("CHAVE_D"); sair_escopo(); return CHAVE_D; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP

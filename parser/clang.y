@@ -407,10 +407,9 @@ expressao_composta		: CHAVE_E CHAVE_D
                         {
                             $$ = NULL;
                         }
-						| CHAVE_E { novo_escopo(); } lista_itens_bloco CHAVE_D 
+						| CHAVE_E lista_itens_bloco CHAVE_D 
                         { 
-                            $$ = $3; 
-                            sair_escopo();
+                            $$ = $2; 
                         }
 						;
 
