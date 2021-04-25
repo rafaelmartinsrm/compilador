@@ -76,8 +76,8 @@ ESPACO_BRANCO	[ \t\r\f]+
 "\""				{ TRATAR_COLUNA; imprime_ret("ASPAS_DUPLAS"); return ASPAS_DUPLAS; }
 "("					{ TRATAR_COLUNA; imprime_ret("PARENTESE_E"); return PARENTESE_E; }
 ")"					{ TRATAR_COLUNA; imprime_ret("PARENTESE_D"); return PARENTESE_D; }
-"{"					{ TRATAR_COLUNA; imprime_ret("CHAVE_E"); return CHAVE_E; }
-"}"					{ TRATAR_COLUNA; imprime_ret("CHAVE_D"); return CHAVE_D; }
+"{"					{ TRATAR_COLUNA; imprime_ret("CHAVE_E"); novo_escopo(); return CHAVE_E; }
+"}"					{ TRATAR_COLUNA; imprime_ret("CHAVE_D"); sair_escopo(); return CHAVE_D; }
 ","					{ TRATAR_COLUNA; imprime_ret("VIRGULA"); return VIRGULA; }
 ";"					{ TRATAR_COLUNA; imprime_ret("PONTO_E_VIRGULA"); return PONTO_E_VIRGULA; }
 "="					{ TRATAR_COLUNA; imprime_ret("ATRIBUICAO"); return ATRIBUICAO; }
@@ -127,7 +127,7 @@ ESPACO_BRANCO	[ \t\r\f]+
 
 void imprime_ret(char *tipo_token)
 {
-   printf("yytext: %s\t\t|\ttoken: %s\t|\tlinha: %d\n", yytext, tipo_token, linha_no);
+   //printf("yytext: %s\t\t|\ttoken: %s\t|\tlinha: %d\n", yytext, tipo_token, linha_no);
 }
 
 int fileno(FILE *stream);

@@ -3,6 +3,7 @@
 #include <string.h>
 #include "../configuracoes.h"
 #include "tabela_simbolos.h"
+#include "ast.h"
 #include "../uthash/uthash.h"
 
 void tabela_inicializar()
@@ -95,48 +96,65 @@ Simbolo* buscar_simbolo_todos_escopos(const char* identificador)
     return NULL;
 }
 
-Escopo** lista_escopos(Escopo** lista, Escopo *raiz, int *tamanho)
+void lista_escopos(Escopo** lista, Escopo* raiz, int *tamanho)
 {
-    if(*tamanho == 0)
-        lista = malloc(sizeof(Escopo*));
-    for(; raiz != NULL; raiz = raiz->filho)
+    if(raiz != NULL)
     {
-
-        *tamanho += 1;
-        lista = realloc(lista, *tamanho * sizeof(Escopo*));
-        lista[(*tamanho) - 1] = raiz;
-        if(raiz->proximo != NULL)
+        if(*tamanho > 0)
         {
-            lista_escopos(lista, raiz->proximo, tamanho);
+            *tamanho += 1;
+            *lista = realloc(*lista, *tamanho * sizeof(Escopo*));
+            lista[(*tamanho) - 1] = raiz;
         }
+        else
+        {
+            *tamanho = 1;
+            lista[(*tamanho) - 1] = raiz;
+        }
+        
     }
 
-    return lista;
+    if(raiz->proximo)
+        lista_escopos(lista, raiz->proximo, tamanho);
+    if(raiz->filho)
+        lista_escopos(lista, raiz->filho, tamanho);
+
+    return; 
+}
+
+void liberar_lista_escopos(Escopo** lista, int *tamanho)
+{
+    free(lista);
+    free(tamanho);
 }
 
 void liberar_tabela_simbolos()
 {
     printf("LIBERANDO\n");
     if(tabela_simbolos == NULL)
+    {
+        printf("ERRO GERAL \n");
         return;
+    }
 
     int i;
 
-    Escopo* escopo = tabela_simbolos->escopo_atual;
+    Escopo *raiz = tabela_simbolos->escopo_atual;
+    Escopo **lista = malloc(sizeof(Escopo*));
+    int *tamanho = malloc(sizeof(int));
+    *tamanho = 0;
 
-    while(escopo->pai != NULL)
-        escopo = escopo->pai;
+    while(raiz->pai != NULL)
+        raiz = raiz->pai;
 
-    Escopo** escopos = NULL;
     Simbolo *simbolo, *tmp;
 
-    int* tamanho  = (int *) malloc(sizeof(int));
-    *tamanho = 0;
-    escopos = lista_escopos(escopos, escopo, tamanho);
+    lista_escopos(lista, raiz, tamanho);
 
     for(i = 0; i < *tamanho; ++i)
     {
-        HASH_ITER(hh, escopos[i]->tabela_hash, simbolo, tmp)
+        printf("limpeza %p\n", lista[i]->tabela_hash);
+        HASH_ITER(hh, lista[i]->tabela_hash, simbolo, tmp)
         {
             Parametro* parametro_tmp = NULL;
             if(simbolo->tag == FUNCAO)
@@ -155,38 +173,40 @@ void liberar_tabela_simbolos()
                 free(simbolo->linhas);
                 simbolo->linhas = linha_tmp;
             }
-            
-            HASH_DEL(escopos[i]->tabela_hash, simbolo);
+            printf("Simbolo: %s\n", simbolo->identificador);
+            HASH_DEL(lista[i]->tabela_hash, simbolo);
             free((void *)simbolo->identificador);
             free(simbolo);
         }
         
-        free(escopos[i]->tabela_hash);
-        free(escopos[i]);
+        free(lista[i]->tabela_hash);
+        free(lista[i]);
     }
-    
-    free(escopos);
-    free(tamanho);
+
+    liberar_lista_escopos(lista, tamanho);
     free(tabela_simbolos);
     return;
 }
 
 void imprime_simbolos()
 {
-    Simbolo *s;
+    Simbolo *s, *tmp;
     Linha *l;
     Escopo *raiz = tabela_simbolos->escopo_atual;
+    Escopo **lista = malloc(sizeof(Escopo*));
     int *tamanho = malloc(sizeof(int));
     *tamanho = 0;
 
     while(raiz->pai != NULL)
         raiz = raiz->pai;
 
-    Escopo** lista = lista_escopos(NULL, raiz, tamanho);
+    lista_escopos(lista, raiz, tamanho);
+
 
     for(int i = 0; i < *tamanho; ++i)
     {
-        for(s = lista[i]->tabela_hash; s != NULL; s = (Simbolo*) s->hh.next)
+        printf("impressao %p\n", lista[i]->tabela_hash);
+        HASH_ITER(hh, lista[i]->tabela_hash, s, tmp)
         {
             if(s)
             {
@@ -206,7 +226,6 @@ void imprime_simbolos()
     }
 
     free(tamanho);
-    free(lista);
 }
 
 const char* tipo_texto(int tipo)
@@ -230,6 +249,16 @@ const char* tipo_texto(int tipo)
     return "indef";
 }
 
+void verifica_main()
+{
+    char erro[256];
+    Simbolo* simbolo_main = buscar_simbolo_todos_escopos("main");
+    if(!simbolo_main)
+    sprintf(erro, "[ERRO] Não existe main\n");  
+    adicionar_erro(erro);
+
+    return;
+}
 
 void novo_escopo()
 {

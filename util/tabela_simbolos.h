@@ -74,42 +74,43 @@ typedef struct Simbolo
         {
             int tipo_dado; /* tipo do retorno */
             int parametros_no;
-            Parametro* parametros;
-        } funcao;
-    };
+                Parametro* parametros;
+            } funcao;
+        };
 
-    UT_hash_handle hh;
-} Simbolo;
+        UT_hash_handle hh;
+    } Simbolo;
 
-typedef struct Escopo
-{
-    /* Árvore N-ária com ponteiro para o pai */
-    Simbolo* tabela_hash;
-    Escopo* pai;
-    Escopo* filho;
-    Escopo* proximo;
-} Escopo;
+    typedef struct Escopo
+    {
+        /* Árvore N-ária com ponteiro para o pai */
+        Simbolo* tabela_hash;
+        Escopo* pai;
+        Escopo* filho;
+        Escopo* proximo;
+    } Escopo;
 
-typedef struct
-{
-    Escopo* escopo_atual;
-} TabelaSimbolos;
+    typedef struct
+    {
+        Escopo* escopo_atual;
+    } TabelaSimbolos;
 
-static TabelaSimbolos *tabela_simbolos;
+    static TabelaSimbolos *tabela_simbolos;
 
-void tabela_inicializar();
-void tabela_finalizar(TabelaSimbolos* tabela_simbolos);
-void add_simbolo(int declare, const char *identificador, int tipo_dado, int linha_no);
-Simbolo* buscar_simbolo_todos_escopos(const char* identificador);
-Simbolo* buscar_simbolo(const char* identificador);
-/* void deletar_simbolo(struct tab_simbolos *simbolo); */
-void deletar_todos();
-void imprimir_simbolo();
-void add_lista(Simbolo* novo_simbolo);
-void imprime_simbolos();
-void liberar_tabela_simbolos();
-const char* tipo_texto(int tipo);
-void novo_escopo();
-void sair_escopo();
-Escopo** lista_escopos(Escopo** lista, Escopo* raiz, int *tamanho);
+    void tabela_inicializar();
+    void tabela_finalizar(TabelaSimbolos* tabela_simbolos);
+    void add_simbolo(int declare, const char *identificador, int tipo_dado, int linha_no);
+    Simbolo* buscar_simbolo_todos_escopos(const char* identificador);
+    Simbolo* buscar_simbolo(const char* identificador);
+    /* void deletar_simbolo(struct tab_simbolos *simbolo); */
+    void deletar_todos();
+    void imprimir_simbolo();
+    void add_lista(Simbolo* novo_simbolo);
+    void imprime_simbolos();
+    void liberar_tabela_simbolos();
+    const char* tipo_texto(int tipo);
+    void novo_escopo();
+    void sair_escopo();
+    void lista_escopos(Escopo** lista, Escopo* raiz, int *tamanho);
+    void verifica_main();
 #endif

@@ -1,15 +1,10 @@
-int chamada($int 1teste1, int teste2)
+int chamada(int teste1, int teste2)
 {
 
     teste2 = 1;
 }
 
-int chamadacorreta(int teste1, int teste2)
-{
-    teste2 = 1;
-}
-
-int main ()
+int main2()
 {
     int a;
     a = 1;
@@ -20,11 +15,12 @@ int main ()
         a = 2;
         a = a + b;
         int c;
+        c = 3;
     }
     else
     {
         a = 3;
         a = 3 + c;
-        chamadacorreta(a, b);
+        chamada(a, b);
     }
 }

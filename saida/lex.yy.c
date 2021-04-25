@@ -975,12 +975,12 @@ YY_RULE_SETUP
 case 33:
 YY_RULE_SETUP
 #line 79 "lexer/lexer.l"
-{ TRATAR_COLUNA; imprime_ret("CHAVE_E"); return CHAVE_E; }
+{ TRATAR_COLUNA; imprime_ret("CHAVE_E"); novo_escopo(); return CHAVE_E; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 80 "lexer/lexer.l"
-{ TRATAR_COLUNA; imprime_ret("CHAVE_D"); return CHAVE_D; }
+{ TRATAR_COLUNA; imprime_ret("CHAVE_D"); sair_escopo(); return CHAVE_D; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
@@ -2061,7 +2061,7 @@ void yyfree (void * ptr )
 
 void imprime_ret(char *tipo_token)
 {
-   printf("yytext: %s\t\t|\ttoken: %s\t|\tlinha: %d\n", yytext, tipo_token, linha_no);
+   //printf("yytext: %s\t\t|\ttoken: %s\t|\tlinha: %d\n", yytext, tipo_token, linha_no);
 }
 
 int fileno(FILE *stream);

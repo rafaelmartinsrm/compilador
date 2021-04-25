@@ -62,7 +62,6 @@ void yyerror(const char *s);
 programa				: declaracao
                         {
                             $$ = novo_no_ast_declaracoes(NULL, 0, $1);
-                            liberar_ast($$);
                         }
                         | programa declaracao
                         {
@@ -101,6 +100,11 @@ def_declaracao			: TOKEN_ID
                             $$ = $1; 
                         }
 						| def_declaracao PARENTESE_E PARENTESE_D
+                        {
+                            $1->funcao.parametros_no = 0;
+                            $1->funcao.parametros = NULL;
+                            $$ = $1;
+                        }
 						| def_declaracao PARENTESE_E lista_tipo_parametro PARENTESE_D
                         {
                             NoAST_Parametros *novo_no = (NoAST_Parametros*) $3;
@@ -407,10 +411,9 @@ expressao_composta		: CHAVE_E CHAVE_D
                         {
                             $$ = NULL;
                         }
-						| CHAVE_E { novo_escopo(); } lista_itens_bloco CHAVE_D 
+						| CHAVE_E lista_itens_bloco CHAVE_D 
                         { 
-                            $$ = $3; 
-                            sair_escopo();
+                            $$ = $2;
                         }
 						;
 
@@ -462,6 +465,7 @@ int main(int argc, char *argv[]) {
 		yyin = fopen(argv[1], "r");
 		yyparse();
 		fclose(yyin);
+        //verifica_main();
         imprime_simbolos();
         liberar_tabela_simbolos();
         liberar_lista();

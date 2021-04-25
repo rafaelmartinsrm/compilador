@@ -1,631 +1,1336 @@
-==16820== Memcheck, a memory error detector
-==16820== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==16820== Using Valgrind-3.14.0-353a3587bb-20181007X and LibVEX; rerun with -h for copyright info
-==16820== Command: ./saida/clang exemplos/exemplo1.c
-==16820== Parent PID: 5967
-==16820== 
---16820-- 
---16820-- Valgrind options:
---16820--    --leak-check=full
---16820--    --show-leak-kinds=all
---16820--    --track-origins=yes
---16820--    --verbose
---16820--    --log-file=valgrind-out.txt
---16820-- Contents of /proc/version:
---16820--   Linux version 4.19.0-14-amd64 (debian-kernel@lists.debian.org) (gcc version 8.3.0 (Debian 8.3.0-6)) #1 SMP Debian 4.19.171-2 (2021-01-30)
---16820-- 
---16820-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
---16820-- Page sizes: currently 4096, max supported 4096
---16820-- Valgrind library directory: /usr/lib/x86_64-linux-gnu/valgrind
---16820-- Reading syms from /home/rafaelmartinsrm/Tradutores/saida/clang
---16820-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-2.28.so
---16820--   Considering /usr/lib/debug/.build-id/f2/5dfd7b95be4ba386fd71080accae8c0732b711.debug ..
---16820--   .. build-id is valid
---16820-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/memcheck-amd64-linux
---16820--   Considering /usr/lib/debug/.build-id/32/2e77af97f403c3d34ff09edf60b089e72ec889.debug ..
---16820--   .. build-id is valid
---16820--    object doesn't have a dynamic symbol table
---16820-- Scheduler: using generic scheduler lock implementation.
---16820-- Reading suppressions file: /usr/lib/x86_64-linux-gnu/valgrind/default.supp
-==16820== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-16820-by-rafaelmartinsrm-on-???
-==16820== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-16820-by-rafaelmartinsrm-on-???
-==16820== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-16820-by-rafaelmartinsrm-on-???
-==16820== 
-==16820== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==16820== don't want to do, unless you know exactly what you're doing,
-==16820== or are doing some strange experiment):
-==16820==   /usr/lib/x86_64-linux-gnu/valgrind/../../bin/vgdb --pid=16820 ...command...
-==16820== 
-==16820== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==16820==   /path/to/gdb ./saida/clang
-==16820== and then give GDB the following command
-==16820==   target remote | /usr/lib/x86_64-linux-gnu/valgrind/../../bin/vgdb --pid=16820
-==16820== --pid is optional if only one valgrind process is running
-==16820== 
---16820-- REDIR: 0x401e2f0 (ld-linux-x86-64.so.2:strlen) redirected to 0x580c9ce2 (vgPlain_amd64_linux_REDIR_FOR_strlen)
---16820-- REDIR: 0x401e0d0 (ld-linux-x86-64.so.2:index) redirected to 0x580c9cfc (vgPlain_amd64_linux_REDIR_FOR_index)
---16820-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_core-amd64-linux.so
---16820--   Considering /usr/lib/debug/.build-id/34/fbc4cdfbfce1bfc3d2e522a01a050bf724c930.debug ..
---16820--   .. build-id is valid
---16820-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so
---16820--   Considering /usr/lib/debug/.build-id/ca/bb7898ea982d936cbfadd70ae831c6eb63623f.debug ..
---16820--   .. build-id is valid
-==16820== WARNING: new redirection conflicts with existing -- ignoring it
---16820--     old: 0x0401e2f0 (strlen              ) R-> (0000.0) 0x580c9ce2 vgPlain_amd64_linux_REDIR_FOR_strlen
---16820--     new: 0x0401e2f0 (strlen              ) R-> (2007.0) 0x04838d80 strlen
---16820-- REDIR: 0x401ab10 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4839e40 (strcmp)
---16820-- REDIR: 0x401e830 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x483d860 (mempcpy)
---16820-- Reading syms from /usr/lib/x86_64-linux-gnu/libfl.so.2.0.0
---16820--    object doesn't have a symbol table
---16820-- Reading syms from /usr/lib/x86_64-linux-gnu/libc-2.28.so
---16820--   Considering /usr/lib/debug/.build-id/18/b9a9a8c523e5cfe5b5d946d605d09242f09798.debug ..
---16820--   .. build-id is valid
---16820-- Reading syms from /usr/lib/x86_64-linux-gnu/libm-2.28.so
---16820--   Considering /usr/lib/debug/.build-id/88/5dda4b4a5cea600e7b5b98c1ad86996c8d2299.debug ..
---16820--   .. build-id is valid
---16820-- REDIR: 0x48dbf70 (libc.so.6:memmove) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48db160 (libc.so.6:strncpy) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48dc250 (libc.so.6:strcasecmp) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48dab70 (libc.so.6:strcat) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48db190 (libc.so.6:rindex) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48dd890 (libc.so.6:rawmemchr) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48f6230 (libc.so.6:wmemchr) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48f5cd0 (libc.so.6:wcscmp) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48dc0e0 (libc.so.6:mempcpy) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48dbf10 (libc.so.6:bcmp) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48db100 (libc.so.6:strncmp) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48dabe0 (libc.so.6:strcmp) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48dc040 (libc.so.6:memset) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48f5ca0 (libc.so.6:wcschr) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48db0a0 (libc.so.6:strnlen) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48dac70 (libc.so.6:strcspn) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48dc2a0 (libc.so.6:strncasecmp) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48dac40 (libc.so.6:strcpy) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48dc3e0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48f74d0 (libc.so.6:wcsnlen) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48db1c0 (libc.so.6:strpbrk) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48daba0 (libc.so.6:index) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48db070 (libc.so.6:strlen) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48e2280 (libc.so.6:memrchr) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48dc2f0 (libc.so.6:strcasecmp_l) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48dbee0 (libc.so.6:memchr) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48f5db0 (libc.so.6:wcslen) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48db460 (libc.so.6:strspn) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48dc220 (libc.so.6:stpncpy) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48dc1f0 (libc.so.6:stpcpy) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48dd8c0 (libc.so.6:strchrnul) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x48dc340 (libc.so.6:strncasecmp_l) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
---16820-- REDIR: 0x49aefa0 (libc.so.6:__strrchr_avx2) redirected to 0x4838790 (rindex)
---16820-- REDIR: 0x48d7350 (libc.so.6:malloc) redirected to 0x4835710 (malloc)
---16820-- REDIR: 0x48db980 (libc.so.6:__GI_strstr) redirected to 0x483dac0 (__strstr_sse2)
---16820-- REDIR: 0x48d79a0 (libc.so.6:free) redirected to 0x4836940 (free)
---16820-- REDIR: 0x49afb30 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x483c790 (memset)
---16820-- REDIR: 0x49af170 (libc.so.6:__strlen_avx2) redirected to 0x4838c60 (strlen)
---16820-- REDIR: 0x49aedb0 (libc.so.6:__strchrnul_avx2) redirected to 0x483d390 (strchrnul)
---16820-- REDIR: 0x49af690 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x483d4a0 (mempcpy)
---16820-- REDIR: 0x49af6b0 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x483c8a0 (memmove)
---16820-- REDIR: 0x49ab780 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x483c060 (bcmp)
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x110F81: novo_no_ast_parametros (ast.c:37)
-==16820==    by 0x10B14E: yyparse (clang.y:89)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x110F27: novo_no_ast_parametros (ast.c:24)
-==16820==    by 0x10B14E: yyparse (clang.y:89)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x111077: novo_no_ast_expressao_composta (ast.c:80)
-==16820==    by 0x10B469: yyparse (clang.y:183)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x111053: novo_no_ast_expressao_composta (ast.c:72)
-==16820==    by 0x10B469: yyparse (clang.y:183)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
---16820-- REDIR: 0x48d7bf0 (libc.so.6:realloc) redirected to 0x4837d00 (realloc)
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x11147B: novo_no_ast_parametros_chamada (ast.c:220)
-==16820==    by 0x10BA71: yyparse (clang.y:345)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x111457: novo_no_ast_parametros_chamada (ast.c:212)
-==16820==    by 0x10BA71: yyparse (clang.y:345)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x10B68A: yyparse (clang.y:234)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x10EC99: add_simbolo (tabela_simbolos.c:47)
-==16820==    by 0x10D249: yylex (lexer.l:101)
-==16820==    by 0x10ADCB: yyparse (clang.tab.c:3787)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== Invalid read of size 8
-==16820==    at 0x112866: imprimir_ast (ast.c:821)
-==16820==    by 0x10B2CE: yyparse (clang.y:133)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Address 0x4ba0158 is 8 bytes after a block of size 32 alloc'd
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x110F49: novo_no_ast_parametros (ast.c:32)
-==16820==    by 0x10B14E: yyparse (clang.y:89)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== Invalid read of size 4
-==16820==    at 0x112883: imprimir_ast (ast.c:821)
-==16820==    by 0x10B2CE: yyparse (clang.y:133)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Address 0x4ba0150 is 0 bytes after a block of size 32 alloc'd
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x110F49: novo_no_ast_parametros (ast.c:32)
-==16820==    by 0x10B14E: yyparse (clang.y:89)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== Invalid free() / delete / delete[] / realloc()
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111D7D: liberar_ast (ast.c:507)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111E5E: liberar_ast (ast.c:530)
-==16820==    by 0x111A6B: liberar_ast (ast.c:405)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Address 0x4ba68f0 is 0 bytes inside a block of size 24 free'd
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111C80: liberar_ast (ast.c:473)
-==16820==    by 0x111D5D: liberar_ast (ast.c:506)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111E5E: liberar_ast (ast.c:530)
-==16820==    by 0x111A6B: liberar_ast (ast.c:405)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Block was alloc'd at
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x1115E6: novo_no_ast_elseif (ast.c:269)
-==16820==    by 0x10BB49: yyparse (clang.y:361)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== Invalid free() / delete / delete[] / realloc()
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111E12: liberar_ast (ast.c:520)
-==16820==    by 0x111DAD: liberar_ast (ast.c:510)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111E5E: liberar_ast (ast.c:530)
-==16820==    by 0x111A6B: liberar_ast (ast.c:405)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Address 0x4ba1040 is 0 bytes inside a block of size 24 free'd
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111C28: liberar_ast (ast.c:458)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111DAD: liberar_ast (ast.c:510)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111E5E: liberar_ast (ast.c:530)
-==16820==    by 0x111A6B: liberar_ast (ast.c:405)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Block was alloc'd at
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x11151F: novo_no_ast_declaracao (ast.c:237)
-==16820==    by 0x10B3A0: yyparse (clang.y:164)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== Invalid free() / delete / delete[] / realloc()
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111B4C: liberar_ast (ast.c:426)
-==16820==    by 0x111BC4: liberar_ast (ast.c:442)
-==16820==    by 0x111D24: liberar_ast (ast.c:501)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111DAD: liberar_ast (ast.c:510)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111E5E: liberar_ast (ast.c:530)
-==16820==    by 0x111A6B: liberar_ast (ast.c:405)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Address 0x4ba1530 is 0 bytes inside a block of size 16 free'd
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111CC8: liberar_ast (ast.c:487)
-==16820==    by 0x111B2C: liberar_ast (ast.c:425)
-==16820==    by 0x111BC4: liberar_ast (ast.c:442)
-==16820==    by 0x111D24: liberar_ast (ast.c:501)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111DAD: liberar_ast (ast.c:510)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111E5E: liberar_ast (ast.c:530)
-==16820==    by 0x111A6B: liberar_ast (ast.c:405)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Block was alloc'd at
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x111115: novo_no_ast_referencia (ast.c:97)
-==16820==    by 0x10B5CB: yyparse (clang.y:214)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== Invalid free() / delete / delete[] / realloc()
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111E12: liberar_ast (ast.c:520)
-==16820==    by 0x111E5E: liberar_ast (ast.c:530)
-==16820==    by 0x111A6B: liberar_ast (ast.c:405)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Address 0x4ba6880 is 0 bytes inside a block of size 48 free'd
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111DB9: liberar_ast (ast.c:511)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111E5E: liberar_ast (ast.c:530)
-==16820==    by 0x111A6B: liberar_ast (ast.c:405)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Block was alloc'd at
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x111253: novo_no_ast_if (ast.c:141)
-==16820==    by 0x10BAF3: yyparse (clang.y:356)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== Invalid free() / delete / delete[] / realloc()
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111A8B: liberar_ast (ast.c:406)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Address 0x4ba6a50 is 0 bytes inside a block of size 40 free'd
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111E6A: liberar_ast (ast.c:531)
-==16820==    by 0x111A6B: liberar_ast (ast.c:405)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Block was alloc'd at
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x1113A2: novo_no_ast_declaracao_funcao (ast.c:185)
-==16820==    by 0x10B2A5: yyparse (clang.y:125)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x110BDA: imprime_simbolos (tabela_simbolos.c:193)
-==16820==    by 0x10C434: main (clang.y:465)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x10EC99: add_simbolo (tabela_simbolos.c:47)
-==16820==    by 0x10D249: yylex (lexer.l:101)
-==16820==    by 0x10ADCB: yyparse (clang.tab.c:3787)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x110C2B: imprime_simbolos (tabela_simbolos.c:195)
-==16820==    by 0x10C434: main (clang.y:465)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x10EC99: add_simbolo (tabela_simbolos.c:47)
-==16820==    by 0x10D249: yylex (lexer.l:101)
-==16820==    by 0x10ADCB: yyparse (clang.tab.c:3787)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x110D62: tipo_texto (tabela_simbolos.c:214)
-==16820==    by 0x110C58: imprime_simbolos (tabela_simbolos.c:196)
-==16820==    by 0x10C434: main (clang.y:465)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x10EC99: add_simbolo (tabela_simbolos.c:47)
-==16820==    by 0x10D249: yylex (lexer.l:101)
-==16820==    by 0x10ADCB: yyparse (clang.tab.c:3787)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x110D68: tipo_texto (tabela_simbolos.c:214)
-==16820==    by 0x110C58: imprime_simbolos (tabela_simbolos.c:196)
-==16820==    by 0x10C434: main (clang.y:465)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x10EC99: add_simbolo (tabela_simbolos.c:47)
-==16820==    by 0x10D249: yylex (lexer.l:101)
-==16820==    by 0x10ADCB: yyparse (clang.tab.c:3787)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x110D6E: tipo_texto (tabela_simbolos.c:214)
-==16820==    by 0x110C58: imprime_simbolos (tabela_simbolos.c:196)
-==16820==    by 0x10C434: main (clang.y:465)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x10EC99: add_simbolo (tabela_simbolos.c:47)
-==16820==    by 0x10D249: yylex (lexer.l:101)
-==16820==    by 0x10ADCB: yyparse (clang.tab.c:3787)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x110731: liberar_tabela_simbolos (tabela_simbolos.c:142)
-==16820==    by 0x10C43E: main (clang.y:466)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x10EC99: add_simbolo (tabela_simbolos.c:47)
-==16820==    by 0x10D249: yylex (lexer.l:101)
-==16820==    by 0x10ADCB: yyparse (clang.tab.c:3787)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== 
-==16820== HEAP SUMMARY:
-==16820==     in use at exit: 0 bytes in 0 blocks
-==16820==   total heap usage: 170 allocs, 191 frees, 41,435 bytes allocated
-==16820== 
-==16820== All heap blocks were freed -- no leaks are possible
-==16820== 
-==16820== ERROR SUMMARY: 37 errors from 17 contexts (suppressed: 0 from 0)
-==16820== 
-==16820== 1 errors in context 1 of 17:
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x110731: liberar_tabela_simbolos (tabela_simbolos.c:142)
-==16820==    by 0x10C43E: main (clang.y:466)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x10EC99: add_simbolo (tabela_simbolos.c:47)
-==16820==    by 0x10D249: yylex (lexer.l:101)
-==16820==    by 0x10ADCB: yyparse (clang.tab.c:3787)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== 
-==16820== 1 errors in context 2 of 17:
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x110D6E: tipo_texto (tabela_simbolos.c:214)
-==16820==    by 0x110C58: imprime_simbolos (tabela_simbolos.c:196)
-==16820==    by 0x10C434: main (clang.y:465)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x10EC99: add_simbolo (tabela_simbolos.c:47)
-==16820==    by 0x10D249: yylex (lexer.l:101)
-==16820==    by 0x10ADCB: yyparse (clang.tab.c:3787)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== 
-==16820== 1 errors in context 3 of 17:
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x110D68: tipo_texto (tabela_simbolos.c:214)
-==16820==    by 0x110C58: imprime_simbolos (tabela_simbolos.c:196)
-==16820==    by 0x10C434: main (clang.y:465)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x10EC99: add_simbolo (tabela_simbolos.c:47)
-==16820==    by 0x10D249: yylex (lexer.l:101)
-==16820==    by 0x10ADCB: yyparse (clang.tab.c:3787)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== 
-==16820== 1 errors in context 4 of 17:
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x110D62: tipo_texto (tabela_simbolos.c:214)
-==16820==    by 0x110C58: imprime_simbolos (tabela_simbolos.c:196)
-==16820==    by 0x10C434: main (clang.y:465)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x10EC99: add_simbolo (tabela_simbolos.c:47)
-==16820==    by 0x10D249: yylex (lexer.l:101)
-==16820==    by 0x10ADCB: yyparse (clang.tab.c:3787)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== 
-==16820== 1 errors in context 5 of 17:
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x110C2B: imprime_simbolos (tabela_simbolos.c:195)
-==16820==    by 0x10C434: main (clang.y:465)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x10EC99: add_simbolo (tabela_simbolos.c:47)
-==16820==    by 0x10D249: yylex (lexer.l:101)
-==16820==    by 0x10ADCB: yyparse (clang.tab.c:3787)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== 
-==16820== 1 errors in context 6 of 17:
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x110BDA: imprime_simbolos (tabela_simbolos.c:193)
-==16820==    by 0x10C434: main (clang.y:465)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x10EC99: add_simbolo (tabela_simbolos.c:47)
-==16820==    by 0x10D249: yylex (lexer.l:101)
-==16820==    by 0x10ADCB: yyparse (clang.tab.c:3787)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== 
-==16820== 1 errors in context 7 of 17:
-==16820== Invalid free() / delete / delete[] / realloc()
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111A8B: liberar_ast (ast.c:406)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Address 0x4ba6a50 is 0 bytes inside a block of size 40 free'd
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111E6A: liberar_ast (ast.c:531)
-==16820==    by 0x111A6B: liberar_ast (ast.c:405)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Block was alloc'd at
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x1113A2: novo_no_ast_declaracao_funcao (ast.c:185)
-==16820==    by 0x10B2A5: yyparse (clang.y:125)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== 
-==16820== 1 errors in context 8 of 17:
-==16820== Invalid free() / delete / delete[] / realloc()
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111E12: liberar_ast (ast.c:520)
-==16820==    by 0x111E5E: liberar_ast (ast.c:530)
-==16820==    by 0x111A6B: liberar_ast (ast.c:405)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Address 0x4ba6880 is 0 bytes inside a block of size 48 free'd
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111DB9: liberar_ast (ast.c:511)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111E5E: liberar_ast (ast.c:530)
-==16820==    by 0x111A6B: liberar_ast (ast.c:405)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Block was alloc'd at
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x111253: novo_no_ast_if (ast.c:141)
-==16820==    by 0x10BAF3: yyparse (clang.y:356)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== 
-==16820== 1 errors in context 9 of 17:
-==16820== Invalid free() / delete / delete[] / realloc()
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111D7D: liberar_ast (ast.c:507)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111E5E: liberar_ast (ast.c:530)
-==16820==    by 0x111A6B: liberar_ast (ast.c:405)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Address 0x4ba68f0 is 0 bytes inside a block of size 24 free'd
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111C80: liberar_ast (ast.c:473)
-==16820==    by 0x111D5D: liberar_ast (ast.c:506)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111E5E: liberar_ast (ast.c:530)
-==16820==    by 0x111A6B: liberar_ast (ast.c:405)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Block was alloc'd at
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x1115E6: novo_no_ast_elseif (ast.c:269)
-==16820==    by 0x10BB49: yyparse (clang.y:361)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== 
-==16820== 1 errors in context 10 of 17:
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x10B68A: yyparse (clang.y:234)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x10EC99: add_simbolo (tabela_simbolos.c:47)
-==16820==    by 0x10D249: yylex (lexer.l:101)
-==16820==    by 0x10ADCB: yyparse (clang.tab.c:3787)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== 
-==16820== 1 errors in context 11 of 17:
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x110F81: novo_no_ast_parametros (ast.c:37)
-==16820==    by 0x10B14E: yyparse (clang.y:89)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x110F27: novo_no_ast_parametros (ast.c:24)
-==16820==    by 0x10B14E: yyparse (clang.y:89)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== 
-==16820== 2 errors in context 12 of 17:
-==16820== Invalid read of size 4
-==16820==    at 0x112883: imprimir_ast (ast.c:821)
-==16820==    by 0x10B2CE: yyparse (clang.y:133)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Address 0x4ba0150 is 0 bytes after a block of size 32 alloc'd
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x110F49: novo_no_ast_parametros (ast.c:32)
-==16820==    by 0x10B14E: yyparse (clang.y:89)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== 
-==16820== 2 errors in context 13 of 17:
-==16820== Invalid read of size 8
-==16820==    at 0x112866: imprimir_ast (ast.c:821)
-==16820==    by 0x10B2CE: yyparse (clang.y:133)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Address 0x4ba0158 is 8 bytes after a block of size 32 alloc'd
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x110F49: novo_no_ast_parametros (ast.c:32)
-==16820==    by 0x10B14E: yyparse (clang.y:89)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== 
-==16820== 2 errors in context 14 of 17:
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x111077: novo_no_ast_expressao_composta (ast.c:80)
-==16820==    by 0x10B469: yyparse (clang.y:183)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x111053: novo_no_ast_expressao_composta (ast.c:72)
-==16820==    by 0x10B469: yyparse (clang.y:183)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== 
-==16820== 2 errors in context 15 of 17:
-==16820== Conditional jump or move depends on uninitialised value(s)
-==16820==    at 0x11147B: novo_no_ast_parametros_chamada (ast.c:220)
-==16820==    by 0x10BA71: yyparse (clang.y:345)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Uninitialised value was created by a heap allocation
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x111457: novo_no_ast_parametros_chamada (ast.c:212)
-==16820==    by 0x10BA71: yyparse (clang.y:345)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== 
-==16820== 8 errors in context 16 of 17:
-==16820== Invalid free() / delete / delete[] / realloc()
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111B4C: liberar_ast (ast.c:426)
-==16820==    by 0x111BC4: liberar_ast (ast.c:442)
-==16820==    by 0x111D24: liberar_ast (ast.c:501)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111DAD: liberar_ast (ast.c:510)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111E5E: liberar_ast (ast.c:530)
-==16820==    by 0x111A6B: liberar_ast (ast.c:405)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Address 0x4ba1530 is 0 bytes inside a block of size 16 free'd
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111CC8: liberar_ast (ast.c:487)
-==16820==    by 0x111B2C: liberar_ast (ast.c:425)
-==16820==    by 0x111BC4: liberar_ast (ast.c:442)
-==16820==    by 0x111D24: liberar_ast (ast.c:501)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111DAD: liberar_ast (ast.c:510)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111E5E: liberar_ast (ast.c:530)
-==16820==    by 0x111A6B: liberar_ast (ast.c:405)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Block was alloc'd at
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x111115: novo_no_ast_referencia (ast.c:97)
-==16820==    by 0x10B5CB: yyparse (clang.y:214)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== 
-==16820== 10 errors in context 17 of 17:
-==16820== Invalid free() / delete / delete[] / realloc()
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111E12: liberar_ast (ast.c:520)
-==16820==    by 0x111DAD: liberar_ast (ast.c:510)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111E5E: liberar_ast (ast.c:530)
-==16820==    by 0x111A6B: liberar_ast (ast.c:405)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Address 0x4ba1040 is 0 bytes inside a block of size 24 free'd
-==16820==    at 0x48369AB: free (vg_replace_malloc.c:530)
-==16820==    by 0x111C28: liberar_ast (ast.c:458)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111DAD: liberar_ast (ast.c:510)
-==16820==    by 0x111DF2: liberar_ast (ast.c:519)
-==16820==    by 0x111E5E: liberar_ast (ast.c:530)
-==16820==    by 0x111A6B: liberar_ast (ast.c:405)
-==16820==    by 0x10B09C: yyparse (clang.y:65)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820==  Block was alloc'd at
-==16820==    at 0x483577F: malloc (vg_replace_malloc.c:299)
-==16820==    by 0x11151F: novo_no_ast_declaracao (ast.c:237)
-==16820==    by 0x10B3A0: yyparse (clang.y:164)
-==16820==    by 0x10C41B: main (clang.y:463)
-==16820== 
-==16820== ERROR SUMMARY: 37 errors from 17 contexts (suppressed: 0 from 0)
+==12280== Memcheck, a memory error detector
+==12280== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==12280== Using Valgrind-3.14.0-353a3587bb-20181007X and LibVEX; rerun with -h for copyright info
+==12280== Command: ./saida/clang exemplos/exemplo1.c
+==12280== Parent PID: 26053
+==12280== 
+--12280-- 
+--12280-- Valgrind options:
+--12280--    --leak-check=full
+--12280--    --show-leak-kinds=all
+--12280--    --track-origins=yes
+--12280--    --verbose
+--12280--    --log-file=valgrind-out.txt
+--12280-- Contents of /proc/version:
+--12280--   Linux version 4.19.0-14-amd64 (debian-kernel@lists.debian.org) (gcc version 8.3.0 (Debian 8.3.0-6)) #1 SMP Debian 4.19.171-2 (2021-01-30)
+--12280-- 
+--12280-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
+--12280-- Page sizes: currently 4096, max supported 4096
+--12280-- Valgrind library directory: /usr/lib/x86_64-linux-gnu/valgrind
+--12280-- Reading syms from /home/rafaelmartinsrm/Tradutores/saida/clang
+--12280-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-2.28.so
+--12280--   Considering /usr/lib/debug/.build-id/f2/5dfd7b95be4ba386fd71080accae8c0732b711.debug ..
+--12280--   .. build-id is valid
+--12280-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/memcheck-amd64-linux
+--12280--   Considering /usr/lib/debug/.build-id/32/2e77af97f403c3d34ff09edf60b089e72ec889.debug ..
+--12280--   .. build-id is valid
+--12280--    object doesn't have a dynamic symbol table
+--12280-- Scheduler: using generic scheduler lock implementation.
+--12280-- Reading suppressions file: /usr/lib/x86_64-linux-gnu/valgrind/default.supp
+==12280== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-12280-by-rafaelmartinsrm-on-???
+==12280== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-12280-by-rafaelmartinsrm-on-???
+==12280== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-12280-by-rafaelmartinsrm-on-???
+==12280== 
+==12280== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==12280== don't want to do, unless you know exactly what you're doing,
+==12280== or are doing some strange experiment):
+==12280==   /usr/lib/x86_64-linux-gnu/valgrind/../../bin/vgdb --pid=12280 ...command...
+==12280== 
+==12280== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==12280==   /path/to/gdb ./saida/clang
+==12280== and then give GDB the following command
+==12280==   target remote | /usr/lib/x86_64-linux-gnu/valgrind/../../bin/vgdb --pid=12280
+==12280== --pid is optional if only one valgrind process is running
+==12280== 
+--12280-- REDIR: 0x401e2f0 (ld-linux-x86-64.so.2:strlen) redirected to 0x580c9ce2 (vgPlain_amd64_linux_REDIR_FOR_strlen)
+--12280-- REDIR: 0x401e0d0 (ld-linux-x86-64.so.2:index) redirected to 0x580c9cfc (vgPlain_amd64_linux_REDIR_FOR_index)
+--12280-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_core-amd64-linux.so
+--12280--   Considering /usr/lib/debug/.build-id/34/fbc4cdfbfce1bfc3d2e522a01a050bf724c930.debug ..
+--12280--   .. build-id is valid
+--12280-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so
+--12280--   Considering /usr/lib/debug/.build-id/ca/bb7898ea982d936cbfadd70ae831c6eb63623f.debug ..
+--12280--   .. build-id is valid
+==12280== WARNING: new redirection conflicts with existing -- ignoring it
+--12280--     old: 0x0401e2f0 (strlen              ) R-> (0000.0) 0x580c9ce2 vgPlain_amd64_linux_REDIR_FOR_strlen
+--12280--     new: 0x0401e2f0 (strlen              ) R-> (2007.0) 0x04838d80 strlen
+--12280-- REDIR: 0x401ab10 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4839e40 (strcmp)
+--12280-- REDIR: 0x401e830 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x483d860 (mempcpy)
+--12280-- Reading syms from /usr/lib/x86_64-linux-gnu/libfl.so.2.0.0
+--12280--    object doesn't have a symbol table
+--12280-- Reading syms from /usr/lib/x86_64-linux-gnu/libc-2.28.so
+--12280--   Considering /usr/lib/debug/.build-id/18/b9a9a8c523e5cfe5b5d946d605d09242f09798.debug ..
+--12280--   .. build-id is valid
+--12280-- Reading syms from /usr/lib/x86_64-linux-gnu/libm-2.28.so
+--12280--   Considering /usr/lib/debug/.build-id/88/5dda4b4a5cea600e7b5b98c1ad86996c8d2299.debug ..
+--12280--   .. build-id is valid
+--12280-- REDIR: 0x48dbf70 (libc.so.6:memmove) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48db160 (libc.so.6:strncpy) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48dc250 (libc.so.6:strcasecmp) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48dab70 (libc.so.6:strcat) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48db190 (libc.so.6:rindex) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48dd890 (libc.so.6:rawmemchr) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48f6230 (libc.so.6:wmemchr) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48f5cd0 (libc.so.6:wcscmp) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48dc0e0 (libc.so.6:mempcpy) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48dbf10 (libc.so.6:bcmp) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48db100 (libc.so.6:strncmp) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48dabe0 (libc.so.6:strcmp) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48dc040 (libc.so.6:memset) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48f5ca0 (libc.so.6:wcschr) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48db0a0 (libc.so.6:strnlen) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48dac70 (libc.so.6:strcspn) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48dc2a0 (libc.so.6:strncasecmp) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48dac40 (libc.so.6:strcpy) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48dc3e0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48f74d0 (libc.so.6:wcsnlen) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48db1c0 (libc.so.6:strpbrk) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48daba0 (libc.so.6:index) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48db070 (libc.so.6:strlen) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48e2280 (libc.so.6:memrchr) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48dc2f0 (libc.so.6:strcasecmp_l) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48dbee0 (libc.so.6:memchr) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48f5db0 (libc.so.6:wcslen) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48db460 (libc.so.6:strspn) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48dc220 (libc.so.6:stpncpy) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48dc1f0 (libc.so.6:stpcpy) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48dd8c0 (libc.so.6:strchrnul) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x48dc340 (libc.so.6:strncasecmp_l) redirected to 0x482b1b0 (_vgnU_ifunc_wrapper)
+--12280-- REDIR: 0x49aefa0 (libc.so.6:__strrchr_avx2) redirected to 0x4838790 (rindex)
+--12280-- REDIR: 0x48d7350 (libc.so.6:malloc) redirected to 0x4835710 (malloc)
+--12280-- REDIR: 0x48db980 (libc.so.6:__GI_strstr) redirected to 0x483dac0 (__strstr_sse2)
+--12280-- REDIR: 0x48d79a0 (libc.so.6:free) redirected to 0x4836940 (free)
+--12280-- REDIR: 0x49afb30 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x483c790 (memset)
+--12280-- REDIR: 0x49af170 (libc.so.6:__strlen_avx2) redirected to 0x4838c60 (strlen)
+--12280-- REDIR: 0x49aedb0 (libc.so.6:__strchrnul_avx2) redirected to 0x483d390 (strchrnul)
+--12280-- REDIR: 0x49af690 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x483d4a0 (mempcpy)
+--12280-- REDIR: 0x49af6b0 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x483c8a0 (memmove)
+--12280-- REDIR: 0x49ab780 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x483c060 (bcmp)
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x1110F8: novo_no_ast_parametros (ast.c:37)
+==12280==    by 0x10B13F: yyparse (clang.y:88)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x11109E: novo_no_ast_parametros (ast.c:24)
+==12280==    by 0x10B13F: yyparse (clang.y:88)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x1111EE: novo_no_ast_expressao_composta (ast.c:80)
+==12280==    by 0x10B496: yyparse (clang.y:187)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1111CA: novo_no_ast_expressao_composta (ast.c:72)
+==12280==    by 0x10B496: yyparse (clang.y:187)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+--12280-- REDIR: 0x48d7bf0 (libc.so.6:realloc) redirected to 0x4837d00 (realloc)
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x1115F2: novo_no_ast_parametros_chamada (ast.c:220)
+==12280==    by 0x10BA8A: yyparse (clang.y:349)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1115CE: novo_no_ast_parametros_chamada (ast.c:212)
+==12280==    by 0x10BA8A: yyparse (clang.y:349)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x10B6B7: yyparse (clang.y:238)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EC84: add_simbolo (tabela_simbolos.c:48)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x1129DD: imprimir_ast (ast.c:821)
+==12280==    by 0x10B2FB: yyparse (clang.y:137)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280==  Address 0x4ba0158 is 8 bytes after a block of size 32 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1110C0: novo_no_ast_parametros (ast.c:32)
+==12280==    by 0x10B13F: yyparse (clang.y:88)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== Invalid read of size 4
+==12280==    at 0x1129FA: imprimir_ast (ast.c:821)
+==12280==    by 0x10B2FB: yyparse (clang.y:137)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280==  Address 0x4ba0150 is 0 bytes after a block of size 32 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1110C0: novo_no_ast_parametros (ast.c:32)
+==12280==    by 0x10B13F: yyparse (clang.y:88)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== Invalid write of size 8
+==12280==    at 0x1105C0: lista_escopos (tabela_simbolos.c:107)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110C3D: imprime_simbolos (tabela_simbolos.c:203)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Address 0x4ba6b78 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x110BEF: imprime_simbolos (tabela_simbolos.c:196)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280== 
+==12280== Invalid write of size 8
+==12280==    at 0x1105C0: lista_escopos (tabela_simbolos.c:107)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110C3D: imprime_simbolos (tabela_simbolos.c:203)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Address 0x4ba6b80 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x110BEF: imprime_simbolos (tabela_simbolos.c:196)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x110C5E: imprime_simbolos (tabela_simbolos.c:208)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Address 0x4ba6b78 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x110BEF: imprime_simbolos (tabela_simbolos.c:196)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280== 
+--12280-- REDIR: 0x49af300 (libc.so.6:__strnlen_avx2) redirected to 0x4838c00 (strnlen)
+==12280== Invalid read of size 8
+==12280==    at 0x110C8C: imprime_simbolos (tabela_simbolos.c:209)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Address 0x4ba6b78 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x110BEF: imprime_simbolos (tabela_simbolos.c:196)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x110CAA: imprime_simbolos (tabela_simbolos.c:209)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Address 0x4ba6b78 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x110BEF: imprime_simbolos (tabela_simbolos.c:196)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x110CC9: imprime_simbolos (tabela_simbolos.c:209)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Address 0x4ba6b80 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x110BEF: imprime_simbolos (tabela_simbolos.c:196)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x110D0E: imprime_simbolos (tabela_simbolos.c:214)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Address 0x4ba6b80 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x110BEF: imprime_simbolos (tabela_simbolos.c:196)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280== 
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x110CF8: imprime_simbolos (tabela_simbolos.c:213)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EC84: add_simbolo (tabela_simbolos.c:48)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x110D49: imprime_simbolos (tabela_simbolos.c:215)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EC84: add_simbolo (tabela_simbolos.c:48)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x110D5F: imprime_simbolos (tabela_simbolos.c:216)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Address 0x4ba6b80 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x110BEF: imprime_simbolos (tabela_simbolos.c:196)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280== 
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x110E8A: tipo_texto (tabela_simbolos.c:233)
+==12280==    by 0x110D76: imprime_simbolos (tabela_simbolos.c:216)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EC84: add_simbolo (tabela_simbolos.c:48)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x110E90: tipo_texto (tabela_simbolos.c:233)
+==12280==    by 0x110D76: imprime_simbolos (tabela_simbolos.c:216)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EC84: add_simbolo (tabela_simbolos.c:48)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x110E96: tipo_texto (tabela_simbolos.c:233)
+==12280==    by 0x110D76: imprime_simbolos (tabela_simbolos.c:216)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EC84: add_simbolo (tabela_simbolos.c:48)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x1106E3: liberar_tabela_simbolos (tabela_simbolos.c:147)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4b9a308 is 8 bytes inside a block of size 32 free'd
+==12280==    at 0x4837D7B: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110C3D: imprime_simbolos (tabela_simbolos.c:203)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Block was alloc'd at
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EB7C: tabela_inicializar (tabela_simbolos.c:22)
+==12280==    by 0x10C3EF: main (clang.y:459)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x1105F1: lista_escopos (tabela_simbolos.c:117)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4b9a318 is 24 bytes inside a block of size 32 free'd
+==12280==    at 0x4837D7B: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110C3D: imprime_simbolos (tabela_simbolos.c:203)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Block was alloc'd at
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EB7C: tabela_inicializar (tabela_simbolos.c:22)
+==12280==    by 0x10C3EF: main (clang.y:459)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x110619: lista_escopos (tabela_simbolos.c:119)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4b9a310 is 16 bytes inside a block of size 32 free'd
+==12280==    at 0x4837D7B: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110C3D: imprime_simbolos (tabela_simbolos.c:203)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Block was alloc'd at
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EB7C: tabela_inicializar (tabela_simbolos.c:22)
+==12280==    by 0x10C3EF: main (clang.y:459)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x110626: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4b9a310 is 16 bytes inside a block of size 32 free'd
+==12280==    at 0x4837D7B: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110C3D: imprime_simbolos (tabela_simbolos.c:203)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Block was alloc'd at
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EB7C: tabela_inicializar (tabela_simbolos.c:22)
+==12280==    by 0x10C3EF: main (clang.y:459)
+==12280== 
+==12280== Invalid free() / delete / delete[] / realloc()
+==12280==    at 0x4837D7B: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4b9a300 is 0 bytes inside a block of size 32 free'd
+==12280==    at 0x4837D7B: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110C3D: imprime_simbolos (tabela_simbolos.c:203)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Block was alloc'd at
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EB7C: tabela_inicializar (tabela_simbolos.c:22)
+==12280==    by 0x10C3EF: main (clang.y:459)
+==12280== 
+==12280== Invalid write of size 8
+==12280==    at 0x1105C0: lista_escopos (tabela_simbolos.c:107)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cc8 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Invalid write of size 8
+==12280==    at 0x1105C0: lista_escopos (tabela_simbolos.c:107)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x48A3580: vfprintf (vfprintf.c:1637)
+==12280==    by 0x48AB605: printf (printf.c:33)
+==12280==    by 0x11073C: liberar_tabela_simbolos (tabela_simbolos.c:156)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x48356AF: malloc (vg_replace_malloc.c:298)
+==12280==    by 0x4837DE7: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x110778: liberar_tabela_simbolos (tabela_simbolos.c:157)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x48356AF: malloc (vg_replace_malloc.c:298)
+==12280==    by 0x4837DE7: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x110B4E: liberar_tabela_simbolos (tabela_simbolos.c:157)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x48356AF: malloc (vg_replace_malloc.c:298)
+==12280==    by 0x4837DE7: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x4836961: free (vg_replace_malloc.c:530)
+==12280==    by 0x110B75: liberar_tabela_simbolos (tabela_simbolos.c:182)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x48356AF: malloc (vg_replace_malloc.c:298)
+==12280==    by 0x4837DE7: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x110723: liberar_tabela_simbolos (tabela_simbolos.c:156)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cc8 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x110751: liberar_tabela_simbolos (tabela_simbolos.c:157)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cc8 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x11076F: liberar_tabela_simbolos (tabela_simbolos.c:157)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cc8 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x110B68: liberar_tabela_simbolos (tabela_simbolos.c:182)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cc8 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x110B8A: liberar_tabela_simbolos (tabela_simbolos.c:183)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cc8 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x11078E: liberar_tabela_simbolos (tabela_simbolos.c:157)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x110901: liberar_tabela_simbolos (tabela_simbolos.c:177)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x1109C3: liberar_tabela_simbolos (tabela_simbolos.c:177)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x1109FA: liberar_tabela_simbolos (tabela_simbolos.c:177)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x110A32: liberar_tabela_simbolos (tabela_simbolos.c:177)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x110A5B: liberar_tabela_simbolos (tabela_simbolos.c:177)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x110AF9: liberar_tabela_simbolos (tabela_simbolos.c:177)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x1107BA: liberar_tabela_simbolos (tabela_simbolos.c:160)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EC84: add_simbolo (tabela_simbolos.c:48)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x11088F: liberar_tabela_simbolos (tabela_simbolos.c:177)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x1108B8: liberar_tabela_simbolos (tabela_simbolos.c:177)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== Invalid read of size 8
+==12280==    at 0x1108DE: liberar_tabela_simbolos (tabela_simbolos.c:177)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== HEAP SUMMARY:
+==12280==     in use at exit: 3,164 bytes in 113 blocks
+==12280==   total heap usage: 168 allocs, 55 frees, 41,419 bytes allocated
+==12280== 
+==12280== Searching for pointers to 113 not-freed blocks
+==12280== Checked 76,968 bytes
+==12280== 
+==12280== 8 bytes in 1 blocks are indirectly lost in loss record 1 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1111F9: novo_no_ast_expressao_composta (ast.c:82)
+==12280==    by 0x10B496: yyparse (clang.y:187)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 8 bytes in 1 blocks are indirectly lost in loss record 2 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10BBA5: yyparse (clang.y:370)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 8 bytes in 1 blocks are indirectly lost in loss record 3 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x11147F: novo_no_ast_declaracoes (ast.c:169)
+==12280==    by 0x10B086: yyparse (clang.y:64)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 24 bytes in 1 blocks are indirectly lost in loss record 4 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x111696: novo_no_ast_declaracao (ast.c:237)
+==12280==    by 0x10B3CD: yyparse (clang.y:168)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 24 bytes in 1 blocks are indirectly lost in loss record 5 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x11131C: novo_no_ast_conjunto (ast.c:117)
+==12280==    by 0x10B8E3: yyparse (clang.y:300)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 24 bytes in 1 blocks are indirectly lost in loss record 6 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x11136F: novo_no_ast_aritmetica (ast.c:129)
+==12280==    by 0x10B7FC: yyparse (clang.y:279)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 24 bytes in 1 blocks are indirectly lost in loss record 7 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x11175D: novo_no_ast_elseif (ast.c:269)
+==12280==    by 0x10BB62: yyparse (clang.y:365)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 24 bytes in 1 blocks are indirectly lost in loss record 8 of 32
+==12280==    at 0x4837D7B: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110C3D: imprime_simbolos (tabela_simbolos.c:203)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280== 
+==12280== 28 bytes in 5 blocks are indirectly lost in loss record 9 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x48DADB9: strdup (strdup.c:42)
+==12280==    by 0x10ECA2: add_simbolo (tabela_simbolos.c:51)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 32 bytes in 1 blocks are indirectly lost in loss record 10 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1110C0: novo_no_ast_parametros (ast.c:32)
+==12280==    by 0x10B13F: yyparse (clang.y:88)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 32 (8 direct, 24 indirect) bytes in 1 blocks are definitely lost in loss record 11 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x110BEF: imprime_simbolos (tabela_simbolos.c:196)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280== 
+==12280== 40 bytes in 1 blocks are indirectly lost in loss record 12 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x111519: novo_no_ast_declaracao_funcao (ast.c:185)
+==12280==    by 0x10B2D2: yyparse (clang.y:129)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 48 bytes in 1 blocks are indirectly lost in loss record 13 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1113CA: novo_no_ast_if (ast.c:141)
+==12280==    by 0x10BB0C: yyparse (clang.y:360)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 48 bytes in 2 blocks are indirectly lost in loss record 14 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1112C9: novo_no_ast_relacional (ast.c:106)
+==12280==    by 0x10B7A4: yyparse (clang.y:265)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 48 bytes in 2 blocks are indirectly lost in loss record 15 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1111CA: novo_no_ast_expressao_composta (ast.c:72)
+==12280==    by 0x10B496: yyparse (clang.y:187)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 48 bytes in 2 blocks are indirectly lost in loss record 16 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x11131C: novo_no_ast_conjunto (ast.c:117)
+==12280==    by 0x10B8AD: yyparse (clang.y:296)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 48 bytes in 2 blocks are indirectly lost in loss record 17 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1115CE: novo_no_ast_parametros_chamada (ast.c:212)
+==12280==    by 0x10BA8A: yyparse (clang.y:349)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 48 bytes in 2 blocks are indirectly lost in loss record 18 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x111172: novo_no_ast_atribuicao (ast.c:58)
+==12280==    by 0x10B67E: yyparse (clang.y:235)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 48 bytes in 2 blocks are indirectly lost in loss record 19 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x11131C: novo_no_ast_conjunto (ast.c:117)
+==12280==    by 0x10B877: yyparse (clang.y:292)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 48 bytes in 3 blocks are indirectly lost in loss record 20 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1116E3: novo_no_ast_constante (ast.c:249)
+==12280==    by 0x10B5DD: yyparse (clang.y:213)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 64 bytes in 1 blocks are indirectly lost in loss record 21 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10F0AF: add_simbolo (tabela_simbolos.c:52)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 64 bytes in 2 blocks are indirectly lost in loss record 22 of 32
+==12280==    at 0x4837D7B: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x111646: novo_no_ast_parametros_chamada (ast.c:228)
+==12280==    by 0x10BACE: yyparse (clang.y:354)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 64 bytes in 2 blocks are indirectly lost in loss record 23 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x11156C: novo_no_ast_chamada_funcao (ast.c:197)
+==12280==    by 0x10B982: yyparse (clang.y:324)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 80 bytes in 1 blocks are indirectly lost in loss record 24 of 32
+==12280==    at 0x4837D7B: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x111242: novo_no_ast_expressao_composta (ast.c:88)
+==12280==    by 0x10B4DA: yyparse (clang.y:192)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 80 bytes in 5 blocks are indirectly lost in loss record 25 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x111723: novo_no_ast_retorno (ast.c:260)
+==12280==    by 0x10BD14: yyparse (clang.y:426)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 96 bytes in 2 blocks are indirectly lost in loss record 26 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1113CA: novo_no_ast_if (ast.c:141)
+==12280==    by 0x10BC83: yyparse (clang.y:384)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 96 bytes in 3 blocks are indirectly lost in loss record 27 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1110C0: novo_no_ast_parametros (ast.c:32)
+==12280==    by 0x10B183: yyparse (clang.y:93)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 448 bytes in 28 blocks are indirectly lost in loss record 28 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EC4B: add_simbolo (tabela_simbolos.c:41)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 480 bytes in 30 blocks are indirectly lost in loss record 29 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x11128C: novo_no_ast_referencia (ast.c:97)
+==12280==    by 0x10B5F8: yyparse (clang.y:218)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 512 bytes in 1 blocks are indirectly lost in loss record 30 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10F13F: add_simbolo (tabela_simbolos.c:52)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 520 bytes in 5 blocks are indirectly lost in loss record 31 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EC84: add_simbolo (tabela_simbolos.c:48)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 3,132 (24 direct, 3,108 indirect) bytes in 1 blocks are definitely lost in loss record 32 of 32
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x111444: novo_no_ast_declaracoes (ast.c:158)
+==12280==    by 0x10B086: yyparse (clang.y:64)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== LEAK SUMMARY:
+==12280==    definitely lost: 32 bytes in 2 blocks
+==12280==    indirectly lost: 3,132 bytes in 111 blocks
+==12280==      possibly lost: 0 bytes in 0 blocks
+==12280==    still reachable: 0 bytes in 0 blocks
+==12280==         suppressed: 0 bytes in 0 blocks
+==12280== 
+==12280== ERROR SUMMARY: 60 errors from 48 contexts (suppressed: 0 from 0)
+==12280== 
+==12280== 1 errors in context 1 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x1108DE: liberar_tabela_simbolos (tabela_simbolos.c:177)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 1 errors in context 2 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x1108B8: liberar_tabela_simbolos (tabela_simbolos.c:177)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 1 errors in context 3 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x11088F: liberar_tabela_simbolos (tabela_simbolos.c:177)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 1 errors in context 4 of 48:
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x1107BA: liberar_tabela_simbolos (tabela_simbolos.c:160)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EC84: add_simbolo (tabela_simbolos.c:48)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 
+==12280== 1 errors in context 5 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x110AF9: liberar_tabela_simbolos (tabela_simbolos.c:177)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 1 errors in context 6 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x110A5B: liberar_tabela_simbolos (tabela_simbolos.c:177)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 1 errors in context 7 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x110A32: liberar_tabela_simbolos (tabela_simbolos.c:177)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 1 errors in context 8 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x1109FA: liberar_tabela_simbolos (tabela_simbolos.c:177)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 1 errors in context 9 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x1109C3: liberar_tabela_simbolos (tabela_simbolos.c:177)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 1 errors in context 10 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x110901: liberar_tabela_simbolos (tabela_simbolos.c:177)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 1 errors in context 11 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x11078E: liberar_tabela_simbolos (tabela_simbolos.c:157)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 1 errors in context 12 of 48:
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x4836961: free (vg_replace_malloc.c:530)
+==12280==    by 0x110B75: liberar_tabela_simbolos (tabela_simbolos.c:182)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x48356AF: malloc (vg_replace_malloc.c:298)
+==12280==    by 0x4837DE7: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 1 errors in context 13 of 48:
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x110B4E: liberar_tabela_simbolos (tabela_simbolos.c:157)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x48356AF: malloc (vg_replace_malloc.c:298)
+==12280==    by 0x4837DE7: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 1 errors in context 14 of 48:
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x110778: liberar_tabela_simbolos (tabela_simbolos.c:157)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x48356AF: malloc (vg_replace_malloc.c:298)
+==12280==    by 0x4837DE7: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 1 errors in context 15 of 48:
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x48A3580: vfprintf (vfprintf.c:1637)
+==12280==    by 0x48AB605: printf (printf.c:33)
+==12280==    by 0x11073C: liberar_tabela_simbolos (tabela_simbolos.c:156)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x48356AF: malloc (vg_replace_malloc.c:298)
+==12280==    by 0x4837DE7: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 1 errors in context 16 of 48:
+==12280== Invalid write of size 8
+==12280==    at 0x1105C0: lista_escopos (tabela_simbolos.c:107)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cd0 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 1 errors in context 17 of 48:
+==12280== Invalid write of size 8
+==12280==    at 0x1105C0: lista_escopos (tabela_simbolos.c:107)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cc8 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 1 errors in context 18 of 48:
+==12280== Invalid free() / delete / delete[] / realloc()
+==12280==    at 0x4837D7B: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4b9a300 is 0 bytes inside a block of size 32 free'd
+==12280==    at 0x4837D7B: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110C3D: imprime_simbolos (tabela_simbolos.c:203)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Block was alloc'd at
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EB7C: tabela_inicializar (tabela_simbolos.c:22)
+==12280==    by 0x10C3EF: main (clang.y:459)
+==12280== 
+==12280== 
+==12280== 1 errors in context 19 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x110626: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4b9a310 is 16 bytes inside a block of size 32 free'd
+==12280==    at 0x4837D7B: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110C3D: imprime_simbolos (tabela_simbolos.c:203)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Block was alloc'd at
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EB7C: tabela_inicializar (tabela_simbolos.c:22)
+==12280==    by 0x10C3EF: main (clang.y:459)
+==12280== 
+==12280== 
+==12280== 1 errors in context 20 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x110619: lista_escopos (tabela_simbolos.c:119)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4b9a310 is 16 bytes inside a block of size 32 free'd
+==12280==    at 0x4837D7B: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110C3D: imprime_simbolos (tabela_simbolos.c:203)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Block was alloc'd at
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EB7C: tabela_inicializar (tabela_simbolos.c:22)
+==12280==    by 0x10C3EF: main (clang.y:459)
+==12280== 
+==12280== 
+==12280== 1 errors in context 21 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x1105F1: lista_escopos (tabela_simbolos.c:117)
+==12280==    by 0x110702: liberar_tabela_simbolos (tabela_simbolos.c:152)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4b9a318 is 24 bytes inside a block of size 32 free'd
+==12280==    at 0x4837D7B: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110C3D: imprime_simbolos (tabela_simbolos.c:203)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Block was alloc'd at
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EB7C: tabela_inicializar (tabela_simbolos.c:22)
+==12280==    by 0x10C3EF: main (clang.y:459)
+==12280== 
+==12280== 
+==12280== 1 errors in context 22 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x1106E3: liberar_tabela_simbolos (tabela_simbolos.c:147)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4b9a308 is 8 bytes inside a block of size 32 free'd
+==12280==    at 0x4837D7B: realloc (vg_replace_malloc.c:826)
+==12280==    by 0x11059A: lista_escopos (tabela_simbolos.c:106)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110C3D: imprime_simbolos (tabela_simbolos.c:203)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Block was alloc'd at
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EB7C: tabela_inicializar (tabela_simbolos.c:22)
+==12280==    by 0x10C3EF: main (clang.y:459)
+==12280== 
+==12280== 
+==12280== 1 errors in context 23 of 48:
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x110E96: tipo_texto (tabela_simbolos.c:233)
+==12280==    by 0x110D76: imprime_simbolos (tabela_simbolos.c:216)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EC84: add_simbolo (tabela_simbolos.c:48)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 
+==12280== 1 errors in context 24 of 48:
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x110E90: tipo_texto (tabela_simbolos.c:233)
+==12280==    by 0x110D76: imprime_simbolos (tabela_simbolos.c:216)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EC84: add_simbolo (tabela_simbolos.c:48)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 
+==12280== 1 errors in context 25 of 48:
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x110E8A: tipo_texto (tabela_simbolos.c:233)
+==12280==    by 0x110D76: imprime_simbolos (tabela_simbolos.c:216)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EC84: add_simbolo (tabela_simbolos.c:48)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 
+==12280== 1 errors in context 26 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x110D5F: imprime_simbolos (tabela_simbolos.c:216)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Address 0x4ba6b80 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x110BEF: imprime_simbolos (tabela_simbolos.c:196)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280== 
+==12280== 
+==12280== 1 errors in context 27 of 48:
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x110D49: imprime_simbolos (tabela_simbolos.c:215)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EC84: add_simbolo (tabela_simbolos.c:48)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 
+==12280== 1 errors in context 28 of 48:
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x110CF8: imprime_simbolos (tabela_simbolos.c:213)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EC84: add_simbolo (tabela_simbolos.c:48)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 
+==12280== 1 errors in context 29 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x110D0E: imprime_simbolos (tabela_simbolos.c:214)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Address 0x4ba6b80 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x110BEF: imprime_simbolos (tabela_simbolos.c:196)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280== 
+==12280== 
+==12280== 1 errors in context 30 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x110CC9: imprime_simbolos (tabela_simbolos.c:209)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Address 0x4ba6b80 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x110BEF: imprime_simbolos (tabela_simbolos.c:196)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280== 
+==12280== 
+==12280== 1 errors in context 31 of 48:
+==12280== Invalid write of size 8
+==12280==    at 0x1105C0: lista_escopos (tabela_simbolos.c:107)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110C3D: imprime_simbolos (tabela_simbolos.c:203)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Address 0x4ba6b80 is 8 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x110BEF: imprime_simbolos (tabela_simbolos.c:196)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280== 
+==12280== 
+==12280== 1 errors in context 32 of 48:
+==12280== Invalid write of size 8
+==12280==    at 0x1105C0: lista_escopos (tabela_simbolos.c:107)
+==12280==    by 0x11063C: lista_escopos (tabela_simbolos.c:120)
+==12280==    by 0x110C3D: imprime_simbolos (tabela_simbolos.c:203)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Address 0x4ba6b78 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x110BEF: imprime_simbolos (tabela_simbolos.c:196)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280== 
+==12280== 
+==12280== 1 errors in context 33 of 48:
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x10B6B7: yyparse (clang.y:238)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x10EC84: add_simbolo (tabela_simbolos.c:48)
+==12280==    by 0x10D25D: yylex (lexer.l:101)
+==12280==    by 0x10ADCB: yyparse (clang.tab.c:3780)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 
+==12280== 1 errors in context 34 of 48:
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x1110F8: novo_no_ast_parametros (ast.c:37)
+==12280==    by 0x10B13F: yyparse (clang.y:88)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x11109E: novo_no_ast_parametros (ast.c:24)
+==12280==    by 0x10B13F: yyparse (clang.y:88)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 
+==12280== 2 errors in context 35 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x110B8A: liberar_tabela_simbolos (tabela_simbolos.c:183)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cc8 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 2 errors in context 36 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x110B68: liberar_tabela_simbolos (tabela_simbolos.c:182)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cc8 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 2 errors in context 37 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x11076F: liberar_tabela_simbolos (tabela_simbolos.c:157)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cc8 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 2 errors in context 38 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x110751: liberar_tabela_simbolos (tabela_simbolos.c:157)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cc8 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 2 errors in context 39 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x110723: liberar_tabela_simbolos (tabela_simbolos.c:156)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280==  Address 0x4ba6cc8 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1106B4: liberar_tabela_simbolos (tabela_simbolos.c:143)
+==12280==    by 0x10C43E: main (clang.y:470)
+==12280== 
+==12280== 
+==12280== 2 errors in context 40 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x110CAA: imprime_simbolos (tabela_simbolos.c:209)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Address 0x4ba6b78 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x110BEF: imprime_simbolos (tabela_simbolos.c:196)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280== 
+==12280== 
+==12280== 2 errors in context 41 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x110C8C: imprime_simbolos (tabela_simbolos.c:209)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Address 0x4ba6b78 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x110BEF: imprime_simbolos (tabela_simbolos.c:196)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280== 
+==12280== 
+==12280== 2 errors in context 42 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x110C5E: imprime_simbolos (tabela_simbolos.c:208)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280==  Address 0x4ba6b78 is 0 bytes after a block of size 8 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x110BEF: imprime_simbolos (tabela_simbolos.c:196)
+==12280==    by 0x10C434: main (clang.y:469)
+==12280== 
+==12280== 
+==12280== 2 errors in context 43 of 48:
+==12280== Invalid read of size 4
+==12280==    at 0x1129FA: imprimir_ast (ast.c:821)
+==12280==    by 0x10B2FB: yyparse (clang.y:137)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280==  Address 0x4ba0150 is 0 bytes after a block of size 32 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1110C0: novo_no_ast_parametros (ast.c:32)
+==12280==    by 0x10B13F: yyparse (clang.y:88)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 
+==12280== 2 errors in context 44 of 48:
+==12280== Invalid read of size 8
+==12280==    at 0x1129DD: imprimir_ast (ast.c:821)
+==12280==    by 0x10B2FB: yyparse (clang.y:137)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280==  Address 0x4ba0158 is 8 bytes after a block of size 32 alloc'd
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1110C0: novo_no_ast_parametros (ast.c:32)
+==12280==    by 0x10B13F: yyparse (clang.y:88)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 
+==12280== 2 errors in context 45 of 48:
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x1111EE: novo_no_ast_expressao_composta (ast.c:80)
+==12280==    by 0x10B496: yyparse (clang.y:187)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1111CA: novo_no_ast_expressao_composta (ast.c:72)
+==12280==    by 0x10B496: yyparse (clang.y:187)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== 
+==12280== 2 errors in context 46 of 48:
+==12280== Conditional jump or move depends on uninitialised value(s)
+==12280==    at 0x1115F2: novo_no_ast_parametros_chamada (ast.c:220)
+==12280==    by 0x10BA8A: yyparse (clang.y:349)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280==  Uninitialised value was created by a heap allocation
+==12280==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==12280==    by 0x1115CE: novo_no_ast_parametros_chamada (ast.c:212)
+==12280==    by 0x10BA8A: yyparse (clang.y:349)
+==12280==    by 0x10C41B: main (clang.y:466)
+==12280== 
+==12280== ERROR SUMMARY: 60 errors from 48 contexts (suppressed: 0 from 0)
