@@ -105,12 +105,13 @@ Simbolo* buscar_simbolo(const char* identificador);
 /* void deletar_simbolo(struct tab_simbolos *simbolo); */
 void deletar_todos();
 void imprimir_simbolo();
+void imprime_simbolos_recursivo(Escopo* escopo);
 void add_lista(Simbolo* novo_simbolo);
 void imprime_simbolos();
 void verifica_existencia_main();
 void liberar_tabela_simbolos();
+void liberar_tabela_simbolos_recursivo(Escopo* escopo);
 const char* tipo_texto(int tipo);
 void novo_escopo();
 void sair_escopo();
-Escopo** lista_escopos(Escopo** lista, Escopo* raiz, int *tamanho);
 #endif

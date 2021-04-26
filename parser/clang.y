@@ -14,7 +14,7 @@ extern int coluna_no;
 extern int declare;
 extern int yylex_destroy(void);
 
-Simbolo **simbolos;
+Simbolo **simbolos = NULL;
 int simbolos_no = 0;
 char erro[256];
 
@@ -157,29 +157,13 @@ inicializar_atrib		: def_declaracao { $$ = $1; }
                         }
 						;
 
-lista_inicializar_atrib	: inicializar_atrib
-                        {
-                            add_lista($1);
-                        }
-						| lista_inicializar_atrib VIRGULA inicializar_atrib
-                        {
-                            add_lista($3);
-                        }
-						;
 
 declaracao_var			: def_declaracao_tipo PONTO_E_VIRGULA { $$ = NULL; }
-						| def_declaracao_tipo lista_inicializar_atrib PONTO_E_VIRGULA
+						| def_declaracao_tipo inicializar_atrib PONTO_E_VIRGULA
                         {
-                            $$ = novo_no_ast_declaracao($1, simbolos, simbolos_no);
-                            simbolos_no = 0;
-
-                            NoAST_Declaracao *novo_no = (NoAST_Declaracao*) $$;
-
-                            for(int i = 0; i < novo_no->simbolos_no; ++i)
-                            {
-                                novo_no->simbolos[i]->tag = CONSTANTE;
-                                novo_no->simbolos[i]->constante.tipo_dado = $1;
-                            }
+                            $$ = novo_no_ast_declaracao($1, $2);
+                            $2->tag = CONSTANTE;
+                            $2->constante.tipo_dado = $1;
                         }
 						;
 
@@ -434,31 +418,6 @@ expressao_return		: RETURN PONTO_E_VIRGULA
 
 %%
 
-void add_lista(Simbolo* novo_simbolo)
-{
-    if(simbolos_no == 0)
-    {
-        simbolos_no = 1;
-        simbolos = (Simbolo **) malloc(1 * sizeof(Simbolo *));
-        simbolos[0] = novo_simbolo;
-    }
-    else
-    {
-        simbolos_no += 1;
-        simbolos = (Simbolo **) realloc(simbolos, simbolos_no * sizeof(Simbolo *));
-        simbolos[simbolos_no - 1] = novo_simbolo;
-    }
-}
-
-void liberar_lista()
-{
-    int i;
-    for(i = 0; i < simbolos_no; ++i)
-    {
-        free(simbolos[simbolos_no]);
-    }
-    free(simbolos);
-}
 
 int main(int argc, char *argv[]) {
    tabela_inicializar(); 
@@ -473,7 +432,6 @@ int main(int argc, char *argv[]) {
         verifica_existencia_main();
         imprime_simbolos();
         liberar_tabela_simbolos();
-        liberar_lista();
 		yylex_destroy();
 	}
 
