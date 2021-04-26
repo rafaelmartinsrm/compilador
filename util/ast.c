@@ -232,13 +232,14 @@ NoAST *novo_no_ast_parametros_chamada(NoAST *no, int parametros_no, NoAST *param
     return (struct NoAST*) novo_no;
 }
 
-NoAST *novo_no_ast_declaracao(int tipo_dado, Simbolo *simbolo)
+NoAST *novo_no_ast_declaracao(int tipo_dado, Simbolo **simbolos, int simbolos_no)
 {
     NoAST_Declaracao *no = malloc(sizeof(NoAST_Declaracao));
 
     no->tipo = NO_DECLARACAO;
     no->tipo_dado = tipo_dado;
-    no->simbolo = simbolo;
+    no->simbolos = simbolos;
+    no->simbolos_no = simbolos_no;
 
     return (struct NoAST*) no;
 }
@@ -646,12 +647,16 @@ void imprimir_no(NoAST *no, int espacamento)
         }
         case(NO_DECLARACAO):
         {
+            int i;
             NoAST_Declaracao *no_declaracao = (NoAST_Declaracao *) no;
             printf("%*c declarações\n", espacamento, '*');
             espacamento += 1;
             printf("%*c %s\n", espacamento, '*', tipo_texto(no_declaracao->tipo_dado));
             espacamento += 1;
-            printf("%*c %s\n", espacamento, '*', no_declaracao->simbolo->identificador);
+            for(i = 0; i < no_declaracao->simbolos_no; ++i)
+            {
+                printf("%*c %s\n", espacamento, '*', no_declaracao->simbolos[i]->identificador);
+            }
             break;
         }
         case(NO_CHAMADA_FUNCAO):
@@ -825,7 +830,8 @@ void imprimir_ast(NoAST *no)
                     case(NO_DECLARACAO): 
                         printf("   * declaração\n");
                         NoAST_Declaracao* no = (NoAST_Declaracao*) no_expressao_composta->itens_bloco[i];
-                        printf("    * %s %s\n", tipo_texto(no->tipo_dado), no->simbolo->identificador); 
+                        for(k = 0; k < no->simbolos_no; ++k)
+                            printf("    * %s %s\n", tipo_texto(no->tipo_dado), no->simbolos[k]->identificador); 
 
                         break;
                     case(NO_IF):

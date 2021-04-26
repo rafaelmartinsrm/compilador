@@ -48,7 +48,7 @@ void yyerror(const char *s);
 %type <no> lista_itens_bloco item_bloco expressao_composta
 %type <no> tipos_expressao expressao_declaracao expressao_iteracao expressao_decisao expressao_return
 %type <simbolo> declaracao_parametro
-%type <simbolo> inicializar_atrib def_declaracao
+%type <simbolo> def_declaracao
 %type <no> expressao expressao_atribuicao expressao_relacional expressao_logica expressao_aritmetica expressao_chamada expressao_conjunto expressao_io expressao_principal expressao_lista_param
 
 %left OP_SOMA OP_IGUALDADE
@@ -148,22 +148,32 @@ declaracao 				: declaracao_func
                         }
 						;
 
-inicializar_atrib		: def_declaracao { $$ = $1; }
-						| def_declaracao ATRIBUICAO expressao_atribuicao
+lista_inicializar_atrib	: def_declaracao
                         {
-                            NoAST_Constante *novo_no = (NoAST_Constante*) $3;
-                            $1->constante.valor = novo_no->valor;
-                            $$ = $1;
+                            add_lista($1);
+                        }
+						| lista_inicializar_atrib VIRGULA def_declaracao
+                        {
+                            add_lista($3);
                         }
 						;
 
-
 declaracao_var			: def_declaracao_tipo PONTO_E_VIRGULA { $$ = NULL; }
-						| def_declaracao_tipo inicializar_atrib PONTO_E_VIRGULA
+						| def_declaracao_tipo lista_inicializar_atrib PONTO_E_VIRGULA
                         {
-                            $$ = novo_no_ast_declaracao($1, $2);
-                            $2->tag = CONSTANTE;
-                            $2->constante.tipo_dado = $1;
+                            $$ = novo_no_ast_declaracao($1, simbolos, simbolos_no);
+                            simbolos_no = 0;
+
+                            NoAST_Declaracao *novo_no = (NoAST_Declaracao*) $$;
+
+                            for(int i = 0; i < novo_no->simbolos_no; ++i)
+                            {
+                                novo_no->simbolos[i]->tag = CONSTANTE;
+                                novo_no->simbolos[i]->constante.tipo_dado = $1;
+                            }
+
+                            simbolos_no = 0;
+                            free(simbolos);
                         }
 						;
 
@@ -418,6 +428,21 @@ expressao_return		: RETURN PONTO_E_VIRGULA
 
 %%
 
+void add_lista(Simbolo* novo_simbolo)
+{
+    if(simbolos_no == 0)
+    {
+        simbolos_no = 1;
+        simbolos = (Simbolo **) malloc(1 * sizeof(Simbolo *));
+        simbolos[0] = novo_simbolo;
+    }
+    else
+    {
+        simbolos_no += 1;
+        simbolos = (Simbolo **) realloc(simbolos, simbolos_no * sizeof(Simbolo *));
+        simbolos[simbolos_no - 1] = novo_simbolo;
+    }
+}
 
 int main(int argc, char *argv[]) {
    tabela_inicializar(); 

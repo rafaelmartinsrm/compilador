@@ -68,7 +68,8 @@ typedef struct
 {
     enum TipoNo tipo;
     int tipo_dado;
-    Simbolo *simbolo;
+    Simbolo **simbolos;
+    int simbolos_no;
 } NoAST_Declaracao;
 
 typedef struct
@@ -168,7 +169,7 @@ typedef struct
 
 NoAST *novo_no_ast(TipoNo tipo, NoAST *esquerda, NoAST *direita);
 
-NoAST *novo_no_ast_declaracao(int tipo_dado, Simbolo *simbolo);
+NoAST *novo_no_ast_declaracao(int tipo_dado, Simbolo **simbolos, int simbolos_no);
 NoAST *novo_no_ast_atribuicao(NoAST *referencia, NoAST *constante);
 NoAST *novo_no_ast_retorno(NoAST *referencia);
 NoAST *novo_no_ast_expressao_composta(NoAST *no, int itens_bloco_no, NoAST *item);

@@ -1,4 +1,4 @@
 [ERRO] Erro no nó de referência! c não está bem definido.
-[ERRO] O erro se encontra na linha (coluna): 23 (6)
+[ERRO] O erro se encontra na linha (coluna): 22 (6)
 [ERRO] O tipo indef do parametro 0 é diferente do esperado (int) para a função 'chamada'.
-[ERRO] Erro na chamada de função 'chamada', linha (coluna): 24 (13).
+[ERRO] Erro na chamada de função 'chamada', linha (coluna): 23 (13).

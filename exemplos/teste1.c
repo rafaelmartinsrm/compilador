@@ -6,9 +6,8 @@ int chamada(int teste1, int teste2)
 
 int main ()
 {
-    int a;
+    int a, b;
     a = 1;
-    int b;
     b = 2;
     if(a > b)
     {
