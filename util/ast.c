@@ -279,6 +279,13 @@ Simbolo *simbolo_no_ast(NoAST *no)
     Simbolo *simbolo = NULL;
     switch(no->tipo)
     {
+        case NO_CHAMADA_FUNCAO:
+        {
+            NoAST_Chamada_Funcao* no_chamada_funcao = (NoAST_Chamada_Funcao *) no;
+            NoAST_Referencia* no_referencia = (NoAST_Referencia *) no_chamada_funcao->definicao;
+            simbolo = no_referencia->definicao;
+            break;
+        }
         case NO_REFERENCIA:
         {
             NoAST_Referencia* no_referencia = (NoAST_Referencia *) no;
@@ -286,7 +293,10 @@ Simbolo *simbolo_no_ast(NoAST *no)
             break;
         }
         default:
+        {
+            printf("[ERRO] Não foi possível encontrar o simbolo para o tipo %d.\n", no->tipo);
             return NULL;
+        }
     }
     return simbolo;
 }
@@ -542,6 +552,7 @@ void liberar_ast(NoAST *no)
         default:
         {
             printf("-\nNão sei liberar o tipo %d\n-", no->tipo);
+            break;
         }
     }
 }
@@ -603,6 +614,9 @@ const char* operador_texto(int operador)
         case INDEFINIDO:
             return "I";
             break;
+        case MENOR_QUE:
+            return "<";
+            break;
         case MAIOR_QUE:
             return ">";
             break;
@@ -657,6 +671,35 @@ void imprimir_no(NoAST *no, int espacamento)
             {
                 printf("%*c %s\n", espacamento, '*', no_declaracao->simbolos[i]->identificador);
             }
+            break;
+        }
+        case(NO_DECLARACAO_FUNCAO):
+        {
+            NoAST_Declaracao_Funcao *no_declaracao_funcao = (NoAST_Declaracao_Funcao *) no;
+            printf("%*c declaração função\n", espacamento, '*');
+            espacamento += 1;
+            printf("%*c %s\n", espacamento, '*', tipo_texto(no_declaracao_funcao->tipo_dado));
+            espacamento += 1;
+            printf("%*c %s\n", espacamento, '*', no_declaracao_funcao->definicao->identificador);
+            Parametro *parametros_tmp = no_declaracao_funcao->definicao->funcao.parametros;
+            if(parametros_tmp)
+            {
+                espacamento += 1;
+                printf("%*c %s\n", espacamento, '*', "parametros");
+                espacamento += 1;
+                for(; parametros_tmp != NULL; parametros_tmp = parametros_tmp->proximo)
+                {
+                    printf("%*c %s\n", espacamento, '*', parametros_tmp->identificador);
+                }
+                espacamento -= 1;
+                espacamento -= 1;
+            }
+            printf("%*c %s\n", espacamento, '*', "expressão composta");
+            espacamento += 1;
+            imprimir_no(no_declaracao_funcao->expressao_composta, espacamento);
+            espacamento -= 1;
+            espacamento -= 1;
+            espacamento -= 1;
             break;
         }
         case(NO_CHAMADA_FUNCAO):
@@ -736,6 +779,11 @@ void imprimir_no(NoAST *no, int espacamento)
         }
         case(NO_EXPRESSAO_COMPOSTA):
         {
+            NoAST_Expressao_Composta *no_expressao = (NoAST_Expressao_Composta *) no;
+            for(i = 0; i < no_expressao->itens_bloco_no; ++i)
+            {
+                imprimir_no(no_expressao->itens_bloco[i], espacamento);
+            }
             break;
         }
         case(NO_IF):
@@ -788,121 +836,8 @@ void imprimir_no(NoAST *no, int espacamento)
             break;
         }
         default:
+            printf("[ERRO] Não foi criada regra para impressão de nó tipo %d.\n", no->tipo);
             break;
     }
 }
 
-void imprimir_ast(NoAST *no)
-{
-    if(no == NULL)
-        return;
-
-    int k = 0;
-    int i = 0;
-    int j = 0; 
-
-    if(no->tipo == NO_DECLARACOES)
-    {
-        NoAST_Declaracoes *no_declaracoes = (NoAST_Declaracoes *) no;
-        for(i = 0; i < no_declaracoes->declaracoes_no; ++i)
-        {
-            imprimir_ast(no_declaracoes->declaracoes[i]);
-        }
-    }
-    else if(no->tipo == NO_DECLARACAO_FUNCAO)
-    {
-        NoAST_Declaracao_Funcao *no_declaracao_funcao = (NoAST_Declaracao_Funcao *) no;
-        printf("* %s\n", no_declaracao_funcao->definicao->identificador);
-        if(no_declaracao_funcao->definicao->funcao.parametros_no > 0)
-        {
-            printf(" * parametros\n");
-            for(i = 0; i < no_declaracao_funcao->definicao->funcao.parametros_no; ++i)
-            {
-                printf("  * %s %s\n", tipo_texto(no_declaracao_funcao->definicao->funcao.parametros[i].tipo_dado), no_declaracao_funcao->definicao->funcao.parametros[i].identificador);
-            }
-        }
-            printf(" * itens\n");
-            NoAST_Expressao_Composta* no_expressao_composta = (NoAST_Expressao_Composta *) no_declaracao_funcao->expressao_composta;
-            for(i = 0; i < no_expressao_composta->itens_bloco_no; ++i)
-            {
-                switch(no_expressao_composta->itens_bloco[i]->tipo)
-                {
-                    case(NO_DECLARACAO): 
-                        printf("   * declaração\n");
-                        NoAST_Declaracao* no = (NoAST_Declaracao*) no_expressao_composta->itens_bloco[i];
-                        for(k = 0; k < no->simbolos_no; ++k)
-                            printf("    * %s %s\n", tipo_texto(no->tipo_dado), no->simbolos[k]->identificador); 
-
-                        break;
-                    case(NO_IF):
-                    {
-                        NoAST_If *no_if = (NoAST_If *) no_expressao_composta->itens_bloco[i];
-                        printf("   * if\n");
-                        if(no_if->bloco_if)
-                        {
-                            printf("    * bloco if\n");
-                            printf("     * condicao\n");
-                            imprimir_no(no_if->condicao, 7);
-                            printf("     * bloco\n");
-                            
-                            if(no_if->bloco_if->tipo == NO_EXPRESSAO_COMPOSTA)
-                            {
-                                NoAST_Expressao_Composta *no_bloco_if = (NoAST_Expressao_Composta *) no_if->bloco_if;
-                                for(j = 0; j < no_bloco_if->itens_bloco_no; ++j)
-                                {
-                                    imprimir_no(no_bloco_if->itens_bloco[j], 7);
-                                    printf("\n");
-                                }
-                            }
-                            else
-                            {
-                                imprimir_no(no_if->bloco_if, 7);
-                            }
-                        }
-                        if(no_if->elseif_no > 0)
-                        {
-                            printf("    * bloco else if\n");
-                            for(k = 0; k < no_if->elseif_no; ++k)
-                            {
-                                printf("     * condicao\n");
-                                NoAST_ElseIf *no_elseif = (NoAST_ElseIf *) no_if->blocos_elseif[k];
-                                imprimir_no(no_elseif->condicao, 7);
-                                printf("\n");
-                                printf("     * bloco\n");
-                                if(no_elseif->bloco_elseif->tipo == NO_EXPRESSAO_COMPOSTA)
-                                {
-                                    NoAST_Expressao_Composta *bloco_elseif_itens = (NoAST_Expressao_Composta *) no_elseif->bloco_elseif;
-                                    for(j = 0; j < bloco_elseif_itens->itens_bloco_no; ++j)
-                                    {
-                                        imprimir_no(bloco_elseif_itens->itens_bloco[j], 7);
-                                        printf("\n");
-                                    }
-                                }
-                                else
-                                {
-                                    imprimir_no(no_elseif->bloco_elseif, 7);
-                                }
-                            }
-                        }
-                        if(no_if->bloco_else)
-                        {
-                            printf("    * bloco else\n");
-                            if(no_if->bloco_else->tipo == NO_EXPRESSAO_COMPOSTA)
-                            {
-                                NoAST_Expressao_Composta *no_bloco_else = (NoAST_Expressao_Composta *) no_if->bloco_else;
-                                for(j = 0; j < no_bloco_else->itens_bloco_no; ++j)
-                                {
-                                    imprimir_no(no_bloco_else->itens_bloco[j], 6);
-                                }
-                            }
-                            break;  
-                        }
-                    }
-                    default:
-                    {
-                        imprimir_no(no_expressao_composta->itens_bloco[i], 5);
-                    }
-                }
-            }
-    }
-}

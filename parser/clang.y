@@ -38,7 +38,7 @@ void yyerror(const char *s);
 %token <valor> TOKEN_INTEIRO
 %token <valor> TOKEN_EMPTY
 %token <valor> TOKEN_PONTO_FLUTUANTE
-%token <valor> OP_IGUALDADE OP_MAIOR_QUE OP_SOMA OP_SUBTRACAO CONJUNTO_ADD CONJUNTO_REMOVE CONJUNTO_EXISTS
+%token <valor> OP_IGUALDADE OP_MAIOR_QUE OP_MENOR_QUE OP_SOMA OP_SUBTRACAO CONJUNTO_ADD CONJUNTO_REMOVE CONJUNTO_EXISTS
 %token <simbolo> TOKEN_ID
 %token ATRIBUICAO ASPAS_SIMPLES ASPAS_DUPLAS CHAVE_E CHAVE_D COMANDO_FOR COMANDO_FORALL COMANDO_READ COMANDO_WRITE COMANDO_WRITELN CONJUNTO_IN TIPO_ELEM COMANDO_ELSE EMPTY COMANDO_IF IN IS_FLOAT IS_INT IS_SET OP_COMPARACAO OP_DIVISAO OP_E OP_MULTIPLICACAO OP_NEGACAO OP_OU PARENTESE_E PARENTESE_D PONTO_E_VIRGULA RETURN TIPO_SET TIPO_INT TIPO_FLOAT VIRGULA
 %type <tipo_dado> def_declaracao_tipo
@@ -139,12 +139,12 @@ declaracao_func			: declaracao_parametro expressao_composta
 declaracao 				: declaracao_func
                         {
                             $$ = $1;
-                            imprimir_ast($$);
+                            imprimir_no($$, 1);
                         }
                         | declaracao_var 
                         { 
                             $$ = $1;
-                            imprimir_ast($$);
+                            imprimir_no($$, 1);
                         }
 						;
 
@@ -255,6 +255,10 @@ expressao_atribuicao	: expressao_relacional { $$ = $1; }
 						;
 
 expressao_relacional    : expressao_logica { $$ = $1; }
+                        | expressao_logica OP_MENOR_QUE expressao_relacional
+                        {
+                            $$ = novo_no_ast_relacional($2.intval, $1, $3);
+                        }
                         | expressao_logica OP_MAIOR_QUE expressao_relacional
                         {
                             $$ = novo_no_ast_relacional($2.intval, $1, $3);

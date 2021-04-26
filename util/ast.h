@@ -30,6 +30,7 @@ typedef enum Operador
     EXISTS,
     INDEFINIDO,
     MAIOR_QUE,
+    MENOR_QUE,
     IGUALDADE,
     REMOVE,
     SOMA,
@@ -40,7 +41,7 @@ typedef struct NoAST
 {
     enum TipoNo tipo;
     struct NoAST *esquerda;
-    struct NoAS1 *direita;
+    struct NoAST *direita;
 } NoAST;
 
 typedef struct
@@ -187,8 +188,9 @@ NoAST *novo_no_ast_referencia(Simbolo *definicao);
 NoAST *novo_no_ast_chamada_funcao(NoAST *definicao, NoAST *parametros, int parametros_no);
 Simbolo *simbolo_no_ast(NoAST *no);
 void imprimir_ast(NoAST *no);
+void imprimir_no(NoAST *no, int espacamento);
 void liberar_ast(NoAST *no);
-void adicionar_erro(const char* erro);
+void adicionar_erro(const char* texto);
 int tipo_expressao(NoAST *no);
 int tipo_parametros_funcao(Simbolo *simbolo, NoAST *no);
 #endif

@@ -35,6 +35,21 @@ PONTO_FLUTUANTE	[0-9]+\.[0-9]+
 ESPACO_BRANCO	[ \t\r\f]+
 
 
+O   [0-7]
+D   [0-9]
+NZ  [1-9]
+L   [a-zA-Z_]
+A   [a-zA-Z_0-9]
+H   [a-fA-F0-9]
+HP  (0[xX])
+E   ([Ee][+-]?{D}+)
+P   ([Pp][+-]?{D}+)
+FS  (f|F|l|L)
+IS  (((u|U)(l|L|ll|LL)?)|((l|L|ll|LL)(u|U)?))
+CP  (u|U|L)
+SP  (u8|u|U|L)
+ES  (\\(['"\?\\abfnrtv]|[0-7]{1,3}|x[a-fA-F0-9]+))
+
 
 %%
 
@@ -68,7 +83,8 @@ ESPACO_BRANCO	[ \t\r\f]+
 "!"					{ TRATAR_COLUNA; imprime_ret("OP_NEGACAO");   return OP_NEGACAO; }
 "||"				{ TRATAR_COLUNA; imprime_ret("OP_OU");  return OP_OU; }
 "=="                { TRATAR_COLUNA; imprime_ret("OP_IGUALDADE"); yylval.intval = IGUALDADE; return OP_IGUALDADE; }
-"<"|">="|"<="	    { TRATAR_COLUNA; imprime_ret("OP_COMPARACAO"); return OP_COMPARACAO; }
+">="|"<="	    { TRATAR_COLUNA; imprime_ret("OP_COMPARACAO"); return OP_COMPARACAO; }
+"<"                 { TRATAR_COLUNA; imprime_ret("OP_MENOR_QUE"); yylval.intval = MENOR_QUE;return OP_MENOR_QUE; }
 ">"                 { TRATAR_COLUNA; imprime_ret("OP_MAIOR_QUE"); yylval.intval = MAIOR_QUE;return OP_MAIOR_QUE; }
 
 
@@ -106,12 +122,30 @@ ESPACO_BRANCO	[ \t\r\f]+
                         declare = 0;
 						return TOKEN_ID;
 					}
-{INTEIRO}			{ 
+{HP}{H}+{IS}?       {
 						TRATAR_COLUNA;
 						imprime_ret("INTEIRO");
 						yylval.intval = atoi(yytext);
 						return TOKEN_INTEIRO;
-					}
+                    }
+{NZ}{D}*{IS}?		{ 
+						TRATAR_COLUNA;
+						imprime_ret("INTEIRO");
+						yylval.intval = atoi(yytext);
+						return TOKEN_INTEIRO;
+                    }
+"0"{O}*{IS}?		{ 
+						TRATAR_COLUNA;
+						imprime_ret("INTEIRO");
+						yylval.intval = atoi(yytext);
+						return TOKEN_INTEIRO;
+                    }
+{CP}?"'"([^'\\\n]|{ES})+"'"	{ 
+						TRATAR_COLUNA;
+						imprime_ret("INTEIRO");
+						yylval.intval = atoi(yytext);
+						return TOKEN_INTEIRO;
+                                }
 {PONTO_FLUTUANTE}	{ 
 						TRATAR_COLUNA; 
 						imprime_ret("PONTO_FLUTUANTE");
@@ -127,7 +161,7 @@ ESPACO_BRANCO	[ \t\r\f]+
 
 void imprime_ret(char *tipo_token)
 {
-   printf("yytext: %s\t\t|\ttoken: %s\t|\tlinha: %d\n", yytext, tipo_token, linha_no);
+   //printf("yytext: %s\t\t|\ttoken: %s\t|\tlinha: %d\n", yytext, tipo_token, linha_no);
 }
 
 int fileno(FILE *stream);
