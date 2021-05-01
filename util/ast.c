@@ -23,6 +23,7 @@ NoAST *novo_no_ast_parametros(NoAST *no, int parametros_no, Simbolo *parametro)
     {
         novo_no = malloc(sizeof(NoAST_Parametros));
         novo_no->tipo = NO_PARAMETROS;
+        novo_no->parametros = NULL;
     }
     else
     {
@@ -71,6 +72,7 @@ NoAST *novo_no_ast_expressao_composta(NoAST *no, int itens_bloco_no, NoAST *item
     {
         novo_no = malloc(sizeof(NoAST_Expressao_Composta));
         novo_no->tipo = NO_EXPRESSAO_COMPOSTA;
+        novo_no->itens_bloco = NULL;
     }
     else
     {
@@ -211,6 +213,7 @@ NoAST *novo_no_ast_parametros_chamada(NoAST *no, int parametros_no, NoAST *param
     {
         novo_no = malloc(sizeof(NoAST_Parametros_Chamada));
         novo_no->tipo = NO_PARAMETROS_CHAMADA;
+        novo_no->parametros = NULL;
     }
     else
     {
@@ -413,7 +416,6 @@ void liberar_ast(NoAST *no)
             for(i = 0; i < no_declaracoes->declaracoes_no; ++i)
             {
                 liberar_ast(no_declaracoes->declaracoes[i]);
-                free(no_declaracoes->declaracoes[i]);
             }
             free(no_declaracoes->declaracoes);
             free(no_declaracoes);
@@ -433,7 +435,8 @@ void liberar_ast(NoAST *no)
             for(i = 0; i < no_parametros_chamada->parametros_no; ++i)
             {
                 liberar_ast(no_parametros_chamada->parametros[i]);
-                free(no_parametros_chamada->parametros[i]);
+                // Simbolo liberado pela tabela
+                //free(no_parametros_chamada->parametros[i]);
             }
             free(no_parametros_chamada->parametros);
             free(no_parametros_chamada);
@@ -465,6 +468,7 @@ void liberar_ast(NoAST *no)
         {
             NoAST_Declaracao* no_declaracao = (NoAST_Declaracao *) no;
             // Simbolos     
+            free(no_declaracao->simbolos);
             free(no_declaracao);
             break;
         }
@@ -514,7 +518,6 @@ void liberar_ast(NoAST *no)
             for(i = 0; i < no_if->elseif_no; ++i)
             {
                 liberar_ast(no_if->blocos_elseif[i]);
-                free(no_if->blocos_elseif[i]);
             }
             free(no_if->blocos_elseif);
             liberar_ast(no_if->bloco_else);
@@ -527,7 +530,6 @@ void liberar_ast(NoAST *no)
             for(i = 0; i < no_expressao_composta->itens_bloco_no; ++i)
             {
                 liberar_ast(no_expressao_composta->itens_bloco[i]); 
-                free(no_expressao_composta->itens_bloco[i]);
             }
             free(no_expressao_composta->itens_bloco);
             free(no_expressao_composta); 

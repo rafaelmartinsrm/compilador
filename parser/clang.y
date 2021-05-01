@@ -173,7 +173,7 @@ declaracao_var			: def_declaracao_tipo PONTO_E_VIRGULA { $$ = NULL; }
                             }
 
                             simbolos_no = 0;
-                            free(simbolos);
+                            simbolos = NULL;
                         }
 						;
 

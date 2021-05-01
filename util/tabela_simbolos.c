@@ -46,6 +46,7 @@ void add_simbolo(int declare, const char *identificador, int tipo_dado, int linh
     if(simbolo == NULL)
     {
         simbolo = malloc(sizeof(Simbolo));
+        simbolo->tag = INDEFINIDA;
         if(simbolo == NULL)
             return;
         simbolo->identificador = strdup(identificador);
@@ -127,8 +128,12 @@ Escopo** lista_escopos(Escopo** lista, Escopo *raiz, int *tamanho)
 
 void liberar_tabela_simbolos_recursivo(Escopo* escopo)
 {
+    if(!escopo)
+        return;
+
     Simbolo *simbolo, *tmp;
-    for(; escopo != NULL; escopo = escopo->filho)
+    Escopo *tmp_escopo;
+    while(escopo)
     {
         HASH_ITER(hh, escopo->tabela_hash, simbolo, tmp)
         {
@@ -158,7 +163,9 @@ void liberar_tabela_simbolos_recursivo(Escopo* escopo)
             liberar_tabela_simbolos_recursivo(escopo->proximo);
         
         free(escopo->tabela_hash);
-        free(escopo);
+        tmp_escopo = escopo;
+        escopo = escopo->filho;
+        free(tmp_escopo);
     }
     return;
 }
@@ -192,7 +199,7 @@ void imprime_simbolos_recursivo(Escopo *escopo)
                 if(s->tag == CONSTANTE)
                     printf("constante: %s %s | escopo %p | linhas: ", tipo_texto(s->constante.tipo_dado), s->identificador, escopo);
                 if(s->tag == INDEFINIDA)
-                    printf("indefinida: %s %s | escopo %p | linhas: ", tipo_texto(s->constante.tipo_dado), s->identificador, escopo);
+                    printf("indefinida: %s %s | escopo %p | linhas: ", tipo_texto(-1), s->identificador, escopo);
                 else if(s->tag == FUNCAO)
                     printf("funcao: %s %s | escopo: %p | linhas: ", tipo_texto(s->funcao.tipo_dado), s->identificador, escopo);
                 for(l = s->linhas; l != NULL; l = (Linha*) l->proxima)

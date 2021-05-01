@@ -4129,7 +4129,7 @@ yyreduce:
                             }
 
                             simbolos_no = 0;
-                            free(simbolos);
+                            simbolos = NULL;
                         }
 #line 4135 "clang.tab.c"
     break;
