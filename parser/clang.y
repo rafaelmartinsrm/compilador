@@ -27,7 +27,8 @@ void yyerror(const char *s);
 %union{
     int		intval;
     float 	floatval;
-    char* 	sval;
+    char    charval;
+    char* 	stringval;
     
     Simbolo* simbolo;
     NoAST*  no;
@@ -38,9 +39,11 @@ void yyerror(const char *s);
 %token <valor> TOKEN_INTEIRO
 %token <valor> TOKEN_EMPTY
 %token <valor> TOKEN_PONTO_FLUTUANTE
-%token <valor> OP_IGUALDADE OP_MAIOR_QUE OP_MENOR_QUE OP_SOMA OP_SUBTRACAO CONJUNTO_ADD CONJUNTO_REMOVE CONJUNTO_EXISTS
+%token <valor> TOKEN_CARACTERE
+%token <valor> TOKEN_CADEIA
+%token <valor> OP_IGUALDADE OP_MAIOR_QUE OP_MENOR_QUE OP_SOMA OP_SUBTRACAO CONJUNTO_ADD CONJUNTO_REMOVE CONJUNTO_EXISTS COMANDO_READ COMANDO_WRITE COMANDO_WRITELN
 %token <simbolo> TOKEN_ID
-%token ATRIBUICAO ASPAS_SIMPLES ASPAS_DUPLAS CHAVE_E CHAVE_D COMANDO_FOR COMANDO_FORALL COMANDO_READ COMANDO_WRITE COMANDO_WRITELN CONJUNTO_IN TIPO_ELEM COMANDO_ELSE EMPTY COMANDO_IF IN IS_FLOAT IS_INT IS_SET OP_COMPARACAO OP_DIVISAO OP_E OP_MULTIPLICACAO OP_NEGACAO OP_OU PARENTESE_E PARENTESE_D PONTO_E_VIRGULA RETURN TIPO_SET TIPO_INT TIPO_FLOAT VIRGULA
+%token ATRIBUICAO ASPAS_SIMPLES ASPAS_DUPLAS CHAVE_E CHAVE_D COMANDO_FOR COMANDO_FORALL CONJUNTO_IN TIPO_ELEM COMANDO_ELSE EMPTY COMANDO_IF IN IS_FLOAT IS_INT IS_SET OP_COMPARACAO OP_DIVISAO OP_E OP_MULTIPLICACAO OP_NEGACAO OP_OU PARENTESE_E PARENTESE_D PONTO_E_VIRGULA RETURN TIPO_SET TIPO_INT TIPO_FLOAT VIRGULA
 %type <tipo_dado> def_declaracao_tipo
 
 %type <no> programa declaracao declaracoes declaracao_func lista_tipo_parametro
@@ -222,8 +225,8 @@ expressao_principal		: TOKEN_ID
                         }
 						| ASPAS_SIMPLES TOKEN_ID ASPAS_SIMPLES
                         { $$ = NULL; }
-						| ASPAS_DUPLAS TOKEN_ID ASPAS_DUPLAS
-                        { $$ = NULL; }
+						| TOKEN_CADEIA
+                        { $$ = novo_no_ast_constante(TIPO_CADEIA, $1); }
 						| PARENTESE_E expressao PARENTESE_D { $$ = $2; }
 						;
 
@@ -307,11 +310,22 @@ expressao_conjunto		: expressao_io { $$ = $1; }
 expressao_io 			: expressao_chamada { $$ = $1; }
 						| COMANDO_WRITELN PARENTESE_E expressao_io PARENTESE_D
                         {
-                            $$ = NULL;
+                            $$ = novo_no_ast_io($3, $1.intval);
+                            if(!(TIPO_CADEIA == tipo_expressao($3)))
+                            {
+                                sprintf(erro, "[ERRO] A expressão não é do tipo cadeia. O erro se encontra na linha (coluna): %d (%d)\n", linha_no, coluna_no);
+                                adicionar_erro(erro);
+                            }
+                            // pular +1 linha
                         }
 						| COMANDO_WRITE PARENTESE_E expressao_io PARENTESE_D
                         {
-                            $$ = NULL;
+                            $$ = novo_no_ast_io($3, $1.intval);
+                            if(!(TIPO_CADEIA == tipo_expressao($3)))
+                            {
+                                sprintf(erro, "[ERRO] A expressão não é do tipo cadeia. O erro se encontra na linha (coluna): %d (%d)\n", linha_no, coluna_no);
+                                adicionar_erro(erro);
+                            }
                         }
 						| COMANDO_READ PARENTESE_E expressao_io PARENTESE_D
                         {

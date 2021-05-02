@@ -277,6 +277,16 @@ NoAST *novo_no_ast_elseif(NoAST *condicao, NoAST *bloco_elseif)
     return (struct NoAST*) no;
 }
 
+NoAST *novo_no_ast_io(NoAST *expressao, int tipo_io)
+{
+    NoAST_IO *no = malloc(sizeof(NoAST_IO));
+    no->tipo = NO_IO;
+    no->tipo_io = tipo_io;
+    no->expressao = expressao;
+    
+    return (struct NoAST*) no;
+}
+
 Simbolo *simbolo_no_ast(NoAST *no)
 {
     Simbolo *simbolo = NULL;
@@ -476,6 +486,8 @@ void liberar_ast(NoAST *no)
         {
             NoAST_Constante* no_constante = (NoAST_Constante *) no;
             // Valor 
+            if(no_constante->tipo_dado == TIPO_CADEIA)
+                free(no_constante->valor.stringval);
             free(no_constante);
             break;
         }
@@ -549,6 +561,13 @@ void liberar_ast(NoAST *no)
             liberar_ast(no_atribuicao->referencia);
             liberar_ast(no_atribuicao->constante);
             free(no_atribuicao);
+            break;
+        }
+        case(NO_IO):
+        {
+            NoAST_IO* no_io = (NoAST_IO *) no;
+            liberar_ast(no_io->expressao);
+            free(no_io);
             break;
         }
         default:
@@ -642,6 +661,25 @@ const char* operador_texto(int operador)
             break;
     }
     return "";
+}
+
+const char* io_texto(int tipo)
+{
+    switch(tipo)
+    {
+        case IO_READ:
+            return "read";
+            break;
+        case IO_WRITE:
+            return "write";
+            break;
+        case IO_WRITELN:
+            return "writeln";
+            break;
+        default:
+            return "indef";
+            break;
+    }
 }
 
 void imprimir_no(NoAST *no, int espacamento)
@@ -766,6 +804,8 @@ void imprimir_no(NoAST *no, int espacamento)
                 printf("%*c %d\n", espacamento, '*', no_constante->valor.intval);
             else if(no_constante->tipo_dado == TIPO_PONTO_FLUTUANTE)
                 printf("%*c %f\n", espacamento, '*', no_constante->valor.floatval);
+            else if(no_constante->tipo_dado == TIPO_CADEIA)
+                printf("%*c %s\n", espacamento, '*', no_constante->valor.stringval);
             espacamento -= 1;
             break;
         }
@@ -834,6 +874,15 @@ void imprimir_no(NoAST *no, int espacamento)
             printf("%*c return\n", espacamento, '*');
             espacamento += 1;
             imprimir_no(no_retorno->referencia, espacamento);
+            espacamento -= 1;
+            break;
+        }
+        case(NO_IO):
+        {
+            NoAST_IO *no_io = (NoAST_IO *) no;
+            printf("%*c I/O %s\n", espacamento, '*', io_texto(no_io->tipo_io));
+            espacamento += 1;
+            imprimir_no(no_io->expressao, espacamento);
             espacamento -= 1;
             break;
         }

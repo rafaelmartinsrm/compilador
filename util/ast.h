@@ -22,7 +22,15 @@ typedef enum TipoNo
     NO_RETORNO,
     NO_CONSTANTE,
     NO_ARITMETICA,
+    NO_IO,
 } TipoNo;
+
+typedef enum TipoIO
+{
+    IO_READ,
+    IO_WRITE,
+    IO_WRITELN
+} TipoIO;
 
 typedef enum Operador 
 {
@@ -167,6 +175,12 @@ typedef struct
     NoAST *direita;
 } NoAST_Conjunto;
 
+typedef struct
+{
+    enum TipoNo tipo;
+    enum TipoIO tipo_io;
+    NoAST *expressao;
+} NoAST_IO;
 
 NoAST *novo_no_ast(TipoNo tipo, NoAST *esquerda, NoAST *direita);
 
@@ -186,6 +200,7 @@ NoAST *novo_no_ast_conjunto(Operador operador, NoAST *esquerda, NoAST *direita);
 NoAST *novo_no_ast_relacional(Operador operador, NoAST *esquerda, NoAST *direita);
 NoAST *novo_no_ast_referencia(Simbolo *definicao);
 NoAST *novo_no_ast_chamada_funcao(NoAST *definicao, NoAST *parametros, int parametros_no);
+NoAST *novo_no_ast_io(NoAST *expressao, int tipo_io);
 Simbolo *simbolo_no_ast(NoAST *no);
 void imprimir_ast(NoAST *no);
 void imprimir_no(NoAST *no, int espacamento);

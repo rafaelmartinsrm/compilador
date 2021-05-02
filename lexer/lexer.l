@@ -26,10 +26,13 @@
 
 DIGITOS		[0-9]
 LETRAS		[a-zA-Z]
-SUBLINHADO	"_"
+SUBLINHADO	_
+ASCII [ -~]
 
 ID		{LETRAS}({LETRAS}|{DIGITOS}|{SUBLINHADO})*
 ID_ERRADO	{DIGITOS}+({LETRAS}|{SUBLINHADO})+
+CARACTERE          (\'{ASCII}\')|(\'\\[ntr]\')
+CADEIA          \"{ASCII}*\"
 INTEIRO		[0-9]+|\-[0-9]+
 PONTO_FLUTUANTE	[0-9]+\.[0-9]+
 ESPACO_BRANCO	[ \t\r\f]+
@@ -64,15 +67,16 @@ ES  (\\(['"\?\\abfnrtv]|[0-7]{1,3}|x[a-fA-F0-9]+))
 "float"				{ TRATAR_COLUNA; imprime_ret("TIPO_FLOAT"); declare = 1; return TIPO_FLOAT; }
 "elem"				{ TRATAR_COLUNA; imprime_ret("TIPO_ELEM"); declare = 1; return TIPO_ELEM; }
 "set"				{ TRATAR_COLUNA; imprime_ret("TIPO_SET"); declare = 1; return TIPO_SET; }
+"char"              { TRATAR_COLUNA; imprime_ret("TIPO_CARACTERE"); declare = 1; return TIPO_CARACTERE; }
 
 "if"				{ TRATAR_COLUNA; imprime_ret("COMANDO_IF"); return COMANDO_IF; }
 "else"				{ TRATAR_COLUNA; imprime_ret("COMANDO_ELSE"); return COMANDO_ELSE; }
 "for"				{ TRATAR_COLUNA; imprime_ret("COMANDO_FOR"); return COMANDO_FOR; }
 "forall"			{ TRATAR_COLUNA; imprime_ret("COMANDO_FORALL"); return COMANDO_FORALL; }
 "return"			{ TRATAR_COLUNA; imprime_ret("COMANDO_RETURN"); return RETURN;}
-"read"				{ TRATAR_COLUNA; imprime_ret("COMANDO_READ"); return COMANDO_READ; }
-"write"				{ TRATAR_COLUNA; imprime_ret("COMANDO_WRITE"); return COMANDO_WRITE; }
-"writeln"			{ TRATAR_COLUNA; imprime_ret("COMANDO_WRITELN"); return COMANDO_WRITELN; }
+"read"				{ TRATAR_COLUNA; imprime_ret("COMANDO_READ"); yylval.intval = IO_READ; return COMANDO_READ; }
+"write"				{ TRATAR_COLUNA; imprime_ret("COMANDO_WRITE"); yylval.intval = IO_WRITE; return COMANDO_WRITE; }
+"writeln"			{ TRATAR_COLUNA; imprime_ret("COMANDO_WRITELN"); yylval.intval = IO_WRITELN; return COMANDO_WRITELN; }
 
 "+"					{ TRATAR_COLUNA; imprime_ret("OP_SOMA"); yylval.intval = SOMA; return OP_SOMA;}
 "-"					{ TRATAR_COLUNA; imprime_ret("OP_SUBTRACAO"); yylval.intval = SUBTRACAO; return OP_SUBTRACAO; }
@@ -122,6 +126,18 @@ ES  (\\(['"\?\\abfnrtv]|[0-7]{1,3}|x[a-fA-F0-9]+))
                         declare = 0;
 						return TOKEN_ID;
 					}
+{CARACTERE}          {
+                        TRATAR_COLUNA;
+                        imprime_ret("CHAR");
+                        yylval.charval = yytext[1];
+                        return TOKEN_CARACTERE;
+                    }
+{CADEIA}            {
+                        TRATAR_COLUNA;
+                        imprime_ret("CADEIA");
+                        yylval.stringval = strdup(yytext);
+                        return TOKEN_CADEIA;
+                    }
 {HP}{H}+{IS}?       {
 						TRATAR_COLUNA;
 						imprime_ret("INTEIRO");
@@ -161,7 +177,7 @@ ES  (\\(['"\?\\abfnrtv]|[0-7]{1,3}|x[a-fA-F0-9]+))
 
 void imprime_ret(char *tipo_token)
 {
-   //printf("yytext: %s\t\t|\ttoken: %s\t|\tlinha: %d\n", yytext, tipo_token, linha_no);
+   printf("yytext: %s\t\t|\ttoken: %s\t|\tlinha: %d\n", yytext, tipo_token, linha_no);
 }
 
 int fileno(FILE *stream);
