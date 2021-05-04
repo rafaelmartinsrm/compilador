@@ -4,6 +4,7 @@
 #include "../configuracoes.h"
 #include "../util/tabela_simbolos.h"
 #include "../util/ast.h"
+#include "../tac/tac.h"
 
 
 extern FILE *yyin;
@@ -46,13 +47,14 @@ void yyerror(const char *s);
 %token ATRIBUICAO ASPAS_SIMPLES ASPAS_DUPLAS CHAVE_E CHAVE_D COMANDO_FOR COMANDO_FORALL CONJUNTO_IN TIPO_ELEM COMANDO_ELSE EMPTY COMANDO_IF IN IS_FLOAT IS_INT IS_SET OP_COMPARACAO OP_DIVISAO OP_E OP_MULTIPLICACAO OP_NEGACAO OP_OU PARENTESE_E PARENTESE_D PONTO_E_VIRGULA RETURN TIPO_SET TIPO_INT TIPO_FLOAT VIRGULA
 %type <tipo_dado> def_declaracao_tipo
 
+%type <valor> operadores_expressao
 %type <no> programa declaracao declaracoes declaracao_func lista_tipo_parametro
 %type <no> declaracao_var valores 
 %type <no> lista_itens_bloco item_bloco expressao_composta
 %type <no> tipos_expressao expressao_declaracao expressao_iteracao expressao_decisao expressao_return
 %type <simbolo> declaracao_parametro
 %type <simbolo> def_declaracao
-%type <no> expressao expressao_atribuicao expressao_relacional expressao_logica expressao_aritmetica expressao_chamada expressao_conjunto expressao_io expressao_principal expressao_lista_param
+%type <no> expressao expressao_atribuicao expressao_relacional expressao_logica expressao_aritmetica expressao_chamada expressao_conjunto expressao_io expressao_principal expressao_lista_param expressao_operacao
 
 %left OP_SOMA OP_IGUALDADE
 
@@ -230,8 +232,9 @@ expressao_principal		: TOKEN_ID
 						| PARENTESE_E expressao PARENTESE_D { $$ = $2; }
 						;
 
+
 expressao_atribuicao	: expressao_relacional { $$ = $1; } 
-						| expressao_chamada ATRIBUICAO expressao_atribuicao
+						| expressao_operacao ATRIBUICAO expressao_atribuicao
                         {   
                             // Atribuicao = chamada ou expressao principal = qqr coisa
                             $$ = novo_no_ast_atribuicao($1, $3);
@@ -280,19 +283,19 @@ expressao_logica		: expressao_aritmetica { $$ = $1; }
 						;
 
 expressao_aritmetica	: expressao_conjunto { $$ = $1; }
-						| expressao_conjunto OP_SOMA expressao_aritmetica
+						| expressao_aritmetica OP_SOMA expressao_conjunto
                         {
                             $$ = novo_no_ast_aritmetica($2.intval, $1, $3);
                         }
-						| expressao_conjunto OP_SUBTRACAO expressao_aritmetica
+						| expressao_aritmetica OP_SUBTRACAO expressao_conjunto
                         {
                             $$ = novo_no_ast_aritmetica($2.intval, $1, $3);
                         }
-						| expressao_conjunto OP_DIVISAO expressao_aritmetica
-						| expressao_conjunto OP_MULTIPLICACAO expressao_aritmetica
+						| expressao_aritmetica OP_DIVISAO expressao_conjunto
+						| expressao_aritmetica OP_MULTIPLICACAO expressao_conjunto
 						;
 
-expressao_conjunto		: expressao_io { $$ = $1; }
+expressao_conjunto		: expressao_operacao { $$ = $1; }
 						| CONJUNTO_ADD PARENTESE_E expressao_conjunto CONJUNTO_IN expressao_conjunto PARENTESE_D
                         {
                             $$ = novo_no_ast_conjunto($1.intval, $3, $5);
@@ -306,6 +309,18 @@ expressao_conjunto		: expressao_io { $$ = $1; }
                             $$ = novo_no_ast_conjunto($1.intval, $3, $5);
                         }
 						; 
+
+
+expressao_operacao      : expressao_io
+                        | operadores_expressao expressao_io
+                        {
+                            $$ = novo_no_ast_operacao($1.intval, $2);
+                        }
+                        ;
+
+operadores_expressao    : OP_SUBTRACAO
+                        ;
+
 
 expressao_io 			: expressao_chamada { $$ = $1; }
 						| COMANDO_WRITELN PARENTESE_E expressao_io PARENTESE_D
@@ -474,6 +489,7 @@ int main(int argc, char *argv[]) {
 		fclose(yyin);
         verifica_existencia_main();
         imprime_simbolos();
+        tac();
         liberar_tabela_simbolos();
 		yylex_destroy();
 	}

@@ -114,4 +114,5 @@ void liberar_tabela_simbolos_recursivo(Escopo* escopo);
 const char* tipo_texto(int tipo);
 void novo_escopo();
 void sair_escopo();
+Escopo* escopo_atual();
 #endif

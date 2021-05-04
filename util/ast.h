@@ -15,6 +15,7 @@ typedef enum TipoNo
     NO_EXPRESSAO_COMPOSTA,
     NO_EXPRESSOES,
     NO_IF,
+    NO_OPERACAO,
     NO_PARAMETROS,
     NO_PARAMETROS_CHAMADA,
     NO_REFERENCIA,
@@ -182,6 +183,13 @@ typedef struct
     NoAST *expressao;
 } NoAST_IO;
 
+typedef struct
+{
+    enum TipoNo tipo;
+    Operador operador;
+    NoAST *referencia;
+} NoAST_Operacao;
+
 NoAST *novo_no_ast(TipoNo tipo, NoAST *esquerda, NoAST *direita);
 
 NoAST *novo_no_ast_declaracao(int tipo_dado, Simbolo **simbolos, int simbolos_no);
@@ -201,6 +209,7 @@ NoAST *novo_no_ast_relacional(Operador operador, NoAST *esquerda, NoAST *direita
 NoAST *novo_no_ast_referencia(Simbolo *definicao);
 NoAST *novo_no_ast_chamada_funcao(NoAST *definicao, NoAST *parametros, int parametros_no);
 NoAST *novo_no_ast_io(NoAST *expressao, int tipo_io);
+NoAST *novo_no_ast_operacao(int operador, NoAST *referencia);
 Simbolo *simbolo_no_ast(NoAST *no);
 void imprimir_ast(NoAST *no);
 void imprimir_no(NoAST *no, int espacamento);

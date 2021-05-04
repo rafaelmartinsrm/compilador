@@ -278,3 +278,11 @@ void sair_escopo()
     tabela_simbolos->escopo_atual = tabela_simbolos->escopo_atual->pai;
     return;
 }
+
+Escopo* escopo_atual()
+{
+    if(tabela_simbolos)
+        return tabela_simbolos->escopo_atual;
+    else
+        return NULL;
+}

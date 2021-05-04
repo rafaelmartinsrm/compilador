@@ -110,7 +110,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 27 "parser/clang.y"
+#line 28 "parser/clang.y"
 
     int		intval;
     float 	floatval;

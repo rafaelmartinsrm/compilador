@@ -247,6 +247,17 @@ NoAST *novo_no_ast_declaracao(int tipo_dado, Simbolo **simbolos, int simbolos_no
     return (struct NoAST*) no;
 }
 
+NoAST *novo_no_ast_operacao(int operador, NoAST *referencia)
+{
+    NoAST_Operacao *no = malloc(sizeof(NoAST_Operacao));
+
+    no->tipo = NO_OPERACAO;
+    no->operador = operador;
+    no->referencia = referencia;
+
+    return (struct NoAST*) no;
+}
+
 NoAST *novo_no_ast_constante(int tipo_constante, Valor valor)
 {
     NoAST_Constante *no = malloc(sizeof(NoAST_Constante));
@@ -570,6 +581,13 @@ void liberar_ast(NoAST *no)
             free(no_io);
             break;
         }
+        case(NO_OPERACAO):
+        {
+            NoAST_Operacao* no_operacao = (NoAST_Operacao *) no;
+            liberar_ast(no_operacao->referencia);
+            free(no_operacao);
+            break;
+        }
         default:
         {
             printf("-\nNão sei liberar o tipo %d\n-", no->tipo);
@@ -690,6 +708,15 @@ void imprimir_no(NoAST *no, int espacamento)
 
     switch(no->tipo)
     {
+        case(NO_OPERACAO):
+        {
+            NoAST_Operacao *no_operacao = (NoAST_Operacao *) no;
+            printf("%*c %s\n", espacamento, '*', operador_texto(no_operacao->operador));
+            espacamento += 1;
+            imprimir_no(no_operacao->referencia, espacamento);
+            espacamento -= 1;
+            break;
+        }
         case(NO_CONJUNTO):
         {
             NoAST_Conjunto *no_conjunto = (NoAST_Conjunto *) no;
@@ -697,6 +724,7 @@ void imprimir_no(NoAST *no, int espacamento)
             espacamento += 1;
             imprimir_no(no_conjunto->esquerda, espacamento);
             imprimir_no(no_conjunto->direita, espacamento);
+            espacamento -= 1;
             break;    
         }
         case(NO_DECLARACAO):
@@ -711,6 +739,8 @@ void imprimir_no(NoAST *no, int espacamento)
             {
                 printf("%*c %s\n", espacamento, '*', no_declaracao->simbolos[i]->identificador);
             }
+            espacamento -= 1;
+            espacamento -= 1;
             break;
         }
         case(NO_DECLARACAO_FUNCAO):
