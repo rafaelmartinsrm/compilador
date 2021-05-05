@@ -36,11 +36,17 @@ typedef enum TipoIO
 typedef enum Operador 
 {
     ADD,
+    DIVISAO,
+    E,
     EXISTS,
     INDEFINIDO,
     MAIOR_QUE,
+    MAIOR_IGUAL,
     MENOR_QUE,
+    MENOR_IGUAL,
+    MULTIPLICACAO,
     IGUALDADE,
+    OU,
     REMOVE,
     SOMA,
     SUBTRACAO,

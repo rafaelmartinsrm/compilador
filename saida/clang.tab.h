@@ -59,49 +59,50 @@ extern int yydebug;
     TOKEN_PONTO_FLUTUANTE = 260,   /* TOKEN_PONTO_FLUTUANTE  */
     TOKEN_CARACTERE = 261,         /* TOKEN_CARACTERE  */
     TOKEN_CADEIA = 262,            /* TOKEN_CADEIA  */
-    OP_IGUALDADE = 263,            /* OP_IGUALDADE  */
-    OP_MAIOR_QUE = 264,            /* OP_MAIOR_QUE  */
-    OP_MENOR_QUE = 265,            /* OP_MENOR_QUE  */
-    OP_SOMA = 266,                 /* OP_SOMA  */
-    OP_SUBTRACAO = 267,            /* OP_SUBTRACAO  */
-    CONJUNTO_ADD = 268,            /* CONJUNTO_ADD  */
-    CONJUNTO_REMOVE = 269,         /* CONJUNTO_REMOVE  */
-    CONJUNTO_EXISTS = 270,         /* CONJUNTO_EXISTS  */
-    COMANDO_READ = 271,            /* COMANDO_READ  */
-    COMANDO_WRITE = 272,           /* COMANDO_WRITE  */
-    COMANDO_WRITELN = 273,         /* COMANDO_WRITELN  */
-    TOKEN_ID = 274,                /* TOKEN_ID  */
-    ATRIBUICAO = 275,              /* ATRIBUICAO  */
-    ASPAS_SIMPLES = 276,           /* ASPAS_SIMPLES  */
-    ASPAS_DUPLAS = 277,            /* ASPAS_DUPLAS  */
-    CHAVE_E = 278,                 /* CHAVE_E  */
-    CHAVE_D = 279,                 /* CHAVE_D  */
-    COMANDO_FOR = 280,             /* COMANDO_FOR  */
-    COMANDO_FORALL = 281,          /* COMANDO_FORALL  */
-    CONJUNTO_IN = 282,             /* CONJUNTO_IN  */
-    TIPO_ELEM = 283,               /* TIPO_ELEM  */
-    COMANDO_ELSE = 284,            /* COMANDO_ELSE  */
-    EMPTY = 285,                   /* EMPTY  */
-    COMANDO_IF = 286,              /* COMANDO_IF  */
-    IN = 287,                      /* IN  */
-    IS_FLOAT = 288,                /* IS_FLOAT  */
-    IS_INT = 289,                  /* IS_INT  */
-    IS_SET = 290,                  /* IS_SET  */
-    OP_COMPARACAO = 291,           /* OP_COMPARACAO  */
-    OP_DIVISAO = 292,              /* OP_DIVISAO  */
-    OP_E = 293,                    /* OP_E  */
-    OP_MULTIPLICACAO = 294,        /* OP_MULTIPLICACAO  */
-    OP_NEGACAO = 295,              /* OP_NEGACAO  */
-    OP_OU = 296,                   /* OP_OU  */
-    PARENTESE_E = 297,             /* PARENTESE_E  */
-    PARENTESE_D = 298,             /* PARENTESE_D  */
-    PONTO_E_VIRGULA = 299,         /* PONTO_E_VIRGULA  */
-    RETURN = 300,                  /* RETURN  */
-    TIPO_SET = 301,                /* TIPO_SET  */
-    TIPO_INT = 302,                /* TIPO_INT  */
-    TIPO_FLOAT = 303,              /* TIPO_FLOAT  */
-    VIRGULA = 304,                 /* VIRGULA  */
-    THEN = 305                     /* THEN  */
+    OP_DIVISAO = 263,              /* OP_DIVISAO  */
+    OP_MULTIPLICACAO = 264,        /* OP_MULTIPLICACAO  */
+    OP_E = 265,                    /* OP_E  */
+    OP_OU = 266,                   /* OP_OU  */
+    OP_IGUALDADE = 267,            /* OP_IGUALDADE  */
+    OP_MAIOR_QUE = 268,            /* OP_MAIOR_QUE  */
+    OP_MENOR_QUE = 269,            /* OP_MENOR_QUE  */
+    OP_MAIOR_IGUAL = 270,          /* OP_MAIOR_IGUAL  */
+    OP_MENOR_IGUAL = 271,          /* OP_MENOR_IGUAL  */
+    OP_SOMA = 272,                 /* OP_SOMA  */
+    OP_SUBTRACAO = 273,            /* OP_SUBTRACAO  */
+    CONJUNTO_ADD = 274,            /* CONJUNTO_ADD  */
+    CONJUNTO_REMOVE = 275,         /* CONJUNTO_REMOVE  */
+    CONJUNTO_EXISTS = 276,         /* CONJUNTO_EXISTS  */
+    COMANDO_READ = 277,            /* COMANDO_READ  */
+    COMANDO_WRITE = 278,           /* COMANDO_WRITE  */
+    COMANDO_WRITELN = 279,         /* COMANDO_WRITELN  */
+    TOKEN_ID = 280,                /* TOKEN_ID  */
+    ATRIBUICAO = 281,              /* ATRIBUICAO  */
+    ASPAS_SIMPLES = 282,           /* ASPAS_SIMPLES  */
+    ASPAS_DUPLAS = 283,            /* ASPAS_DUPLAS  */
+    CHAVE_E = 284,                 /* CHAVE_E  */
+    CHAVE_D = 285,                 /* CHAVE_D  */
+    COMANDO_FOR = 286,             /* COMANDO_FOR  */
+    COMANDO_FORALL = 287,          /* COMANDO_FORALL  */
+    CONJUNTO_IN = 288,             /* CONJUNTO_IN  */
+    TIPO_ELEM = 289,               /* TIPO_ELEM  */
+    COMANDO_ELSE = 290,            /* COMANDO_ELSE  */
+    EMPTY = 291,                   /* EMPTY  */
+    COMANDO_IF = 292,              /* COMANDO_IF  */
+    IN = 293,                      /* IN  */
+    IS_FLOAT = 294,                /* IS_FLOAT  */
+    IS_INT = 295,                  /* IS_INT  */
+    IS_SET = 296,                  /* IS_SET  */
+    OP_NEGACAO = 297,              /* OP_NEGACAO  */
+    PARENTESE_E = 298,             /* PARENTESE_E  */
+    PARENTESE_D = 299,             /* PARENTESE_D  */
+    PONTO_E_VIRGULA = 300,         /* PONTO_E_VIRGULA  */
+    RETURN = 301,                  /* RETURN  */
+    TIPO_SET = 302,                /* TIPO_SET  */
+    TIPO_INT = 303,                /* TIPO_INT  */
+    TIPO_FLOAT = 304,              /* TIPO_FLOAT  */
+    VIRGULA = 305,                 /* VIRGULA  */
+    THEN = 306                     /* THEN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -122,7 +123,7 @@ union YYSTYPE
     Valor   valor;
     int     tipo_dado;
 
-#line 126 "clang.tab.h"
+#line 127 "clang.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -42,9 +42,9 @@ void yyerror(const char *s);
 %token <valor> TOKEN_PONTO_FLUTUANTE
 %token <valor> TOKEN_CARACTERE
 %token <valor> TOKEN_CADEIA
-%token <valor> OP_IGUALDADE OP_MAIOR_QUE OP_MENOR_QUE OP_SOMA OP_SUBTRACAO CONJUNTO_ADD CONJUNTO_REMOVE CONJUNTO_EXISTS COMANDO_READ COMANDO_WRITE COMANDO_WRITELN
+%token <valor> OP_DIVISAO OP_MULTIPLICACAO OP_E OP_OU OP_IGUALDADE OP_MAIOR_QUE OP_MENOR_QUE OP_MAIOR_IGUAL OP_MENOR_IGUAL OP_SOMA OP_SUBTRACAO CONJUNTO_ADD CONJUNTO_REMOVE CONJUNTO_EXISTS COMANDO_READ COMANDO_WRITE COMANDO_WRITELN
 %token <simbolo> TOKEN_ID
-%token ATRIBUICAO ASPAS_SIMPLES ASPAS_DUPLAS CHAVE_E CHAVE_D COMANDO_FOR COMANDO_FORALL CONJUNTO_IN TIPO_ELEM COMANDO_ELSE EMPTY COMANDO_IF IN IS_FLOAT IS_INT IS_SET OP_COMPARACAO OP_DIVISAO OP_E OP_MULTIPLICACAO OP_NEGACAO OP_OU PARENTESE_E PARENTESE_D PONTO_E_VIRGULA RETURN TIPO_SET TIPO_INT TIPO_FLOAT VIRGULA
+%token ATRIBUICAO ASPAS_SIMPLES ASPAS_DUPLAS CHAVE_E CHAVE_D COMANDO_FOR COMANDO_FORALL CONJUNTO_IN TIPO_ELEM COMANDO_ELSE EMPTY COMANDO_IF IN IS_FLOAT IS_INT IS_SET OP_NEGACAO PARENTESE_E PARENTESE_D PONTO_E_VIRGULA RETURN TIPO_SET TIPO_INT TIPO_FLOAT VIRGULA
 %type <tipo_dado> def_declaracao_tipo
 
 %type <valor> operadores_expressao
@@ -56,7 +56,6 @@ void yyerror(const char *s);
 %type <simbolo> def_declaracao
 %type <no> expressao expressao_atribuicao expressao_relacional expressao_logica expressao_aritmetica expressao_chamada expressao_conjunto expressao_io expressao_principal expressao_lista_param expressao_operacao
 
-%left OP_SOMA OP_IGUALDADE
 
 %nonassoc THEN
 %nonassoc COMANDO_ELSE
@@ -233,7 +232,7 @@ expressao_principal		: TOKEN_ID
 						;
 
 
-expressao_atribuicao	: expressao_relacional { $$ = $1; } 
+expressao_atribuicao	: expressao_logica { $$ = $1; } 
 						| expressao_operacao ATRIBUICAO expressao_atribuicao
                         {   
                             // Atribuicao = chamada ou expressao principal = qqr coisa
@@ -260,27 +259,42 @@ expressao_atribuicao	: expressao_relacional { $$ = $1; }
                         }
 						;
 
-expressao_relacional    : expressao_logica { $$ = $1; }
-                        | expressao_logica OP_MENOR_QUE expressao_relacional
+                        
+
+expressao_logica		: expressao_relacional { $$ = $1; }
+						| expressao_logica OP_E expressao_relacional
                         {
                             $$ = novo_no_ast_relacional($2.intval, $1, $3);
                         }
-                        | expressao_logica OP_MAIOR_QUE expressao_relacional
+						| expressao_logica OP_OU expressao_relacional
                         {
                             $$ = novo_no_ast_relacional($2.intval, $1, $3);
                         }
-						| expressao_logica OP_IGUALDADE expressao_relacional
+						;
+
+
+expressao_relacional    : expressao_aritmetica { $$ = $1; }
+                        | expressao_relacional OP_MENOR_QUE expressao_aritmetica
+                        {
+                            $$ = novo_no_ast_relacional($2.intval, $1, $3);
+                        }
+                        | expressao_relacional OP_MAIOR_QUE expressao_aritmetica
+                        {
+                            $$ = novo_no_ast_relacional($2.intval, $1, $3);
+                        }
+						| expressao_relacional OP_IGUALDADE expressao_aritmetica
+                        {
+                            $$ = novo_no_ast_relacional($2.intval, $1, $3);
+                        }
+						| expressao_relacional OP_MAIOR_IGUAL expressao_aritmetica
+                        {
+                            $$ = novo_no_ast_relacional($2.intval, $1, $3);
+                        }
+						| expressao_relacional OP_MENOR_IGUAL expressao_aritmetica
                         {
                             $$ = novo_no_ast_relacional($2.intval, $1, $3);
                         }
                         ;
-                        
-
-expressao_logica		: expressao_aritmetica { $$ = $1; }
-						| expressao_aritmetica OP_E expressao_logica
-						| expressao_aritmetica OP_NEGACAO expressao_logica
-						| expressao_aritmetica OP_COMPARACAO expressao_logica
-						;
 
 expressao_aritmetica	: expressao_conjunto { $$ = $1; }
 						| expressao_aritmetica OP_SOMA expressao_conjunto
@@ -292,7 +306,13 @@ expressao_aritmetica	: expressao_conjunto { $$ = $1; }
                             $$ = novo_no_ast_aritmetica($2.intval, $1, $3);
                         }
 						| expressao_aritmetica OP_DIVISAO expressao_conjunto
+                        {
+                            $$ = novo_no_ast_aritmetica($2.intval, $1, $3);
+                        }
 						| expressao_aritmetica OP_MULTIPLICACAO expressao_conjunto
+                        {
+                            $$ = novo_no_ast_aritmetica($2.intval, $1, $3);
+                        }
 						;
 
 expressao_conjunto		: expressao_operacao { $$ = $1; }

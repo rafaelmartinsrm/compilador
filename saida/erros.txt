@@ -1,0 +1,4 @@
+[ERRO] Erro na chamada de função 'fib', linha (coluna): 6 (19).
+[ERRO] Erro na chamada de função 'fib', linha (coluna): 6 (28).
+[ERRO] O tipo indef do parametro 0 é diferente do esperado (int) para a função 'fib'.
+[ERRO] Erro na chamada de função 'fib', linha (coluna): 17 (9).

@@ -650,17 +650,35 @@ const char* operador_texto(int operador)
 {
     switch(operador)
     {
+        case E:
+            return "&&";
+            break;
+        case OU:
+            return "||";
+            break;
         case INDEFINIDO:
             return "I";
             break;
         case MENOR_QUE:
             return "<";
             break;
+        case MENOR_IGUAL:
+            return "<=";
+            break;
+        case MAIOR_IGUAL:
+            return ">=";
+            break;
         case MAIOR_QUE:
             return ">";
             break;
         case IGUALDADE:
             return "==";
+            break;
+        case MULTIPLICACAO:
+            return "*";
+            break;
+        case DIVISAO:
+            return "/";
             break;
         case SOMA:
             return "+";
@@ -676,6 +694,9 @@ const char* operador_texto(int operador)
             break;
         case EXISTS:
             return "exists";
+            break;
+        default:
+            return "?";
             break;
     }
     return "";

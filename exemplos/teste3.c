@@ -8,7 +8,10 @@ int fib(int i) {
 
 int main() {
     int i;
+    if(2 >= 4 && 2 <= 3 || 2 * 3)
+    {
 
+    }
     if(i < 0) return;
     else {
         i = fib(i);

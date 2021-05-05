@@ -80,14 +80,15 @@ ES  (\\(['"\?\\abfnrtv]|[0-7]{1,3}|x[a-fA-F0-9]+))
 
 "+"					{ TRATAR_COLUNA; imprime_ret("OP_SOMA"); yylval.intval = SOMA; return OP_SOMA;}
 "-"					{ TRATAR_COLUNA; imprime_ret("OP_SUBTRACAO"); yylval.intval = SUBTRACAO; return OP_SUBTRACAO; }
-"/"					{ TRATAR_COLUNA; imprime_ret("OP_DIVISAO"); return OP_DIVISAO; }
-"*"					{ TRATAR_COLUNA; imprime_ret("OP_MULTIPLICACAO"); return OP_MULTIPLICACAO; }
+"/"					{ TRATAR_COLUNA; imprime_ret("OP_DIVISAO"); yylval.intval = DIVISAO; return OP_DIVISAO; }
+"*"					{ TRATAR_COLUNA; imprime_ret("OP_MULTIPLICACAO"); yylval.intval = MULTIPLICACAO; return OP_MULTIPLICACAO; }
 
-"&&"				{ TRATAR_COLUNA; imprime_ret("OP_E"); return OP_E; }
+"&&"				{ TRATAR_COLUNA; imprime_ret("OP_E"); yylval.intval = E; return OP_E; }
 "!"					{ TRATAR_COLUNA; imprime_ret("OP_NEGACAO");   return OP_NEGACAO; }
-"||"				{ TRATAR_COLUNA; imprime_ret("OP_OU");  return OP_OU; }
+"||"				{ TRATAR_COLUNA; imprime_ret("OP_OU"); yylval.intval = OU; return OP_OU; }
 "=="                { TRATAR_COLUNA; imprime_ret("OP_IGUALDADE"); yylval.intval = IGUALDADE; return OP_IGUALDADE; }
-">="|"<="	    { TRATAR_COLUNA; imprime_ret("OP_COMPARACAO"); return OP_COMPARACAO; }
+">="                { TRATAR_COLUNA; imprime_ret("OP_MAIOR_IGUAL"); yylval.intval = MAIOR_IGUAL; return OP_MAIOR_IGUAL; }
+"<="                { TRATAR_COLUNA; imprime_ret("OP_MENOR_IGUAL"); yylval.intval = MENOR_IGUAL; return OP_MENOR_IGUAL; }
 "<"                 { TRATAR_COLUNA; imprime_ret("OP_MENOR_QUE"); yylval.intval = MENOR_QUE;return OP_MENOR_QUE; }
 ">"                 { TRATAR_COLUNA; imprime_ret("OP_MAIOR_QUE"); yylval.intval = MAIOR_QUE;return OP_MAIOR_QUE; }
 
