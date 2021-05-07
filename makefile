@@ -1,6 +1,6 @@
 OBJS 		= bison.o lexer.o
 C_COMPILER	= gcc
-C_FLAGS		= -g -Wall 
+C_FLAGS		= -g -Wall -lm 
 
 clang:		$(OBJS)
 			cd saida; \

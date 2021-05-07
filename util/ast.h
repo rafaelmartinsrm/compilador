@@ -55,6 +55,7 @@ typedef enum Operador
 typedef struct NoAST
 {
     enum TipoNo tipo;
+    const char* reg;
     struct NoAST *esquerda;
     struct NoAST *direita;
 } NoAST;
@@ -77,6 +78,7 @@ typedef struct
 typedef struct
 {
     enum TipoNo tipo;
+    const char* reg;
     Simbolo *definicao;
 } NoAST_Referencia;
 
@@ -155,6 +157,7 @@ typedef struct
 typedef struct
 {
     enum TipoNo tipo;
+    const char* reg;
     int tipo_dado;
     Valor valor;
 } NoAST_Constante;
@@ -169,6 +172,7 @@ typedef struct
 typedef struct
 {
     enum TipoNo tipo;
+    const char* reg;
     Operador operador;
     NoAST *esquerda;
     NoAST *direita;
