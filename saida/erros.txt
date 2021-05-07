@@ -1,5 +1,6 @@
-[ERRO] A expressão não é do tipo cadeia. O erro se encontra na linha (coluna): 5 (11)
 [ERRO] O erro se encontra na linha (coluna): 11 (6)
 [ERRO] O tipo indef do parametro 0 é diferente do esperado (int) para a função 'teste'.
 [ERRO] Erro na chamada de função 'teste', linha (coluna): 12 (9).
 [ERRO] A expressão não é do tipo cadeia. O erro se encontra na linha (coluna): 13 (11)
+[ERRO] O tipo indef do parametro 0 é diferente do esperado (int) para a função 'teste'.
+[ERRO] Erro na chamada de função 'teste', linha (coluna): 14 (9).

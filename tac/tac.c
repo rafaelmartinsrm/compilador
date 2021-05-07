@@ -106,6 +106,8 @@ void expressoes_tac_recursivo(NoAST *no)
             for(i = 0; i < no_parametros_chamada->parametros_no; ++i)
             {
                 expressoes_tac_recursivo(no_parametros_chamada->parametros[i]);
+                sprintf(comando, "param %s\n", no_parametros_chamada->parametros[i]->reg);
+                nova_entrada(comando);
             }
             break;
         }
@@ -119,6 +121,12 @@ void expressoes_tac_recursivo(NoAST *no)
             NoAST_Chamada_Funcao* no_chamada_funcao = (NoAST_Chamada_Funcao *) no;
             expressoes_tac_recursivo(no_chamada_funcao->definicao);
             expressoes_tac_recursivo(no_chamada_funcao->parametros);
+            Simbolo* simbolo = simbolo_no_ast(no_chamada_funcao->definicao);
+            NoAST_Parametros_Chamada* no_parametros_chamada = (NoAST_Parametros_Chamada *) no_chamada_funcao->parametros;
+            sprintf(comando, "call %s, %d\n", simbolo->identificador, no_parametros_chamada->parametros_no);
+            nova_entrada(comando);
+            sprintf(comando, "pop $0\nprintln $0\n");
+            nova_entrada(comando);
             break;
         }
         case(NO_CONJUNTO):
@@ -159,6 +167,8 @@ void expressoes_tac_recursivo(NoAST *no)
         {
             NoAST_Retorno* no_retorno = (NoAST_Retorno *) no;
             expressoes_tac_recursivo(no_retorno->referencia);
+            sprintf(comando, "return %s\n", no_retorno->referencia->reg);
+            nova_entrada(comando);
             break;
         }
         case(NO_REFERENCIA):

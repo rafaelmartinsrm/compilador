@@ -2,7 +2,7 @@ int teste(int b)
 {
     int a;
     a = b;
-    writeln(a);
+    return a;
 }
 
 int main()
@@ -11,4 +11,5 @@ int main()
     a = 6*6;
     teste(2);
     writeln(a);
+    teste(a);
 }
