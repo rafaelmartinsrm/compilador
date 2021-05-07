@@ -1,10 +1,10 @@
 .table
-int a_0x4ba0300
+int a_0x4b9fec0
 int a_0x4ba3410
 .code
 teste:
-mov a_0x4ba0300, #0
-return a_0x4ba0300
+mov a_0x4b9fec0, #0
+return a_0x4b9fec0
 main:
 mov $0, 6
 mov $1, 6

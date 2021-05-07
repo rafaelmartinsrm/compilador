@@ -175,7 +175,6 @@ void add_simbolo(int declare, const char *identificador, int tipo_dado, int linh
 
 void liberar_tabela_simbolos()
 {
-    printf("LIBERANDO\n");
     if(tabela_simbolos == NULL)
         return;
 
@@ -201,10 +200,12 @@ void imprime_simbolos_recursivo(Escopo *escopo)
             {
                 if(s->tag == CONSTANTE)
                     printf("constante: %s %s | escopo %p | linhas: ", tipo_texto(s->constante.tipo_dado), s->identificador, escopo);
-                if(s->tag == INDEFINIDA)
+                else if(s->tag == INDEFINIDA)
                     printf("indefinida: %s %s | escopo %p | linhas: ", tipo_texto(-1), s->identificador, escopo);
                 else if(s->tag == FUNCAO)
                     printf("funcao: %s %s | escopo: %p | linhas: ", tipo_texto(s->funcao.tipo_dado), s->identificador, escopo);
+                else if(s->tag == PARAMETRO)
+                    printf("parametro: %s %s | escopo: %p | linhas: ", tipo_texto(s->funcao.tipo_dado), s->identificador, escopo);
                 for(l = s->linhas; l != NULL; l = (Linha*) l->proxima)
                 {
                     printf("%d ", l->linha_no);

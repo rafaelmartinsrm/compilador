@@ -113,8 +113,6 @@ void expressoes_tac_recursivo(NoAST *no)
         }
         case(NO_PARAMETROS):
         {
-            NoAST_Parametros* no_parametros = (NoAST_Parametros *) no;
-            printf("entrou aqui\n");
             break;
         }
         case(NO_CHAMADA_FUNCAO):
@@ -139,7 +137,7 @@ void expressoes_tac_recursivo(NoAST *no)
         }
         case(NO_DECLARACAO):
         {
-            NoAST_Declaracao* no_declaracao = (NoAST_Declaracao *) no;
+            //NoAST_Declaracao* no_declaracao = (NoAST_Declaracao *) no;
             // Simbolos     
             break;
         }
