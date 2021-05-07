@@ -32,6 +32,7 @@ NoAST *novo_no_ast_parametros(NoAST *no, int parametros_no, Simbolo *parametro)
 
     Parametro* novo_parametro = malloc(sizeof(Parametro));
     novo_parametro->identificador = parametro->identificador;
+    novo_parametro->simbolo = parametro;
     novo_parametro->tipo_dado = parametro->funcao.tipo_dado;
     novo_parametro->proximo = NULL;
 

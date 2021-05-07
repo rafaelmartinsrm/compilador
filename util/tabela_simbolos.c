@@ -50,94 +50,95 @@ void add_simbolo(int declare, const char *identificador, int tipo_dado, int linh
         if(simbolo == NULL)
             return;
         simbolo->identificador = strdup(identificador);
-        HASH_ADD_STR(tabela_simbolos->escopo_atual->tabela_hash, identificador, simbolo);
-        simbolo->linhas = linha;
-    }
-    else
-    {
-        temp_linha = simbolo->linhas;
-        while(temp_linha->proxima != NULL) 
-            temp_linha = temp_linha->proxima;
-        temp_linha->proxima = linha;
-    }
-    /* se já existir, adicionar linhas */ 
-    /* linhas+ escopo+ tipos+ */
-    return;
-}
-
-Simbolo* buscar_simbolo(const char* identificador)
-{
-    Simbolo* simbolo;
-    HASH_FIND_STR(tabela_simbolos->escopo_atual->tabela_hash, identificador, simbolo);
-    if(simbolo)
-        return simbolo;
-    return NULL;
-}
-
-
-Simbolo* buscar_simbolo_todos_escopos(const char* identificador)
-{
-    Simbolo* simbolo;
-    HASH_FIND_STR(tabela_simbolos->escopo_atual->tabela_hash, identificador, simbolo);
-    if(simbolo)
-        return simbolo;
-    else
-    {
-        if(tabela_simbolos->escopo_atual->pai)
+            simbolo->reg = NULL;
+            HASH_ADD_STR(tabela_simbolos->escopo_atual->tabela_hash, identificador, simbolo);
+            simbolo->linhas = linha;
+        }
+        else
         {
-            Escopo* temp_escopo = tabela_simbolos->escopo_atual;
-            for(temp_escopo = temp_escopo->pai; temp_escopo != NULL; temp_escopo = temp_escopo->pai)
+            temp_linha = simbolo->linhas;
+            while(temp_linha->proxima != NULL) 
+                temp_linha = temp_linha->proxima;
+            temp_linha->proxima = linha;
+        }
+        /* se já existir, adicionar linhas */ 
+        /* linhas+ escopo+ tipos+ */
+        return;
+    }
+
+    Simbolo* buscar_simbolo(const char* identificador)
+    {
+        Simbolo* simbolo;
+        HASH_FIND_STR(tabela_simbolos->escopo_atual->tabela_hash, identificador, simbolo);
+        if(simbolo)
+            return simbolo;
+        return NULL;
+    }
+
+
+    Simbolo* buscar_simbolo_todos_escopos(const char* identificador)
+    {
+        Simbolo* simbolo;
+        HASH_FIND_STR(tabela_simbolos->escopo_atual->tabela_hash, identificador, simbolo);
+        if(simbolo)
+            return simbolo;
+        else
+        {
+            if(tabela_simbolos->escopo_atual->pai)
             {
-                HASH_FIND_STR(temp_escopo->tabela_hash, identificador, simbolo);
-                if(simbolo)
-                    return simbolo;
+                Escopo* temp_escopo = tabela_simbolos->escopo_atual;
+                for(temp_escopo = temp_escopo->pai; temp_escopo != NULL; temp_escopo = temp_escopo->pai)
+                {
+                    HASH_FIND_STR(temp_escopo->tabela_hash, identificador, simbolo);
+                    if(simbolo)
+                        return simbolo;
+                }
             }
         }
+        return NULL;
     }
-    return NULL;
-}
 
-void verifica_existencia_main()
-{
-    Simbolo* simbolo = buscar_simbolo_todos_escopos("main");
-
-    if(!simbolo)
+    void verifica_existencia_main()
     {
-        adicionar_erro("[ERRO] Não foi definida uma main.");
-    }
-}
+        Simbolo* simbolo = buscar_simbolo_todos_escopos("main");
 
-Escopo** lista_escopos(Escopo** lista, Escopo *raiz, int *tamanho)
-{
-    if(*tamanho == 0)
-        lista = malloc(sizeof(Escopo*));
-    for(; raiz != NULL; raiz = raiz->filho)
-    {
-
-        *tamanho += 1;
-        lista = realloc(lista, *tamanho * sizeof(Escopo*));
-        lista[(*tamanho) - 1] = raiz;
-        if(raiz->proximo != NULL)
+        if(!simbolo)
         {
-            lista_escopos(lista, raiz->proximo, tamanho);
+            adicionar_erro("[ERRO] Não foi definida uma main.");
         }
     }
 
-    return lista;
-}
-
-void liberar_tabela_simbolos_recursivo(Escopo* escopo)
-{
-    if(!escopo)
-        return;
-
-    Simbolo *simbolo, *tmp;
-    Escopo *tmp_escopo;
-    while(escopo)
+    Escopo** lista_escopos(Escopo** lista, Escopo *raiz, int *tamanho)
     {
-        HASH_ITER(hh, escopo->tabela_hash, simbolo, tmp)
+        if(*tamanho == 0)
+            lista = malloc(sizeof(Escopo*));
+        for(; raiz != NULL; raiz = raiz->filho)
         {
-            Parametro* parametro_tmp = NULL;
+
+            *tamanho += 1;
+            lista = realloc(lista, *tamanho * sizeof(Escopo*));
+            lista[(*tamanho) - 1] = raiz;
+            if(raiz->proximo != NULL)
+            {
+                lista_escopos(lista, raiz->proximo, tamanho);
+            }
+        }
+
+        return lista;
+    }
+
+    void liberar_tabela_simbolos_recursivo(Escopo* escopo)
+    {
+        if(!escopo)
+            return;
+
+        Simbolo *simbolo, *tmp;
+        Escopo *tmp_escopo;
+        while(escopo)
+        {
+            HASH_ITER(hh, escopo->tabela_hash, simbolo, tmp)
+            {
+                Parametro* parametro_tmp = NULL;
             if(simbolo->tag == FUNCAO)
             {
                 while(simbolo->funcao.parametros != NULL)     
@@ -156,6 +157,8 @@ void liberar_tabela_simbolos_recursivo(Escopo* escopo)
             }
             
             HASH_DEL(escopo->tabela_hash, simbolo);
+            if(simbolo->reg)
+                free((char*)simbolo->reg);
             free((void *)simbolo->identificador);
             free(simbolo);
         }

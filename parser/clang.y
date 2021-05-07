@@ -87,6 +87,7 @@ lista_identificadores	: TOKEN_ID
 
 declaracao_parametro	: def_declaracao_tipo def_declaracao
                         {
+                            $2->tag = PARAMETRO;
                             $2->funcao.tipo_dado = $1;
                             $$ = $2;    
                         }

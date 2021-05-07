@@ -114,6 +114,7 @@ void expressoes_tac_recursivo(NoAST *no)
         case(NO_PARAMETROS):
         {
             NoAST_Parametros* no_parametros = (NoAST_Parametros *) no;
+            printf("entrou aqui\n");
             break;
         }
         case(NO_CHAMADA_FUNCAO):
@@ -176,7 +177,10 @@ void expressoes_tac_recursivo(NoAST *no)
             NoAST_Referencia* no_referencia = (NoAST_Referencia *) no;
             // Concat identificador e endereço
             char str1[256];
-            sprintf(str1, "%s_%p", no_referencia->definicao->identificador, no_referencia->definicao->identificador);
+            if(no_referencia->definicao->tag == PARAMETRO)
+                sprintf(str1, "%s", no_referencia->definicao->reg);
+            else
+                sprintf(str1, "%s_%p", no_referencia->definicao->identificador, no_referencia->definicao->identificador);
 
             no_referencia->reg = strdup(str1);
             break;
@@ -222,8 +226,9 @@ void expressoes_tac_recursivo(NoAST *no)
                 i = 0;
                 while(parametro)
                 {
-                    sprintf(comando, "mov %s_%p, #%d\n", parametro->identificador, parametro->identificador, i);
-                    nova_entrada(comando);
+                    char str1[256];
+                    sprintf(str1, "#%d", i);
+                    parametro->simbolo->reg = strdup(str1);
                     parametro = parametro->proximo;
                 }
             }

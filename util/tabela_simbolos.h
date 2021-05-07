@@ -12,7 +12,8 @@ typedef enum
     CONSTANTE,
     FUNCAO,
     IDENTIFICADOR,
-    OPERACAO
+    OPERACAO,
+    PARAMETRO
 } TagSimbolo;
 
 typedef struct Simbolo Simbolo;
@@ -45,6 +46,7 @@ typedef struct Parametro
 {
     int tipo_dado;
     const char* identificador;
+    Simbolo *simbolo;
     Parametro *proximo;
     Valor valor;
 } Parametro;
@@ -58,6 +60,7 @@ typedef struct Linha
 typedef struct Simbolo
 {
     const char* identificador;
+    const char* reg;
     Linha* linhas;
     int escopo;
     TagSimbolo tag;

@@ -1,3 +1,5 @@
+[ERRO] Erro no nó de referência! b não está bem definido.
+[ERRO] O erro se encontra na linha (coluna): 4 (4)
 [ERRO] O erro se encontra na linha (coluna): 11 (6)
 [ERRO] O tipo indef do parametro 0 é diferente do esperado (int) para a função 'teste'.
 [ERRO] Erro na chamada de função 'teste', linha (coluna): 12 (9).

@@ -588,16 +588,16 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    66,    66,    73,    77,    84,    85,    88,    93,    96,
-     100,   107,   112,   118,   126,   129,   130,   131,   132,   136,
-     144,   149,   156,   160,   166,   167,   185,   186,   189,   193,
-     200,   201,   204,   205,   208,   209,   210,   211,   212,   215,
-     216,   217,   220,   224,   228,   230,   232,   236,   237,   265,
-     266,   270,   277,   278,   282,   286,   290,   294,   300,   301,
-     305,   309,   313,   319,   320,   324,   328,   335,   336,   342,
-     346,   347,   357,   366,   372,   373,   374,   400,   404,   411,
-     435,   439,   443,   449,   453,   457,   461,   465,   471,   475,
-     481,   485
+       0,    66,    66,    73,    77,    84,    85,    88,    94,    97,
+     101,   108,   113,   119,   127,   130,   131,   132,   133,   137,
+     145,   150,   157,   161,   167,   168,   186,   187,   190,   194,
+     201,   202,   205,   206,   209,   210,   211,   212,   213,   216,
+     217,   218,   221,   225,   229,   231,   233,   237,   238,   266,
+     267,   271,   278,   279,   283,   287,   291,   295,   301,   302,
+     306,   310,   314,   320,   321,   325,   329,   336,   337,   343,
+     347,   348,   358,   367,   373,   374,   375,   401,   405,   412,
+     436,   440,   444,   450,   454,   458,   462,   466,   472,   476,
+     482,   486
 };
 #endif
 
@@ -4173,56 +4173,57 @@ yyreduce:
   case 7: /* declaracao_parametro: def_declaracao_tipo def_declaracao  */
 #line 89 "parser/clang.y"
                         {
+                            (yyvsp[0].simbolo)->tag = PARAMETRO;
                             (yyvsp[0].simbolo)->funcao.tipo_dado = (yyvsp[-1].tipo_dado);
                             (yyval.simbolo) = (yyvsp[0].simbolo);    
                         }
-#line 4180 "clang.tab.c"
+#line 4181 "clang.tab.c"
     break;
 
   case 8: /* declaracao_parametro: def_declaracao_tipo  */
-#line 93 "parser/clang.y"
+#line 94 "parser/clang.y"
                                                                       { declare = 1; (yyval.simbolo) = NULL; }
-#line 4186 "clang.tab.c"
+#line 4187 "clang.tab.c"
     break;
 
   case 9: /* lista_tipo_parametro: declaracao_parametro  */
-#line 97 "parser/clang.y"
+#line 98 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_parametros(NULL, 0, (yyvsp[0].simbolo));
                         }
-#line 4194 "clang.tab.c"
+#line 4195 "clang.tab.c"
     break;
 
   case 10: /* lista_tipo_parametro: lista_tipo_parametro VIRGULA declaracao_parametro  */
-#line 101 "parser/clang.y"
+#line 102 "parser/clang.y"
                         {
                             NoAST_Parametros *novo_no = (NoAST_Parametros*) (yyvsp[-2].no);
                             (yyval.no) = novo_no_ast_parametros((yyvsp[-2].no), novo_no->parametros_no, (yyvsp[0].simbolo));
                         }
-#line 4203 "clang.tab.c"
+#line 4204 "clang.tab.c"
     break;
 
   case 11: /* def_declaracao: TOKEN_ID  */
-#line 108 "parser/clang.y"
+#line 109 "parser/clang.y"
                         {
                             (yyvsp[0].simbolo)->tag = CONSTANTE;
                             (yyval.simbolo) = (yyvsp[0].simbolo); 
                         }
-#line 4212 "clang.tab.c"
+#line 4213 "clang.tab.c"
     break;
 
   case 12: /* def_declaracao: def_declaracao PARENTESE_E PARENTESE_D  */
-#line 113 "parser/clang.y"
+#line 114 "parser/clang.y"
                         {
                             (yyvsp[-2].simbolo)->funcao.parametros_no = 0;
                             (yyvsp[-2].simbolo)->funcao.parametros = NULL;
                             (yyval.simbolo) = (yyvsp[-2].simbolo);
                         }
-#line 4222 "clang.tab.c"
+#line 4223 "clang.tab.c"
     break;
 
   case 13: /* def_declaracao: def_declaracao PARENTESE_E lista_tipo_parametro PARENTESE_D  */
-#line 119 "parser/clang.y"
+#line 120 "parser/clang.y"
                         {
                             NoAST_Parametros *novo_no = (NoAST_Parametros*) (yyvsp[-1].no);
                             (yyvsp[-3].simbolo)->funcao.parametros_no = novo_no->parametros_no;
@@ -4230,84 +4231,84 @@ yyreduce:
                             liberar_ast((yyvsp[-1].no));
                             (yyval.simbolo) = (yyvsp[-3].simbolo);
                         }
-#line 4234 "clang.tab.c"
+#line 4235 "clang.tab.c"
     break;
 
   case 15: /* def_declaracao_tipo: TIPO_INT  */
-#line 129 "parser/clang.y"
+#line 130 "parser/clang.y"
                                                 { (yyval.tipo_dado) = TIPO_INTEIRO;}
-#line 4240 "clang.tab.c"
+#line 4241 "clang.tab.c"
     break;
 
   case 16: /* def_declaracao_tipo: TIPO_FLOAT  */
-#line 130 "parser/clang.y"
+#line 131 "parser/clang.y"
                                                                 { (yyval.tipo_dado) = TIPO_PONTO_FLUTUANTE;}
-#line 4246 "clang.tab.c"
+#line 4247 "clang.tab.c"
     break;
 
   case 17: /* def_declaracao_tipo: TIPO_ELEM  */
-#line 131 "parser/clang.y"
+#line 132 "parser/clang.y"
                                                                 { (yyval.tipo_dado) = TIPO_INDEFINIDO; }
-#line 4252 "clang.tab.c"
+#line 4253 "clang.tab.c"
     break;
 
   case 18: /* def_declaracao_tipo: TIPO_SET  */
-#line 132 "parser/clang.y"
+#line 133 "parser/clang.y"
                                                                 { (yyval.tipo_dado) = TIPO_CONJUNTO; }
-#line 4258 "clang.tab.c"
+#line 4259 "clang.tab.c"
     break;
 
   case 19: /* declaracao_func: declaracao_parametro expressao_composta  */
-#line 137 "parser/clang.y"
+#line 138 "parser/clang.y"
                         {
                             (yyvsp[-1].simbolo)->tag = FUNCAO;
                             (yyval.no) = novo_no_ast_declaracao_funcao((yyvsp[-1].simbolo)->funcao.tipo_dado, (yyvsp[-1].simbolo), (yyvsp[0].no));
                         }
-#line 4267 "clang.tab.c"
+#line 4268 "clang.tab.c"
     break;
 
   case 20: /* declaracao: declaracao_func  */
-#line 145 "parser/clang.y"
+#line 146 "parser/clang.y"
                         {
                             (yyval.no) = (yyvsp[0].no);
                             imprimir_no((yyval.no), 1);
                         }
-#line 4276 "clang.tab.c"
+#line 4277 "clang.tab.c"
     break;
 
   case 21: /* declaracao: declaracao_var  */
-#line 150 "parser/clang.y"
+#line 151 "parser/clang.y"
                         { 
                             (yyval.no) = (yyvsp[0].no);
                             imprimir_no((yyval.no), 1);
                         }
-#line 4285 "clang.tab.c"
+#line 4286 "clang.tab.c"
     break;
 
   case 22: /* lista_inicializar_atrib: def_declaracao  */
-#line 157 "parser/clang.y"
+#line 158 "parser/clang.y"
                         {
                             add_lista((yyvsp[0].simbolo));
                         }
-#line 4293 "clang.tab.c"
+#line 4294 "clang.tab.c"
     break;
 
   case 23: /* lista_inicializar_atrib: lista_inicializar_atrib VIRGULA def_declaracao  */
-#line 161 "parser/clang.y"
+#line 162 "parser/clang.y"
                         {
                             add_lista((yyvsp[0].simbolo));
                         }
-#line 4301 "clang.tab.c"
+#line 4302 "clang.tab.c"
     break;
 
   case 24: /* declaracao_var: def_declaracao_tipo PONTO_E_VIRGULA  */
-#line 166 "parser/clang.y"
+#line 167 "parser/clang.y"
                                                                       { (yyval.no) = NULL; }
-#line 4307 "clang.tab.c"
+#line 4308 "clang.tab.c"
     break;
 
   case 25: /* declaracao_var: def_declaracao_tipo lista_inicializar_atrib PONTO_E_VIRGULA  */
-#line 168 "parser/clang.y"
+#line 169 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_declaracao((yyvsp[-2].tipo_dado), simbolos, simbolos_no);
                             simbolos_no = 0;
@@ -4323,152 +4324,152 @@ yyreduce:
                             simbolos_no = 0;
                             simbolos = NULL;
                         }
-#line 4327 "clang.tab.c"
+#line 4328 "clang.tab.c"
     break;
 
   case 26: /* item_bloco: declaracao_var  */
-#line 185 "parser/clang.y"
+#line 186 "parser/clang.y"
                                                          { (yyval.no) = (yyvsp[0].no); }
-#line 4333 "clang.tab.c"
+#line 4334 "clang.tab.c"
     break;
 
   case 27: /* item_bloco: tipos_expressao  */
-#line 186 "parser/clang.y"
+#line 187 "parser/clang.y"
                                                                   { (yyval.no) = (yyvsp[0].no); }
-#line 4339 "clang.tab.c"
+#line 4340 "clang.tab.c"
     break;
 
   case 28: /* lista_itens_bloco: item_bloco  */
-#line 190 "parser/clang.y"
+#line 191 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_expressao_composta(NULL, 0, (yyvsp[0].no));
                         }
-#line 4347 "clang.tab.c"
+#line 4348 "clang.tab.c"
     break;
 
   case 29: /* lista_itens_bloco: lista_itens_bloco item_bloco  */
-#line 194 "parser/clang.y"
+#line 195 "parser/clang.y"
                         {
                             NoAST_Expressao_Composta *novo_no = (NoAST_Expressao_Composta*) (yyvsp[-1].no);
                             (yyval.no) = novo_no_ast_expressao_composta((yyvsp[-1].no), novo_no->itens_bloco_no, (yyvsp[0].no));
                         }
-#line 4356 "clang.tab.c"
+#line 4357 "clang.tab.c"
     break;
 
   case 30: /* expressao: expressao_atribuicao  */
-#line 200 "parser/clang.y"
+#line 201 "parser/clang.y"
                                                                { (yyval.no) = (yyvsp[0].no); }
-#line 4362 "clang.tab.c"
+#line 4363 "clang.tab.c"
     break;
 
   case 31: /* expressao: expressao VIRGULA expressao_atribuicao  */
-#line 201 "parser/clang.y"
+#line 202 "parser/clang.y"
                                                                                          { (yyval.no) = (yyvsp[0].no); }
-#line 4368 "clang.tab.c"
+#line 4369 "clang.tab.c"
     break;
 
   case 32: /* expressao_declaracao: PONTO_E_VIRGULA  */
-#line 204 "parser/clang.y"
+#line 205 "parser/clang.y"
                                           { (yyval.no) = NULL; }
-#line 4374 "clang.tab.c"
+#line 4375 "clang.tab.c"
     break;
 
   case 33: /* expressao_declaracao: expressao PONTO_E_VIRGULA  */
-#line 205 "parser/clang.y"
+#line 206 "parser/clang.y"
                                                                             { (yyval.no) = (yyvsp[-1].no); }
-#line 4380 "clang.tab.c"
+#line 4381 "clang.tab.c"
     break;
 
   case 34: /* tipos_expressao: expressao_declaracao  */
-#line 208 "parser/clang.y"
+#line 209 "parser/clang.y"
                                                    { (yyval.no) = (yyvsp[0].no); }
-#line 4386 "clang.tab.c"
+#line 4387 "clang.tab.c"
     break;
 
   case 35: /* tipos_expressao: expressao_decisao  */
-#line 209 "parser/clang.y"
+#line 210 "parser/clang.y"
                                                                     { (yyval.no) = (yyvsp[0].no); }
-#line 4392 "clang.tab.c"
+#line 4393 "clang.tab.c"
     break;
 
   case 36: /* tipos_expressao: expressao_composta  */
-#line 210 "parser/clang.y"
+#line 211 "parser/clang.y"
                                                                      { (yyval.no) = (yyvsp[0].no); }
-#line 4398 "clang.tab.c"
+#line 4399 "clang.tab.c"
     break;
 
   case 37: /* tipos_expressao: expressao_return  */
-#line 211 "parser/clang.y"
+#line 212 "parser/clang.y"
                                                                    { (yyval.no) = (yyvsp[0].no); }
-#line 4404 "clang.tab.c"
+#line 4405 "clang.tab.c"
     break;
 
   case 38: /* tipos_expressao: expressao_iteracao  */
-#line 212 "parser/clang.y"
+#line 213 "parser/clang.y"
                                                                      { (yyval.no) = (yyvsp[0].no); }
-#line 4410 "clang.tab.c"
+#line 4411 "clang.tab.c"
     break;
 
   case 39: /* valores: TOKEN_INTEIRO  */
-#line 215 "parser/clang.y"
+#line 216 "parser/clang.y"
                                                                 { (yyval.no) = novo_no_ast_constante(TIPO_INTEIRO, (yyvsp[0].valor)); }
-#line 4416 "clang.tab.c"
+#line 4417 "clang.tab.c"
     break;
 
   case 40: /* valores: TOKEN_PONTO_FLUTUANTE  */
-#line 216 "parser/clang.y"
+#line 217 "parser/clang.y"
                                                                         { (yyval.no) = novo_no_ast_constante(TIPO_PONTO_FLUTUANTE, (yyvsp[0].valor)); }
-#line 4422 "clang.tab.c"
+#line 4423 "clang.tab.c"
     break;
 
   case 41: /* valores: TOKEN_EMPTY  */
-#line 217 "parser/clang.y"
+#line 218 "parser/clang.y"
                                                 { (yyval.no) = novo_no_ast_constante(TIPO_CONJUNTO, (yyvsp[0].valor)); }
-#line 4428 "clang.tab.c"
+#line 4429 "clang.tab.c"
     break;
 
   case 42: /* expressao_principal: TOKEN_ID  */
-#line 221 "parser/clang.y"
+#line 222 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_referencia((yyvsp[0].simbolo));
                         }
-#line 4436 "clang.tab.c"
+#line 4437 "clang.tab.c"
     break;
 
   case 43: /* expressao_principal: valores  */
-#line 225 "parser/clang.y"
+#line 226 "parser/clang.y"
                         {
                             (yyval.no) = (yyvsp[0].no); 
                         }
-#line 4444 "clang.tab.c"
+#line 4445 "clang.tab.c"
     break;
 
   case 44: /* expressao_principal: ASPAS_SIMPLES TOKEN_ID ASPAS_SIMPLES  */
-#line 229 "parser/clang.y"
+#line 230 "parser/clang.y"
                         { (yyval.no) = NULL; }
-#line 4450 "clang.tab.c"
+#line 4451 "clang.tab.c"
     break;
 
   case 45: /* expressao_principal: TOKEN_CADEIA  */
-#line 231 "parser/clang.y"
+#line 232 "parser/clang.y"
                         { (yyval.no) = novo_no_ast_constante(TIPO_CADEIA, (yyvsp[0].valor)); }
-#line 4456 "clang.tab.c"
+#line 4457 "clang.tab.c"
     break;
 
   case 46: /* expressao_principal: PARENTESE_E expressao PARENTESE_D  */
-#line 232 "parser/clang.y"
+#line 233 "parser/clang.y"
                                                                                     { (yyval.no) = (yyvsp[-1].no); }
-#line 4462 "clang.tab.c"
+#line 4463 "clang.tab.c"
     break;
 
   case 47: /* expressao_atribuicao: expressao_logica  */
-#line 236 "parser/clang.y"
+#line 237 "parser/clang.y"
                                            { (yyval.no) = (yyvsp[0].no); }
-#line 4468 "clang.tab.c"
+#line 4469 "clang.tab.c"
     break;
 
   case 48: /* expressao_atribuicao: expressao_operacao ATRIBUICAO expressao_atribuicao  */
-#line 238 "parser/clang.y"
+#line 239 "parser/clang.y"
                         {   
                             // Atribuicao = chamada ou expressao principal = qqr coisa
                             (yyval.no) = novo_no_ast_atribuicao((yyvsp[-2].no), (yyvsp[0].no));
@@ -4492,161 +4493,161 @@ yyreduce:
                                 adicionar_erro(erro);
                             }
                         }
-#line 4496 "clang.tab.c"
+#line 4497 "clang.tab.c"
     break;
 
   case 49: /* expressao_logica: expressao_relacional  */
-#line 265 "parser/clang.y"
+#line 266 "parser/clang.y"
                                                        { (yyval.no) = (yyvsp[0].no); }
-#line 4502 "clang.tab.c"
+#line 4503 "clang.tab.c"
     break;
 
   case 50: /* expressao_logica: expressao_logica OP_E expressao_relacional  */
-#line 267 "parser/clang.y"
+#line 268 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_relacional((yyvsp[-1].valor).intval, (yyvsp[-2].no), (yyvsp[0].no));
                         }
-#line 4510 "clang.tab.c"
+#line 4511 "clang.tab.c"
     break;
 
   case 51: /* expressao_logica: expressao_logica OP_OU expressao_relacional  */
-#line 271 "parser/clang.y"
+#line 272 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_relacional((yyvsp[-1].valor).intval, (yyvsp[-2].no), (yyvsp[0].no));
                         }
-#line 4518 "clang.tab.c"
+#line 4519 "clang.tab.c"
     break;
 
   case 52: /* expressao_relacional: expressao_aritmetica  */
-#line 277 "parser/clang.y"
+#line 278 "parser/clang.y"
                                                { (yyval.no) = (yyvsp[0].no); }
-#line 4524 "clang.tab.c"
+#line 4525 "clang.tab.c"
     break;
 
   case 53: /* expressao_relacional: expressao_relacional OP_MENOR_QUE expressao_aritmetica  */
-#line 279 "parser/clang.y"
+#line 280 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_relacional((yyvsp[-1].valor).intval, (yyvsp[-2].no), (yyvsp[0].no));
                         }
-#line 4532 "clang.tab.c"
+#line 4533 "clang.tab.c"
     break;
 
   case 54: /* expressao_relacional: expressao_relacional OP_MAIOR_QUE expressao_aritmetica  */
-#line 283 "parser/clang.y"
+#line 284 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_relacional((yyvsp[-1].valor).intval, (yyvsp[-2].no), (yyvsp[0].no));
                         }
-#line 4540 "clang.tab.c"
+#line 4541 "clang.tab.c"
     break;
 
   case 55: /* expressao_relacional: expressao_relacional OP_IGUALDADE expressao_aritmetica  */
-#line 287 "parser/clang.y"
+#line 288 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_relacional((yyvsp[-1].valor).intval, (yyvsp[-2].no), (yyvsp[0].no));
                         }
-#line 4548 "clang.tab.c"
+#line 4549 "clang.tab.c"
     break;
 
   case 56: /* expressao_relacional: expressao_relacional OP_MAIOR_IGUAL expressao_aritmetica  */
-#line 291 "parser/clang.y"
+#line 292 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_relacional((yyvsp[-1].valor).intval, (yyvsp[-2].no), (yyvsp[0].no));
                         }
-#line 4556 "clang.tab.c"
+#line 4557 "clang.tab.c"
     break;
 
   case 57: /* expressao_relacional: expressao_relacional OP_MENOR_IGUAL expressao_aritmetica  */
-#line 295 "parser/clang.y"
+#line 296 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_relacional((yyvsp[-1].valor).intval, (yyvsp[-2].no), (yyvsp[0].no));
                         }
-#line 4564 "clang.tab.c"
+#line 4565 "clang.tab.c"
     break;
 
   case 58: /* expressao_aritmetica: expressao_conjunto  */
-#line 300 "parser/clang.y"
+#line 301 "parser/clang.y"
                                              { (yyval.no) = (yyvsp[0].no); }
-#line 4570 "clang.tab.c"
+#line 4571 "clang.tab.c"
     break;
 
   case 59: /* expressao_aritmetica: expressao_aritmetica OP_SOMA expressao_conjunto  */
-#line 302 "parser/clang.y"
+#line 303 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_aritmetica((yyvsp[-1].valor).intval, (yyvsp[-2].no), (yyvsp[0].no));
                         }
-#line 4578 "clang.tab.c"
+#line 4579 "clang.tab.c"
     break;
 
   case 60: /* expressao_aritmetica: expressao_aritmetica OP_SUBTRACAO expressao_conjunto  */
-#line 306 "parser/clang.y"
+#line 307 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_aritmetica((yyvsp[-1].valor).intval, (yyvsp[-2].no), (yyvsp[0].no));
                         }
-#line 4586 "clang.tab.c"
+#line 4587 "clang.tab.c"
     break;
 
   case 61: /* expressao_aritmetica: expressao_aritmetica OP_DIVISAO expressao_conjunto  */
-#line 310 "parser/clang.y"
+#line 311 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_aritmetica((yyvsp[-1].valor).intval, (yyvsp[-2].no), (yyvsp[0].no));
                         }
-#line 4594 "clang.tab.c"
+#line 4595 "clang.tab.c"
     break;
 
   case 62: /* expressao_aritmetica: expressao_aritmetica OP_MULTIPLICACAO expressao_conjunto  */
-#line 314 "parser/clang.y"
+#line 315 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_aritmetica((yyvsp[-1].valor).intval, (yyvsp[-2].no), (yyvsp[0].no));
                         }
-#line 4602 "clang.tab.c"
+#line 4603 "clang.tab.c"
     break;
 
   case 63: /* expressao_conjunto: expressao_operacao  */
-#line 319 "parser/clang.y"
+#line 320 "parser/clang.y"
                                                      { (yyval.no) = (yyvsp[0].no); }
-#line 4608 "clang.tab.c"
+#line 4609 "clang.tab.c"
     break;
 
   case 64: /* expressao_conjunto: CONJUNTO_ADD PARENTESE_E expressao_conjunto CONJUNTO_IN expressao_conjunto PARENTESE_D  */
-#line 321 "parser/clang.y"
+#line 322 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_conjunto((yyvsp[-5].valor).intval, (yyvsp[-3].no), (yyvsp[-1].no));
                         }
-#line 4616 "clang.tab.c"
+#line 4617 "clang.tab.c"
     break;
 
   case 65: /* expressao_conjunto: CONJUNTO_REMOVE PARENTESE_E expressao_conjunto CONJUNTO_IN expressao_conjunto PARENTESE_D  */
-#line 325 "parser/clang.y"
+#line 326 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_conjunto((yyvsp[-5].valor).intval, (yyvsp[-3].no), (yyvsp[-1].no));
                         }
-#line 4624 "clang.tab.c"
+#line 4625 "clang.tab.c"
     break;
 
   case 66: /* expressao_conjunto: CONJUNTO_EXISTS PARENTESE_E expressao_conjunto CONJUNTO_IN expressao_conjunto PARENTESE_D  */
-#line 329 "parser/clang.y"
+#line 330 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_conjunto((yyvsp[-5].valor).intval, (yyvsp[-3].no), (yyvsp[-1].no));
                         }
-#line 4632 "clang.tab.c"
+#line 4633 "clang.tab.c"
     break;
 
   case 68: /* expressao_operacao: operadores_expressao expressao_io  */
-#line 337 "parser/clang.y"
+#line 338 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_operacao((yyvsp[-1].valor).intval, (yyvsp[0].no));
                         }
-#line 4640 "clang.tab.c"
+#line 4641 "clang.tab.c"
     break;
 
   case 70: /* expressao_io: expressao_chamada  */
-#line 346 "parser/clang.y"
+#line 347 "parser/clang.y"
                                                     { (yyval.no) = (yyvsp[0].no); }
-#line 4646 "clang.tab.c"
+#line 4647 "clang.tab.c"
     break;
 
   case 71: /* expressao_io: COMANDO_WRITELN PARENTESE_E expressao_io PARENTESE_D  */
-#line 348 "parser/clang.y"
+#line 349 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_io((yyvsp[-1].no), (yyvsp[-3].valor).intval);
                             if(!(TIPO_CADEIA == tipo_expressao((yyvsp[-1].no))))
@@ -4656,11 +4657,11 @@ yyreduce:
                             }
                             // pular +1 linha
                         }
-#line 4660 "clang.tab.c"
+#line 4661 "clang.tab.c"
     break;
 
   case 72: /* expressao_io: COMANDO_WRITE PARENTESE_E expressao_io PARENTESE_D  */
-#line 358 "parser/clang.y"
+#line 359 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_io((yyvsp[-1].no), (yyvsp[-3].valor).intval);
                             if(!(TIPO_CADEIA == tipo_expressao((yyvsp[-1].no))))
@@ -4669,25 +4670,25 @@ yyreduce:
                                 adicionar_erro(erro);
                             }
                         }
-#line 4673 "clang.tab.c"
+#line 4674 "clang.tab.c"
     break;
 
   case 73: /* expressao_io: COMANDO_READ PARENTESE_E expressao_io PARENTESE_D  */
-#line 367 "parser/clang.y"
+#line 368 "parser/clang.y"
                         {
                             (yyval.no) = NULL;
                         }
-#line 4681 "clang.tab.c"
+#line 4682 "clang.tab.c"
     break;
 
   case 74: /* expressao_chamada: expressao_principal  */
-#line 372 "parser/clang.y"
+#line 373 "parser/clang.y"
                                                       { (yyval.no) = (yyvsp[0].no); }
-#line 4687 "clang.tab.c"
+#line 4688 "clang.tab.c"
     break;
 
   case 76: /* expressao_chamada: expressao_principal PARENTESE_E expressao_lista_param PARENTESE_D  */
-#line 375 "parser/clang.y"
+#line 376 "parser/clang.y"
                         {
                             NoAST_Parametros_Chamada *no_parametros = (NoAST_Parametros_Chamada*) (yyvsp[-1].no);
                             (yyval.no) = novo_no_ast_chamada_funcao((yyvsp[-3].no), (yyvsp[-1].no), no_parametros->parametros_no);
@@ -4711,28 +4712,28 @@ yyreduce:
                                 adicionar_erro(erro);
                             }
                         }
-#line 4715 "clang.tab.c"
+#line 4716 "clang.tab.c"
     break;
 
   case 77: /* expressao_lista_param: expressao_atribuicao  */
-#line 401 "parser/clang.y"
+#line 402 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_parametros_chamada(NULL, 0, (yyvsp[0].no));
                         }
-#line 4723 "clang.tab.c"
+#line 4724 "clang.tab.c"
     break;
 
   case 78: /* expressao_lista_param: expressao_lista_param VIRGULA expressao_atribuicao  */
-#line 405 "parser/clang.y"
+#line 406 "parser/clang.y"
                         {
                             NoAST_Parametros_Chamada *novo_no = (NoAST_Parametros_Chamada*) (yyvsp[-2].no);
                             (yyval.no) = novo_no_ast_parametros_chamada((yyvsp[-2].no),  novo_no->parametros_no, (yyvsp[0].no));
                         }
-#line 4732 "clang.tab.c"
+#line 4733 "clang.tab.c"
     break;
 
   case 79: /* expressao_decisao: COMANDO_IF PARENTESE_E expressao PARENTESE_D tipos_expressao COMANDO_ELSE tipos_expressao  */
-#line 412 "parser/clang.y"
+#line 413 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_if((yyvsp[-4].no), (yyvsp[-2].no), NULL, 0, (yyvsp[0].no));
                             if((yyvsp[0].no)->tipo == NO_IF)
@@ -4756,107 +4757,107 @@ yyreduce:
                                 free(no_else);
                             }
                         }
-#line 4760 "clang.tab.c"
+#line 4761 "clang.tab.c"
     break;
 
   case 80: /* expressao_decisao: COMANDO_IF PARENTESE_E expressao PARENTESE_D tipos_expressao  */
-#line 436 "parser/clang.y"
+#line 437 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_if((yyvsp[-2].no), (yyvsp[0].no), NULL, 0, NULL);
                         }
-#line 4768 "clang.tab.c"
+#line 4769 "clang.tab.c"
     break;
 
   case 81: /* expressao_decisao: COMANDO_IF PARENTESE_E expressao_atribuicao CONJUNTO_IN expressao_atribuicao PARENTESE_D tipos_expressao COMANDO_ELSE tipos_expressao  */
-#line 440 "parser/clang.y"
+#line 441 "parser/clang.y"
                         {
                             (yyval.no) = NULL;
                         }
-#line 4776 "clang.tab.c"
+#line 4777 "clang.tab.c"
     break;
 
   case 82: /* expressao_decisao: COMANDO_IF PARENTESE_E expressao_atribuicao CONJUNTO_IN expressao_atribuicao PARENTESE_D tipos_expressao  */
-#line 444 "parser/clang.y"
+#line 445 "parser/clang.y"
                         {
                             (yyval.no) = NULL;
                         }
-#line 4784 "clang.tab.c"
+#line 4785 "clang.tab.c"
     break;
 
   case 83: /* expressao_iteracao: COMANDO_FOR PARENTESE_E declaracao_var expressao_declaracao PARENTESE_D tipos_expressao  */
-#line 450 "parser/clang.y"
+#line 451 "parser/clang.y"
                         {
                             (yyval.no) = NULL;
                         }
-#line 4792 "clang.tab.c"
+#line 4793 "clang.tab.c"
     break;
 
   case 84: /* expressao_iteracao: COMANDO_FOR PARENTESE_E expressao_declaracao expressao_declaracao PARENTESE_D tipos_expressao  */
-#line 454 "parser/clang.y"
+#line 455 "parser/clang.y"
                         {
                             (yyval.no) = NULL;
                         }
-#line 4800 "clang.tab.c"
+#line 4801 "clang.tab.c"
     break;
 
   case 85: /* expressao_iteracao: COMANDO_FOR PARENTESE_E declaracao_var expressao_declaracao expressao PARENTESE_D tipos_expressao  */
-#line 458 "parser/clang.y"
+#line 459 "parser/clang.y"
                         {
                             (yyval.no) = NULL;
                         }
-#line 4808 "clang.tab.c"
+#line 4809 "clang.tab.c"
     break;
 
   case 86: /* expressao_iteracao: COMANDO_FOR PARENTESE_E expressao_declaracao expressao_declaracao expressao PARENTESE_D tipos_expressao  */
-#line 462 "parser/clang.y"
+#line 463 "parser/clang.y"
                         {
                             (yyval.no) = NULL;
                         }
-#line 4816 "clang.tab.c"
+#line 4817 "clang.tab.c"
     break;
 
   case 87: /* expressao_iteracao: COMANDO_FORALL PARENTESE_E expressao_atribuicao CONJUNTO_IN expressao_atribuicao PARENTESE_D tipos_expressao  */
-#line 466 "parser/clang.y"
+#line 467 "parser/clang.y"
                         {
                             (yyval.no) = NULL;
                         }
-#line 4824 "clang.tab.c"
+#line 4825 "clang.tab.c"
     break;
 
   case 88: /* expressao_composta: CHAVE_E CHAVE_D  */
-#line 472 "parser/clang.y"
+#line 473 "parser/clang.y"
                         {
                             (yyval.no) = NULL;
                         }
-#line 4832 "clang.tab.c"
+#line 4833 "clang.tab.c"
     break;
 
   case 89: /* expressao_composta: CHAVE_E lista_itens_bloco CHAVE_D  */
-#line 476 "parser/clang.y"
+#line 477 "parser/clang.y"
                         { 
                             (yyval.no) = (yyvsp[-1].no); 
                         }
-#line 4840 "clang.tab.c"
+#line 4841 "clang.tab.c"
     break;
 
   case 90: /* expressao_return: RETURN PONTO_E_VIRGULA  */
-#line 482 "parser/clang.y"
+#line 483 "parser/clang.y"
                         {
                             (yyval.no) = NULL;
                         }
-#line 4848 "clang.tab.c"
+#line 4849 "clang.tab.c"
     break;
 
   case 91: /* expressao_return: RETURN expressao PONTO_E_VIRGULA  */
-#line 486 "parser/clang.y"
+#line 487 "parser/clang.y"
                         {
                             (yyval.no) = novo_no_ast_retorno((yyvsp[-1].no));
                         }
-#line 4856 "clang.tab.c"
+#line 4857 "clang.tab.c"
     break;
 
 
-#line 4860 "clang.tab.c"
+#line 4861 "clang.tab.c"
 
       default: break;
     }
@@ -5081,7 +5082,7 @@ yyreturn:
   return yyresult;
 }
 
-#line 491 "parser/clang.y"
+#line 492 "parser/clang.y"
 
 
 void add_lista(Simbolo* novo_simbolo)
