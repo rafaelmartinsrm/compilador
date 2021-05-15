@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "string.h"
+#include <string.h>
 
 void tac(NoAST *raiz)
 {
@@ -62,6 +62,7 @@ void declaracoes_tac_recursivo(Escopo* escopo)
 }
 
 int tmps = -1;
+int if_no = 0;
 char* alocar_tmp()
 {
     tmps += 1;
@@ -78,7 +79,9 @@ char* alocar_tmp()
 void expressoes_tac_recursivo(NoAST *no)
 {
     int i;
-    char comando[256];
+    char comando[256], reg[256];
+    if(!no)
+        return;
     switch(no->tipo)
     {
         case(NO_DECLARACOES):
@@ -124,7 +127,7 @@ void expressoes_tac_recursivo(NoAST *no)
             NoAST_Parametros_Chamada* no_parametros_chamada = (NoAST_Parametros_Chamada *) no_chamada_funcao->parametros;
             sprintf(comando, "call %s, %d\n", simbolo->identificador, no_parametros_chamada->parametros_no);
             nova_entrada(comando);
-            sprintf(comando, "pop $0\nprintln $0\n");
+            sprintf(comando, "pop $0\n");
             nova_entrada(comando);
             break;
         }
@@ -158,8 +161,39 @@ void expressoes_tac_recursivo(NoAST *no)
         case(NO_ELSEIF):
         {
             NoAST_ElseIf* no_elseif = (NoAST_ElseIf *) no;
+            int i = 0, atual = 0, ultimo = 0, proximo = 0;
+            char *tempstr = calloc(strlen(no_elseif->reg)+1, sizeof(char));
+            strcpy(tempstr, no_elseif->reg);
+            char * token = strtok((char *)tempstr, "_");
+            char *token_array[5];
+            while(token != NULL)
+            {
+                token_array[i++] = token;
+                token = strtok(NULL, "_");
+            }
+            atual = atoi(token_array[3]);
+            ultimo = atoi(token_array[4]);
+
+            printf("%s\n", no_elseif->reg);
+            sprintf(comando, "%s:\n", no_elseif->reg);
+            nova_entrada(comando);
             expressoes_tac_recursivo(no_elseif->condicao);
+            sprintf(comando, "brnz bloco%s, %s\n", no_elseif->reg, no_elseif->condicao->reg);
+            nova_entrada(comando);
+            if(atual != 0)
+            {
+                sprintf(comando, "jump %s_%s_%s_%d_%d\n", token_array[0], token_array[1], token_array[2], atual-1, ultimo);
+                nova_entrada(comando);
+            }
+            else
+            {
+                sprintf(comando, "jump %s_%s_blocoelse\n", token_array[0], token_array[1]);
+                nova_entrada(comando);
+            }
+            sprintf(comando, "bloco%s:\n", no_elseif->reg);
+            nova_entrada(comando);
             expressoes_tac_recursivo(no_elseif->bloco_elseif);
+            free(tempstr);
             break;
         }
         case(NO_RETORNO):
@@ -188,19 +222,64 @@ void expressoes_tac_recursivo(NoAST *no)
             NoAST_Relacional* no_relacional = (NoAST_Relacional *) no;
             expressoes_tac_recursivo(no_relacional->esquerda);
             expressoes_tac_recursivo(no_relacional->direita);
+            no_relacional->reg = alocar_tmp();
+            switch(no_relacional->operador)
+            {
+                case MENOR_QUE:
+                    sprintf(comando, "slt %s, %s, %s\n", no_relacional->reg, no_relacional->esquerda->reg, no_relacional->direita->reg);
+                    break;
+                case MAIOR_QUE:
+                    sprintf(comando, "slt %s, %s, %s\n", no_relacional->reg, no_relacional->direita->reg, no_relacional->esquerda->reg);
+                    break;
+
+            }
+            nova_entrada(comando);
             break;
         }
         case(NO_IF):
         {
             NoAST_If* no_if = (NoAST_If *) no;
+            sprintf(reg, "if_%d", if_no);
+            no_if->reg = strdup(reg);
+            sprintf(comando, "%s:\n", no_if->reg);
+            nova_entrada(comando);
             expressoes_tac_recursivo(no_if->condicao);
+            sprintf(comando, "brnz bloco%s, %s\n", no_if->reg, no_if->condicao->reg);
+            nova_entrada(comando);
+            if_no += 1;
+
+            if(no_if->elseif_no)
+            {
+                sprintf(comando, "jump %s_elseif_%d_%d\n", no_if->reg, (no_if->elseif_no)-1, (no_if->elseif_no)-1);
+                nova_entrada(comando);
+            }
+            else
+            {
+                sprintf(comando, "jump %s_blocoelse\n", no_if->reg);
+                nova_entrada(comando);
+            }
+
+            sprintf(comando, "bloco%s:\n", no_if->reg);
+            nova_entrada(comando);
             expressoes_tac_recursivo(no_if->bloco_if);
+            sprintf(comando, "jump end%s\n", no_if->reg);
+            nova_entrada(comando);
 
             for(i = 0; i < no_if->elseif_no; ++i)
             {
+                sprintf(reg, "%s_elseif_%d_%d", no_if->reg, i, (no_if->elseif_no)-1);
+                no_if->blocos_elseif[i]->reg = strdup(reg);
                 expressoes_tac_recursivo(no_if->blocos_elseif[i]);
+                sprintf(comando, "jump end%s\n", no_if->reg);
+                nova_entrada(comando);
             }
+            sprintf(comando, "%s_blocoelse:\n", no_if->reg);
+            nova_entrada(comando);
             expressoes_tac_recursivo(no_if->bloco_else);
+            sprintf(comando, "jump end%s\n", no_if->reg);
+            nova_entrada(comando);
+            sprintf(comando, "end%s:\n", no_if->reg);
+            nova_entrada(comando);
             break;
         }
         case(NO_EXPRESSAO_COMPOSTA):

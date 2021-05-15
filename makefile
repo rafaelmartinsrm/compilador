@@ -4,7 +4,7 @@ C_FLAGS		= -g -Wall -lm
 
 clang:		$(OBJS)
 			cd saida; \
-	 		$(C_COMPILER) $(C_FLAGS) $(OBJS) ../util/tabela_simbolos.c ../util/ast.c ../tac/tac.c -o clang -lfl
+	 		$(C_COMPILER) $(C_FLAGS) $(OBJS) ../util/tabela_simbolos.c ../util/ast.c ../tac/tac.c -o clang -lfl -lm
 
 lexer.o:	lexer.yy.c
 			$(C_COMPILER) $(C_FLAGS) -c saida/lex.yy.c -o saida/lexer.o

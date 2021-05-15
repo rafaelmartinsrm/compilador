@@ -432,6 +432,9 @@ expressao_decisao		: COMANDO_IF PARENTESE_E expressao PARENTESE_D tipos_expressa
                                 }
                                 free(no_else);
                             }
+                            else{
+                            printf("%p\n\n", $7);
+                            }
                         }
 						| COMANDO_IF PARENTESE_E expressao PARENTESE_D tipos_expressao %prec THEN
                         {
@@ -449,7 +452,6 @@ expressao_decisao		: COMANDO_IF PARENTESE_E expressao PARENTESE_D tipos_expressa
 
 expressao_iteracao		: COMANDO_FOR PARENTESE_E declaracao_var expressao_declaracao PARENTESE_D tipos_expressao
                         {
-                            $$ = NULL;
                         }
                         | COMANDO_FOR PARENTESE_E expressao_declaracao expressao_declaracao PARENTESE_D tipos_expressao
                         {
@@ -461,7 +463,7 @@ expressao_iteracao		: COMANDO_FOR PARENTESE_E declaracao_var expressao_declaraca
                         }
                         | COMANDO_FOR PARENTESE_E expressao_declaracao expressao_declaracao expressao PARENTESE_D tipos_expressao
                         {
-                            $$ = NULL;
+                            $$ = novo_no_ast_for($3, $4, $5, $7);
                         }
 						| COMANDO_FORALL PARENTESE_E expressao_atribuicao CONJUNTO_IN expressao_atribuicao PARENTESE_D tipos_expressao
                         {
@@ -473,9 +475,9 @@ expressao_composta		: CHAVE_E CHAVE_D
                         {
                             $$ = NULL;
                         }
-						| CHAVE_E lista_itens_bloco CHAVE_D 
-                        { 
-                            $$ = $2; 
+                            | CHAVE_E lista_itens_bloco CHAVE_D 
+                            { 
+                                $$ = $2; 
                         }
 						;
 

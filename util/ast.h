@@ -14,6 +14,7 @@ typedef enum TipoNo
     NO_EXPRESSAO,
     NO_EXPRESSAO_COMPOSTA,
     NO_EXPRESSOES,
+    NO_FOR,
     NO_IF,
     NO_OPERACAO,
     NO_PARAMETROS,
@@ -93,6 +94,7 @@ typedef struct
 typedef struct
 {
     enum TipoNo tipo;
+    const char* reg;
     Operador operador;
     NoAST *esquerda;
     NoAST *direita;
@@ -108,6 +110,7 @@ typedef struct
 typedef struct
 {
     enum TipoNo tipo;
+    const char* reg;
     struct NoAST *condicao;
     struct NoAST *bloco_if;
     struct NoAST **blocos_elseif;
@@ -118,9 +121,20 @@ typedef struct
 typedef struct
 {
     enum TipoNo tipo;
+    const char* reg;
     struct NoAST *condicao;
     struct NoAST *bloco_elseif;
 } NoAST_ElseIf;
+
+typedef struct
+{
+    enum TipoNo tipo;
+    const char* reg;
+    NoAST *inicializacao;
+    NoAST *condicao;
+    NoAST *expressao;
+    NoAST *bloco_for;
+} NoAST_For;
 
 typedef struct
 {
@@ -208,6 +222,7 @@ NoAST *novo_no_ast_retorno(NoAST *referencia);
 NoAST *novo_no_ast_expressao_composta(NoAST *no, int itens_bloco_no, NoAST *item);
 NoAST *novo_no_ast_if(NoAST *condicao, NoAST *bloco_if, NoAST **bloco_elseif, int elseif_no, NoAST *bloco_else);
 NoAST *novo_no_ast_elseif(NoAST *condicao, NoAST *bloco_elseif);
+NoAST *novo_no_ast_for(NoAST *inicializacao, NoAST *condicao, NoAST *expressao, NoAST *bloco_for);
 NoAST *novo_no_ast_declaracao_funcao(int tipo_dado, Simbolo *simbolo, NoAST *expressao_composta);
 NoAST *novo_no_ast_declaracoes(NoAST *no, int declaracoes_no, NoAST *declaracao);
 NoAST *novo_no_ast_parametros(NoAST *no, int parametros_no, Simbolo *parametro);

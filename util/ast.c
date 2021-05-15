@@ -109,6 +109,7 @@ NoAST *novo_no_ast_relacional(Operador operador, NoAST *esquerda, NoAST *direita
 {
     NoAST_Relacional *novo_no = malloc(sizeof(NoAST_Relacional));
     novo_no->tipo = NO_RELACIONAL;
+    novo_no->reg = NULL;
     novo_no->operador = operador;
     novo_no->esquerda = esquerda;
     novo_no->direita = direita;
@@ -146,11 +147,25 @@ NoAST *novo_no_ast_if(NoAST *condicao, NoAST *bloco_if, NoAST **blocos_elseif, i
 
     novo_no->tipo = NO_IF;
     novo_no->condicao = condicao;
+    novo_no->reg = NULL;
     novo_no->bloco_if = bloco_if;
     novo_no->blocos_elseif = blocos_elseif;
     novo_no->elseif_no = elseif_no;
     novo_no->bloco_else = bloco_else;
 
+    return (struct NoAST*) novo_no;
+}
+
+NoAST *novo_no_ast_for(NoAST *inicializacao, NoAST *condicao, NoAST *expressao, NoAST *bloco_for)
+{
+    NoAST_For *novo_no = malloc(sizeof(NoAST_For));
+
+    novo_no->tipo = NO_FOR;
+    novo_no->reg = NULL;
+    novo_no->inicializacao = inicializacao;
+    novo_no->condicao = condicao;
+    novo_no->expressao = expressao;
+    novo_no->bloco_for = bloco_for;
     return (struct NoAST*) novo_no;
 }
 
@@ -285,6 +300,7 @@ NoAST *novo_no_ast_elseif(NoAST *condicao, NoAST *bloco_elseif)
 {
     NoAST_ElseIf *no = malloc(sizeof(NoAST_ElseIf));
     no->tipo = NO_ELSEIF;
+    no->reg = NULL;
     no->condicao = condicao;
     no->bloco_elseif = bloco_elseif;
 
@@ -513,8 +529,22 @@ void liberar_ast(NoAST *no)
         {
             NoAST_ElseIf* no_elseif = (NoAST_ElseIf *) no;
             liberar_ast(no_elseif->condicao);
+            if(no_elseif->reg)
+                free((char*)no_elseif->reg);
             liberar_ast(no_elseif->bloco_elseif);
             free(no_elseif);
+            break;
+        }
+        case(NO_FOR):
+        {
+            NoAST_For* no_for = (NoAST_For *) no;
+            liberar_ast(no_for->inicializacao);
+            liberar_ast(no_for->condicao);
+            liberar_ast(no_for->expressao);
+            liberar_ast(no_for->bloco_for);
+            if(no_for->reg)
+                free((char*)no_for->reg);
+            free(no_for);
             break;
         }
         case(NO_RETORNO):
@@ -536,6 +566,8 @@ void liberar_ast(NoAST *no)
         case(NO_RELACIONAL):
         {
             NoAST_Relacional* no_relacional = (NoAST_Relacional *) no;
+            if(no_relacional->reg)
+                free((char*)no_relacional->reg);
             liberar_ast(no_relacional->esquerda);
             liberar_ast(no_relacional->direita);
             free(no_relacional);
@@ -546,6 +578,8 @@ void liberar_ast(NoAST *no)
             NoAST_If* no_if = (NoAST_If *) no;
             liberar_ast(no_if->condicao);
             liberar_ast(no_if->bloco_if);
+            if(no_if->reg)
+                free((char*)no_if->reg);
 
             for(i = 0; i < no_if->elseif_no; ++i)
             {
@@ -866,6 +900,30 @@ void imprimir_no(NoAST *no, int espacamento)
                 printf("%*c %f\n", espacamento, '*', no_constante->valor.floatval);
             else if(no_constante->tipo_dado == TIPO_CADEIA)
                 printf("%*c %s\n", espacamento, '*', no_constante->valor.stringval);
+            espacamento -= 1;
+            break;
+        }
+        case(NO_FOR):
+        {
+            NoAST_For *no_for = (NoAST_For *) no;
+            printf("%*c for\n", espacamento, '*');
+            espacamento += 1;
+            printf("%*c inicialização\n", espacamento, '*');
+            espacamento += 1;
+            imprimir_no(no_for->inicializacao, espacamento);
+            espacamento -= 1;
+            printf("%*c condicao\n", espacamento, '*');
+            espacamento += 1;
+            imprimir_no(no_for->condicao, espacamento);
+            espacamento -= 1;
+            printf("%*c expressão\n", espacamento, '*');
+            espacamento += 1;
+            imprimir_no(no_for->expressao, espacamento);
+            espacamento -= 1;
+            printf("%*c bloco\n", espacamento, '*');
+            espacamento += 1;
+            imprimir_no(no_for->bloco_for, espacamento);
+            espacamento -= 1;
             espacamento -= 1;
             break;
         }
