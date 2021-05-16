@@ -450,16 +450,9 @@ expressao_decisao		: COMANDO_IF PARENTESE_E expressao PARENTESE_D tipos_expressa
                         }
 						;
 
-expressao_iteracao		: COMANDO_FOR PARENTESE_E declaracao_var expressao_declaracao PARENTESE_D tipos_expressao
+expressao_iteracao		: COMANDO_FOR PARENTESE_E expressao_declaracao expressao_declaracao PARENTESE_D tipos_expressao
                         {
-                        }
-                        | COMANDO_FOR PARENTESE_E expressao_declaracao expressao_declaracao PARENTESE_D tipos_expressao
-                        {
-                            $$ = NULL;
-                        }
-						| COMANDO_FOR PARENTESE_E declaracao_var expressao_declaracao expressao PARENTESE_D tipos_expressao
-                        {
-                            $$ = NULL;
+                            $$ = novo_no_ast_for($3, $4, NULL, $6);
                         }
                         | COMANDO_FOR PARENTESE_E expressao_declaracao expressao_declaracao expressao PARENTESE_D tipos_expressao
                         {

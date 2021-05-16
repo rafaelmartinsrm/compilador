@@ -9,6 +9,8 @@ int main()
 {
     int a;
     a = 6*6;
+    for(; a < 100; a = a+1)
+        writeln(a);
     writeln(a);
     if(a < 6)
     {

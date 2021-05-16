@@ -150,6 +150,7 @@ typedef struct
 typedef struct 
 {
     enum TipoNo tipo;
+    const char* reg;
     NoAST *definicao;
     NoAST *parametros;
     int parametros_no;

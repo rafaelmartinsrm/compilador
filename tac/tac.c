@@ -62,7 +62,7 @@ void declaracoes_tac_recursivo(Escopo* escopo)
 }
 
 int tmps = -1;
-int if_no = 0;
+int if_no = 0, for_no = 0;
 char* alocar_tmp()
 {
     tmps += 1;
@@ -99,8 +99,25 @@ void expressoes_tac_recursivo(NoAST *no)
             expressoes_tac_recursivo(no_aritmetica->esquerda);   
             expressoes_tac_recursivo(no_aritmetica->direita);   
             no_aritmetica->reg = alocar_tmp();
-            sprintf(comando, "mul %s, %s, %s\n", no_aritmetica->reg, no_aritmetica->esquerda->reg, no_aritmetica->direita->reg);
-            nova_entrada(comando);
+            switch(no_aritmetica->operador)
+            {
+                case(ADD):
+                    sprintf(comando, "add %s, %s, %s\n", no_aritmetica->reg, no_aritmetica->esquerda->reg, no_aritmetica->direita->reg);
+                    nova_entrada(comando);
+                    break;
+                case(SOMA):
+                    sprintf(comando, "add %s, %s, %s\n", no_aritmetica->reg, no_aritmetica->esquerda->reg, no_aritmetica->direita->reg);
+                    nova_entrada(comando);
+                    break;
+                case(SUBTRACAO):
+                    sprintf(comando, "sub %s, %s, %s\n", no_aritmetica->reg, no_aritmetica->esquerda->reg, no_aritmetica->direita->reg);
+                    nova_entrada(comando);
+                    break;
+                case(MULTIPLICACAO):
+                    sprintf(comando, "mul %s, %s, %s\n", no_aritmetica->reg, no_aritmetica->esquerda->reg, no_aritmetica->direita->reg);
+                    nova_entrada(comando);
+                    break;
+            }
             break;
         }
         case(NO_PARAMETROS_CHAMADA):
@@ -233,6 +250,36 @@ void expressoes_tac_recursivo(NoAST *no)
                     break;
 
             }
+            nova_entrada(comando);
+            break;
+        }
+        case(NO_FOR):
+        {
+            NoAST_For* no_for = (NoAST_For *) no;
+            sprintf(reg, "for_%d", for_no);
+            no_for->reg = strdup(reg);
+            for_no += 1;
+            sprintf(comando, "%s:\n", no_for->reg);
+            nova_entrada(comando);
+            expressoes_tac_recursivo(no_for->inicializacao);
+            sprintf(comando, "%s_condicao:\n", no_for->reg);
+            nova_entrada(comando);
+            expressoes_tac_recursivo(no_for->condicao);
+            sprintf(comando, "brnz %s_bloco, %s\n", no_for->reg, no_for->condicao->reg);
+            nova_entrada(comando);
+            sprintf(comando, "jump end%s\n", no_for->reg);
+            nova_entrada(comando);
+            sprintf(comando, "%s_expressao:\n", no_for->reg);
+            nova_entrada(comando);
+            expressoes_tac_recursivo(no_for->expressao);
+            sprintf(comando, "jump %s_condicao\n", no_for->reg);
+            nova_entrada(comando);
+            sprintf(comando, "%s_bloco:\n", no_for->reg);
+            nova_entrada(comando);
+            expressoes_tac_recursivo(no_for->bloco_for);
+            sprintf(comando, "jump %s_expressao\n", no_for->reg);
+            nova_entrada(comando);
+            sprintf(comando, "end%s:\n", no_for->reg);
             nova_entrada(comando);
             break;
         }

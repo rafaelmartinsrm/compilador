@@ -1,9 +1,10 @@
 [ERRO] Erro no nó de referência! b não está bem definido.
 [ERRO] O erro se encontra na linha (coluna): 4 (4)
 [ERRO] O erro se encontra na linha (coluna): 11 (6)
-[ERRO] A expressão não é do tipo cadeia. O erro se encontra na linha (coluna): 12 (11)
-[ERRO] O tipo indef do parametro 0 é diferente do esperado (int) para a função 'teste'.
-[ERRO] Erro na chamada de função 'teste', linha (coluna): 35 (9).
-[ERRO] A expressão não é do tipo cadeia. O erro se encontra na linha (coluna): 36 (11)
+[ERRO] A expressão não é do tipo cadeia. O erro se encontra na linha (coluna): 13 (11)
+[ERRO] A expressão não é do tipo cadeia. O erro se encontra na linha (coluna): 14 (11)
 [ERRO] O tipo indef do parametro 0 é diferente do esperado (int) para a função 'teste'.
 [ERRO] Erro na chamada de função 'teste', linha (coluna): 37 (9).
+[ERRO] A expressão não é do tipo cadeia. O erro se encontra na linha (coluna): 38 (11)
+[ERRO] O tipo indef do parametro 0 é diferente do esperado (int) para a função 'teste'.
+[ERRO] Erro na chamada de função 'teste', linha (coluna): 39 (9).

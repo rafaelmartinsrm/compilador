@@ -132,6 +132,7 @@ NoAST *novo_no_ast_conjunto(Operador operador, NoAST *esquerda, NoAST *direita)
 NoAST *novo_no_ast_aritmetica(Operador operador, NoAST *esquerda, NoAST *direita)
 {
     NoAST_Aritmetica *novo_no = malloc(sizeof(NoAST_Aritmetica));
+    novo_no->reg = NULL;
     novo_no->tipo = NO_ARITMETICA;
     novo_no->operador = operador;
     novo_no->esquerda = esquerda;
@@ -214,7 +215,7 @@ NoAST *novo_no_ast_declaracao_funcao(int tipo_dado, Simbolo *simbolo, NoAST *exp
 NoAST *novo_no_ast_chamada_funcao(NoAST *definicao, NoAST *parametros, int parametros_no)
 {
     NoAST_Chamada_Funcao *novo_no = malloc(sizeof(NoAST_Chamada_Funcao));
-
+    novo_no->reg = NULL;
     novo_no->tipo = NO_CHAMADA_FUNCAO;
     novo_no->definicao = definicao;
     novo_no->parametros = parametros;
@@ -493,6 +494,8 @@ void liberar_ast(NoAST *no)
         case(NO_CHAMADA_FUNCAO):
         {
             NoAST_Chamada_Funcao* no_chamada_funcao = (NoAST_Chamada_Funcao *) no;
+            if(no_chamada_funcao->reg)
+                free((char*)no_chamada_funcao->reg);
             liberar_ast(no_chamada_funcao->definicao);
             liberar_ast(no_chamada_funcao->parametros);
             free(no_chamada_funcao);
